@@ -1,0 +1,61 @@
+---
+import { ArrowRight } from "lucide-react";
+import Button from "../../components/atomos/Button";
+import Section from "../../components/organismos/Section.astro";
+---
+
+<Section isBackgroundFoto id="inicio">
+  <div class="max-w-2xl">
+    <h1
+      class="text-5xl md:text-6xl lg:text-7xl font-bold text-primary-textoTitle mb-6 leading-tight"
+    >
+      Cambiando vidas,{" "}
+      <span
+        class="bg-gradient-to-r from-primary-100 to-primary-200 bg-clip-text text-transparent"
+      >
+        una sonrisa
+      </span>{" "}
+      a la vez
+    </h1>
+
+    <p class="text-xl md:text-2xl text-primary-texto mb-8 leading-relaxed">
+      Cada 3 minutos nace un niño con labio leporino. Tu donación puede
+      transformar su vida y darle la oportunidad de sonreír con confianza.
+    </p>
+
+    <div class="flex flex-col sm:flex-row gap-4">
+      <Button
+        weight="bold"
+        size="lg"
+        variant="primary"
+        class="text-lg px-8 py-6 shadow-strong hover:shadow-medium transition-all"
+      >
+        Donar Ahora
+        <ArrowRight class="ml-2 h-5 w-5" />
+      </Button>
+      <Button
+        weight="bold"
+        variant="secondary"
+        size="lg"
+        class="text-lg px-8 py-6 border-2"
+      >
+        Conoce Más
+      </Button>
+    </div>
+
+    <div class="mt-12 grid grid-cols-3 gap-6">
+      <div>
+        <div class="text-4xl font-bold text-primary-texto mb-2">2M+</div>
+        <div class="text-sm text-primary-texto">Niños tratados</div>
+      </div>
+      <div>
+        <div class="text-4xl font-bold text-primary-texto mb-2">90+</div>
+        <div class="text-sm text-primary-texto">Países alcanzados</div>
+      </div>
+      <div>
+        <div class="text-4xl font-bold text-accent mb-2">25+</div>
+        <div class="text-sm text-muted-foreground">Años de impacto</div>
+      </div>
+    </div>
+  </div>
+</Section>

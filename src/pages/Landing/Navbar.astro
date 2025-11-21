@@ -1,0 +1,47 @@
+---
+import Button from "../../components/atomos/Button";
+import { Heart } from "lucide-react";
+---
+
+<nav
+  class="fixed top-0 w-full bg-white/60 backdrop-blur s z-50 border-b border-primary-border"
+>
+  <div class="mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex h-16 items-center justify-between">
+      <div class="flex items-center gap-2">
+        <img src="./logo.jpeg" class="h-8 w-8 rounded-xl" />
+        <span class="text-xl font-bold text-primary-100">Fundación</span>
+        <span class="text-xl font-bold text-primary-200">Simi Sumaq</span>
+      </div>
+
+      <div class="hidden md:flex items-center gap-8">
+        <a
+          href="#inicio"
+          class="text-sm font-medium text-primary-texto hover:text-primary-textoTitle transition-colors"
+        >
+          Inicio
+        </a>
+        <a
+          href="#mision"
+          class="text-sm font-medium text-primary-texto hover:text-primary-textoTitle transition-colors"
+        >
+          Nuestra Misión
+        </a>
+        <a
+          href="#impacto"
+          class="text-sm font-medium text-primary-texto hover:text-primary-textoTitle transition-colors"
+        >
+          Impacto
+        </a>
+        <a
+          href="#ayudar"
+          class="text-sm font-medium text-primary-texto hover:text-primary-textoTitle transition-colors"
+        >
+          Cómo Ayudar
+        </a>
+      </div>
+
+      <Button size="lg" class="font-semibold"> Donar Ahora </Button>
+    </div>
+  </div>
+</nav>

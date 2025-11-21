@@ -1,0 +1,44 @@
+---
+import Section from "../../components/organismos/Section.astro";
+---
+
+<Section id="mision">
+  <div class="grid lg:grid-cols-2 gap-12 items-center">
+    <div class="order-2 lg:order-1">
+      <h2 class="text-4xl md:text-5xl font-bold text-foreground mb-6">
+        Nuestra Misión
+      </h2>
+      <p class="text-lg text-muted-foreground mb-6 leading-relaxed">
+        Trabajamos para proporcionar cirugías gratuitas de labio leporino y
+        paladar hendido a niños que no tienen acceso a tratamiento médico. Cada
+        cirugía toma aproximadamente 45 minutos y cuesta tan solo $250, pero
+        cambia una vida para siempre.
+      </p>
+      <p class="text-lg text-muted-foreground mb-8 leading-relaxed">
+        No solo tratamos la condición física, sino que también empoderamos a
+        estos niños para que puedan hablar, comer, respirar y sonreír con
+        confianza. Les damos la oportunidad de ir a la escuela, hacer amigos y
+        perseguir sus sueños.
+      </p>
+
+      <div class="grid sm:grid-cols-2 gap-6">
+        <div class="p-6 bg-background rounded-lg shadow-subtle">
+          <div class="text-3xl font-bold text-primary mb-2">$250</div>
+          <div class="text-sm text-muted-foreground">Costo de una cirugía</div>
+        </div>
+        <div class="p-6 bg-background rounded-lg shadow-subtle">
+          <div class="text-3xl font-bold text-secondary mb-2">45 min</div>
+          <div class="text-sm text-muted-foreground">Duración promedio</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="order-1 lg:order-2">
+      <img
+        src={"./mision.webp"}
+        alt="Niños felices sonriendo juntos"
+        class="w-full h-auto rounded-2xl shadow-strong"
+      />
+    </div>
+  </div>
+</Section>

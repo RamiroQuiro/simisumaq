@@ -1,0 +1,86 @@
+---
+import Section from "../../components/organismos/Section.astro";
+import { Facebook, Heart, Instagram, Twitter, Youtube } from "lucide-react";
+---
+
+<footer id="footer" class="bg-primary-textoTitle mt-12 text-white py-12">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid md:grid-cols-4 gap-8 mb-8">
+      <div>
+        <div class="flex items-center gap-2">
+          <img src="./logo.jpeg" class="h-8 w-8 rounded-xl" />
+          <span class="text-xl font-bold text-primary-100">Fundación</span>
+          <span class="text-xl font-bold text-primary-200">Simi Sumaq</span>
+        </div>
+        <p class="text-white/80">
+          Transformando vidas a través de cirugías de labio leporino y paladar
+          hendido.
+        </p>
+      </div>
+
+      <div>
+        <h3 class="font-bold mb-4">Sobre Nosotros</h3>
+        <ul class="space-y-2 text-white/80">
+          <li>
+            <a href="#" class="hover:text-white transition-colors"
+              >Nuestra Historia</a
+            >
+          </li>
+          <li>
+            <a href="#" class="hover:text-white transition-colors">Equipo</a>
+          </li>
+          <li>
+            <a href="#" class="hover:text-white transition-colors">Impacto</a>
+          </li>
+          <li>
+            <a href="#" class="hover:text-white transition-colors">Reportes</a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="font-bold mb-4">Ayuda</h3>
+        <ul class="space-y-2 text-white/80">
+          <li>
+            <a href="#" class="hover:text-white transition-colors">Donar</a>
+          </li>
+          <li>
+            <a href="#" class="hover:text-white transition-colors"
+              >Voluntariado</a
+            >
+          </li>
+          <li>
+            <a href="#" class="hover:text-white transition-colors">Eventos</a>
+          </li>
+          <li>
+            <a href="#" class="hover:text-white transition-colors"
+              >Patrocinios</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="font-bold mb-4">Síguenos</h3>
+        <div class="flex gap-4">
+          <a href="#" class="hover:text-primary transition-colors">
+            <Facebook className="h-6 w-6" />
+          </a>
+          <a href="#" class="hover:text-primary transition-colors">
+            <Twitter className="h-6 w-6" />
+          </a>
+          <a href="#" class="hover:text-primary transition-colors">
+            <Instagram className="h-6 w-6" />
+          </a>
+          <a href="#" class="hover:text-primary transition-colors">
+            <Youtube className="h-6 w-6" />
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-white/20 pt-8 text-center text-white/60">
+      <p>&copy; 2024 Fundación Sonrisas. Todos los derechos reservados.</p>
+    </div>
+  </div>
+</footer>

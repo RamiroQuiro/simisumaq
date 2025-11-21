@@ -1,0 +1,14 @@
+@import "tailwindcss";
+/* src/styles/global.css */
+@import "./tailwind.css";
+
+/* Tus estilos globales adicionales */
+body {
+  font-family: system-ui, sans-serif;
+}
+
+/* Puedes usar las custom properties de tu tema */
+.custom-element {
+  background-color: var(--color-primary-500);
+  color: var(--color-primary-textoTitle);
+}

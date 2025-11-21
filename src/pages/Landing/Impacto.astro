@@ -1,0 +1,82 @@
+---
+import { Award, Globe, Heart, Users } from "lucide-react";
+import Section from "../../components/organismos/Section.astro";
+
+const stats = [
+  {
+    icon: Heart,
+    number: "10,000+",
+    label: "Cirugías este año",
+    color: "text-primary",
+  },
+  {
+    icon: Users,
+    number: "5,000+",
+    label: "Profesionales capacitados",
+    color: "text-secondary",
+  },
+  {
+    icon: Globe,
+    number: "90+",
+    label: "Países con presencia",
+    color: "text-primary",
+  },
+  {
+    icon: Award,
+    number: "100%",
+    label: "Cirugías gratuitas",
+    color: "text-secondary",
+  },
+];
+---
+
+<Section id="impacto" class="py-24">
+  <div class="text-center mb-16">
+    <h2 class="text-4xl md:text-5xl font-bold text-foreground mb-6">
+      Nuestro Impacto Global
+    </h2>
+    <p class="text-xl text-muted-foreground max-w-3xl mx-auto">
+      Cada día, transformamos vidas alrededor del mundo. Estos números
+      representan esperanza, sonrisas y futuros más brillantes.
+    </p>
+  </div>
+
+  <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+    {
+      stats.map((stat, index) => {
+        const Icon = stat.icon;
+        return (
+          <div
+            key={index}
+            class="bg-card p-8 rounded-2xl shadow-subtle hover:shadow-medium transition-all text-center"
+          >
+            <Icon className={`h-12 w-12 mx-auto mb-4 ${stat.color}`} />
+            <div class="text-4xl font-bold text-foreground mb-2">
+              {stat.number}
+            </div>
+            <div class="text-sm text-muted-foreground">{stat.label}</div>
+          </div>
+        );
+      })
+    }
+  </div>
+
+  <div class="relative rounded-2xl overflow-hidden shadow-strong">
+    <img
+      src={"./impacto.webp"}
+      alt="Equipo médico realizando cirugía de labio leporino"
+      class="w-full h-auto"
+    />
+    <div
+      class="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/40 to-transparent flex items-end"
+    >
+      <div class="p-8 text-white">
+        <h3 class="text-3xl font-bold mb-3">Excelencia Médica</h3>
+        <p class="text-lg opacity-90">
+          Nuestros equipos médicos capacitados realizan cirugías de clase
+          mundial, asegurando los mejores resultados para cada niño.
+        </p>
+      </div>
+    </div>
+  </div>
+</Section>

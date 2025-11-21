@@ -1,0 +1,102 @@
+---
+import { DollarSign, Calendar, Users, Share2 } from "lucide-react";
+import Section from "../../components/organismos/Section.astro";
+import Button from "../../components/atomos/Button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../components/organismos/Card";
+const ways = [
+  {
+    icon: DollarSign,
+    title: "Donación Única",
+    description:
+      "Haz una diferencia inmediata con una donación única. $250 puede cambiar una vida para siempre.",
+    action: "Donar Ahora",
+  },
+  {
+    icon: Calendar,
+    title: "Donación Mensual",
+    description:
+      "Únete a nuestra comunidad de patrocinadores mensuales y crea un impacto sostenible.",
+    action: "Ser Patrocinador",
+  },
+  {
+    icon: Users,
+    title: "Voluntariado",
+    description:
+      "Profesionales médicos pueden unirse a nuestras misiones y capacitar equipos locales.",
+    action: "Únete al Equipo",
+  },
+  {
+    icon: Share2,
+    title: "Comparte Nuestra Causa",
+    description:
+      "Ayúdanos a llegar a más personas compartiendo nuestro trabajo en redes sociales.",
+    action: "Compartir",
+  },
+];
+---
+
+<Section id="ayudar">
+  <div class="text-center mb-16">
+    <h2 class="text-4xl md:text-5xl font-bold text-foreground mb-6">
+      Cómo Puedes Ayudar
+    </h2>
+    <p class="text-xl text-muted-foreground max-w-3xl mx-auto">
+      Hay muchas formas de contribuir a nuestra misión. Cada acción cuenta y
+      juntos podemos transformar más vidas.
+    </p>
+  </div>
+
+  <div class="grid md:grid-cols-2 gap-8 mb-12">
+    {
+      ways.map((way, index) => {
+        const Icon = way.icon;
+        return (
+          <Card
+            key={index}
+            className="border-2 hover:border-primary-100 transition-all hover:shadow-medium"
+          >
+            <CardHeader>
+              <div class="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center mb-4">
+                <Icon className="h-6 w-6 text-white" />
+              </div>
+              <CardTitle className="text-2xl">{way.title}</CardTitle>
+              <CardDescription className="text-base">
+                {way.description}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button variant="outline" className="w-full border-2">
+                {way.action}
+              </Button>
+            </CardContent>
+          </Card>
+        );
+      })
+    }
+  </div>
+
+  <div
+    class="bg-gradient-to-r from-primary-100 to-primary-200 rounded-2xl p-12 text-center text-white shadow-strong"
+  >
+    <h3 class="text-3xl md:text-4xl font-bold mb-4">
+      ¿Listo para hacer la diferencia?
+    </h3>
+    <p class="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
+      Tu donación puede darle a un niño la oportunidad de sonreír, de ir a la
+      escuela y de perseguir sus sueños. Únete a nosotros hoy.
+    </p>
+    <Button
+      size="lg"
+      variant="secondary"
+      class="text-lg px-12 py-6 shadow-strong"
+    >
+      Dona Ahora
+    </Button>
+  </div>
+</Section>
