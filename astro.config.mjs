@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
     host: true,
     port: 4324,
-    allowedHosts: ["simisumaq.controlstock.online"],
+    allowedHosts: true,
   },
   devToolbar: {
     enabled: false,
