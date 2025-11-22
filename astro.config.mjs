@@ -7,6 +7,7 @@ import react from "@astrojs/react";
 export default defineConfig({
   server: {
     host: true,
+    port: 4324,
     allowedHosts: ["simisumaq.controlstock.online"],
   },
   devToolbar: {
