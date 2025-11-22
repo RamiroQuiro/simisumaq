@@ -7,6 +7,7 @@ import react from "@astrojs/react";
 export default defineConfig({
   server: {
     host: true,
+    allowedHosts: true,
   },
   devToolbar: {
     enabled: false,

@@ -6,10 +6,51 @@ import "../styles/global.css";
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>Simi Sumaq</title>
+
+    <!-- Meta Tags SEO Esenciales -->
+    <title>Fundación Simi Sumaq - Transformando Vidas con Esperanza</title>
+    <meta
+      name="description"
+      content="Fundación Simi Sumaq: asociación sin fines de lucro, cuyo objeto social es el desarrollo de actividades relacionadas con el tratamiento interdisciplinario de labio leporino y paladar hendido en niños FLAP"
+    />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="Fundación Simi Sumaq - Transformando Vidas con Esperanza"
+    />
+    <meta
+      property="og:description"
+      content="Fundación Simi Sumaq: asociación sin fines de lucro, cuyo objeto social es el desarrollo de actividades relacionadas con el tratamiento interdisciplinario de labio leporino y paladar hendido en niños FLAP"
+    />
+    <meta property="og:image" content="/og-image.jpg" />
+    <meta property="og:url" content="https://fundacionsimisumaq.org" />
+    <meta property="og:site_name" content="Fundación Simi Sumaq" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Fundación Simi Sumaq - Transformando Vidas"
+    />
+    <meta
+      name="twitter:description"
+      content="Trabajando como asociación sin fines de lucro, cuyo objeto social es el desarrollo de actividades. #Solidaridad #DesarrolloSocial"
+    />
+    <meta name="twitter:image" content="/logo.jpeg" />
+
+    <!-- SEO Técnico -->
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#2E86C1" />
+    <link rel="canonical" href="https://fundacionsimisumaq.org" />
+
+    <!-- Preconexiones para mejor performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   </head>
   <body>
     <slot />
