@@ -1,0 +1,257 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Section from "../components/organismos/Section.astro";
+import Button from "../components/atomos/Button";
+import Input from "../components/atomos/Input";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Facebook,
+  Instagram,
+  Twitter,
+  Send,
+} from "lucide-react";
+import TituloColores from "../components/atomos/TituloColores.astro";
+
+const contactInfo = [
+  {
+    icon: Mail,
+    title: "Email",
+    value: "info@simisumaq.org",
+    link: "mailto:info@simisumaq.org",
+  },
+  {
+    icon: Phone,
+    title: "Teléfono",
+    value: "+54 9 XXX XXX-XXXX",
+    link: "tel:+549XXXXXXXXX",
+  },
+  {
+    icon: MapPin,
+    title: "Dirección",
+    value: "Dirección de la Fundación, Ciudad, Provincia",
+    link: "#",
+  },
+];
+
+const socialMedia = [
+  { icon: Facebook, name: "Facebook", link: "#", color: "hover:text-blue-600" },
+  {
+    icon: Instagram,
+    name: "Instagram",
+    link: "#",
+    color: "hover:text-pink-600",
+  },
+  { icon: Twitter, name: "Twitter", link: "#", color: "hover:text-blue-400" },
+];
+---
+
+<Layout>
+  <Section
+    isBackgroundFoto
+    srcFotoBackground="https://scontent.cdninstagram.com/v/t39.30808-6/519955600_1472151187555812_8311202546685257369_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=100&ig_cache_key=MzY3OTQ3NDE5NTY0NjIyMjQ2Nw%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjEwODB4MTA4MC5zZHIuQzMifQ%3D%3D&_nc_ohc=sTOgwY9RpG8Q7kNvwH3qKSR&_nc_oc=Admvzu0frmwxUEv-b56EsNsfXxtR3Z-9YzqPgFjjaLdOaAa-dOkGCRgqGlGIrBYypO4&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=cJzGYEIdw_XYyqqVPcRLFg&oh=00_AfmK8MGGB8HWXroWhVp7JeLYilXdRcqi1AD13jkqZy7R3g&oe=69350800"
+    id="hero"
+    class="bg-gradient-to-r from-primary-100 to-primary-200"
+  >
+    <div class="text-center text-primary-textoTitle py-20">
+      <TituloColores>Contáctanos</TituloColores>
+      <p class="text-xl md:text-2xl max-w-3xl mx-auto opacity-90">
+        Estamos aquí para responder tus preguntas y recibir tu apoyo
+      </p>
+    </div>
+  </Section>
+
+  <!-- Información de Contacto -->
+  <Section id="info" class="py-24 bg-white">
+    <div class="max-w-6xl mx-auto">
+      <h2
+        class="text-4xl md:text-5xl font-bold text-foreground mb-12 text-center"
+      >
+        Información de Contacto
+      </h2>
+
+      <div class="grid md:grid-cols-3 gap-8 mb-16">
+        {
+          contactInfo.map((info) => {
+            const Icon = info.icon;
+            return (
+              <a
+                href={info.link}
+                class="bg-white p-8 rounded-2xl shadow-subtle hover:shadow-medium transition-all text-center border-2 border-transparent hover:border-primary-100"
+              >
+                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
+                  <Icon className="h-8 w-8 text-white" />
+                </div>
+                <h3 class="text-lg font-semibold text-primary-textoTitle mb-2">
+                  {info.title}
+                </h3>
+                <p class="text-muted-foreground">{info.value}</p>
+              </a>
+            );
+          })
+        }
+      </div>
+
+      <!-- Redes Sociales -->
+      <div class="text-center">
+        <h3 class="text-2xl font-bold text-primary-textoTitle mb-6">
+          Síguenos en Redes Sociales
+        </h3>
+        <div class="flex justify-center gap-6">
+          {
+            socialMedia.map((social) => {
+              const Icon = social.icon;
+              return (
+                <a
+                  href={social.link}
+                  class={`w-14 h-14 rounded-full bg-primary-bg-claro flex items-center justify-center text-primary-texto ${social.color} transition-all hover:scale-110`}
+                  aria-label={social.name}
+                >
+                  <Icon className="h-6 w-6" />
+                </a>
+              );
+            })
+          }
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  <!-- Formulario de Contacto -->
+  <Section id="formulario" class="py-24 bg-primary-bg-claro">
+    <div class="max-w-3xl mx-auto">
+      <h2
+        class="text-4xl md:text-5xl font-bold text-foreground mb-8 text-center"
+      >
+        Envíanos un Mensaje
+      </h2>
+      <p class="text-xl text-muted-foreground text-center mb-12">
+        Completa el formulario y nos pondremos en contacto contigo a la brevedad
+      </p>
+
+      <div class="bg-white p-8 md:p-12 rounded-2xl shadow-subtle">
+        <form class="space-y-6">
+          <div class="grid md:grid-cols-2 gap-6">
+            <div>
+              <label
+                for="nombre"
+                class="block text-sm font-semibold text-primary-textoTitle mb-2"
+              >
+                Nombre Completo *
+              </label>
+              <Input
+                id="nombre"
+                type="text"
+                placeholder="Tu nombre"
+                required
+                className="w-full"
+              />
+            </div>
+            <div>
+              <label
+                for="email"
+                class="block text-sm font-semibold text-primary-textoTitle mb-2"
+              >
+                Email *
+              </label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="tu@email.com"
+                required
+                className="w-full"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label
+              for="telefono"
+              class="block text-sm font-semibold text-primary-textoTitle mb-2"
+            >
+              Teléfono
+            </label>
+            <Input
+              id="telefono"
+              type="tel"
+              placeholder="+54 9 XXX XXX-XXXX"
+              className="w-full"
+            />
+          </div>
+
+          <div>
+            <label
+              for="asunto"
+              class="block text-sm font-semibold text-primary-textoTitle mb-2"
+            >
+              Asunto *
+            </label>
+            <Input
+              id="asunto"
+              type="text"
+              placeholder="¿En qué podemos ayudarte?"
+              required
+              className="w-full"
+            />
+          </div>
+
+          <div>
+            <label
+              for="mensaje"
+              class="block text-sm font-semibold text-primary-textoTitle mb-2"
+            >
+              Mensaje *
+            </label>
+            <textarea
+              id="mensaje"
+              rows="6"
+              placeholder="Escribe tu mensaje aquí..."
+              required
+              class="w-full px-4 py-3 rounded-lg border border-primary-border focus:outline-none focus:ring-2 focus:ring-primary-100 focus:border-transparent resize-none"
+            ></textarea>
+          </div>
+
+          <div class="flex items-start gap-3">
+            <input
+              type="checkbox"
+              id="privacidad"
+              required
+              class="mt-1 h-4 w-4 rounded border-primary-border text-primary-100 focus:ring-primary-100"
+            />
+            <label for="privacidad" class="text-sm text-muted-foreground">
+              Acepto la política de privacidad y el tratamiento de mis datos
+              personales *
+            </label>
+          </div>
+
+          <Button
+            type="submit"
+            variant="primary"
+            size="lg"
+            className="w-full text-lg"
+          >
+            <Send className="h-5 w-5 mr-2" />
+            Enviar Mensaje
+          </Button>
+
+          <p class="text-sm text-muted-foreground text-center">
+            * Campos obligatorios
+          </p>
+        </form>
+      </div>
+    </div>
+  </Section>
+
+  <!-- CTA Section -->
+
+  <div class="max-w-4xl mx-auto text-center text-primary-textoTitle py-20">
+    <h2 class="text-4xl md:text-5xl font-bold mb-6">¿Listo para Ayudar?</h2>
+    <p class="text-xl mb-8 opacity-90">
+      Tu apoyo puede cambiar la vida de un niño. Conoce cómo puedes colaborar
+    </p>
+    <Button href="/como-ayudar" size="lg" class="text-lg px-8 py-6">
+      Cómo Ayudar
+    </Button>
+  </div>
+</Layout>

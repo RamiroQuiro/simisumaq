@@ -1,0 +1,99 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/organismos/Navbar.astro";
+import Section from "../components/organismos/Section.astro";
+import { User } from "lucide-react";
+
+const comision = [
+  { nombre: "Nombre Apellido", cargo: "Presidente" },
+  { nombre: "Nombre Apellido", cargo: "Vicepresidente" },
+  { nombre: "Nombre Apellido", cargo: "Secretario" },
+  { nombre: "Nombre Apellido", cargo: "Tesorero" },
+  { nombre: "Nombre Apellido", cargo: "Vocal Titular" },
+  { nombre: "Nombre Apellido", cargo: "Vocal Suplente" },
+];
+
+const equipoMedico = [
+  { nombre: "Dr. Nombre Apellido", especialidad: "Cirugía Plástica" },
+  { nombre: "Dra. Nombre Apellido", especialidad: "Odontología" },
+  { nombre: "Lic. Nombre Apellido", especialidad: "Fonoaudiología" },
+  { nombre: "Lic. Nombre Apellido", especialidad: "Psicología" },
+  { nombre: "Lic. Nombre Apellido", especialidad: "Trabajo Social" },
+  { nombre: "Dra. Nombre Apellido", especialidad: "Pediatría" },
+];
+---
+
+<Layout>
+  <Section
+    isBackgroundFoto
+    srcFotoBackground="https://scontent.cdninstagram.com/v/t39.30808-6/568562079_1555866042517659_2240020214404568880_n.jpg?stp=c0.1.1920.1280a_dst-jpg_e35_s1080x1080_tt6&_nc_cat=103&ig_cache_key=Mzc0ODM2MzY2ODIzMzg3NDk3MA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE5MjB4MTI4Mi5zZHIuQzMifQ%3D%3D&_nc_ohc=a9ebwiJ1puYQ7kNvwFAJnv9&_nc_oc=AdkDVcPTlgwkQBC9BjH90LgmL52EKHqWArZEAHz043DEu0lidyS-fZLBur1QEWMToOo&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=xgw30uDoRDwYnCnajBPQrQ&oh=00_AflOtoXk52H2AAnSYq_I0xOB6FcGBbWVmXCM-aLkQfQrlA&oe=69352ED9"
+    id="hero"
+    class="bg-linear-to-r from-primary-100 to-primary-200"
+  >
+    <div class="text-center text-primary-textoTitle py-20">
+      <h1 class="text-5xl md:text-6xl font-bold mb-6">Nuestro Equipo</h1>
+      <p class="text-xl md:text-2xl max-w-3xl mx-auto opacity-90">
+        Profesionales comprometidos trabajando con el corazón
+      </p>
+    </div>
+  </Section>
+
+  <Section id="comision" class="py-24 bg-white">
+    <div class="max-w-6xl mx-auto">
+      <h2
+        class="text-4xl md:text-5xl font-bold text-primary-textoTitle mb-12 text-center"
+      >
+        Comisión Directiva
+      </h2>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        {
+          comision.map((miembro) => (
+            <div class="bg-white p-6 rounded-2xl shadow-subtle hover:shadow-medium transition-all text-center border border-primary-border">
+              <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-primary-bg-claro flex items-center justify-center">
+                <User className="h-10 w-10 text-primary-texto" />
+              </div>
+              <h3 class="text-xl font-bold text-primary-textoTitle mb-1">
+                {miembro.nombre}
+              </h3>
+              <p class="text-primary-100 font-medium">{miembro.cargo}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </Section>
+
+  <Section id="profesionales" class="py-24 bg-primary-bg-claro">
+    <div class="max-w-6xl mx-auto">
+      <h2
+        class="text-4xl md:text-5xl font-bold text-primary-textoTitle mb-12 text-center"
+      >
+        Equipo Profesional
+      </h2>
+
+      <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {
+          equipoMedico.map((pro) => (
+            <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all text-center">
+              <div class="w-20 h-20 mx-auto mb-3 rounded-full bg-linear-to-br from-primary-100/10 to-primary-200/10 flex items-center justify-center">
+                <User className="h-8 w-8 text-primary-100" />
+              </div>
+              <h3 class="text-lg font-bold text-primary-textoTitle mb-1">
+                {pro.nombre}
+              </h3>
+              <p class="text-sm text-muted-foreground">{pro.especialidad}</p>
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="mt-16 text-center">
+        <p class="text-muted-foreground max-w-2xl mx-auto">
+          Además, contamos con una red de voluntarios y colaboradores que hacen
+          posible cada una de nuestras actividades y campañas.
+        </p>
+      </div>
+    </div>
+  </Section>
+</Layout>

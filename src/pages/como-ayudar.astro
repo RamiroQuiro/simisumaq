@@ -1,0 +1,209 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/organismos/Navbar.astro";
+import Section from "../components/organismos/Section.astro";
+import Button from "../components/atomos/Button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../components/organismos/Card";
+import {
+  DollarSign,
+  Calendar,
+  Users,
+  Share2,
+  Heart,
+  Gift,
+  HandHeart,
+  Stethoscope,
+} from "lucide-react";
+
+const ways = [
+  {
+    icon: DollarSign,
+    title: "Donación Única",
+    description:
+      "Haz una diferencia inmediata con una donación única. $250 puede cambiar una vida para siempre.",
+    action: "Donar Ahora",
+    variant: "primary",
+  },
+  {
+    icon: Calendar,
+    title: "Donación Mensual",
+    description:
+      "Únete a nuestra comunidad de patrocinadores mensuales y crea un impacto sostenible.",
+    action: "Ser Patrocinador",
+    variant: "secondary",
+  },
+  {
+    icon: Users,
+    title: "Voluntariado",
+    description:
+      "Profesionales médicos pueden unirse a nuestras misiones y capacitar equipos locales.",
+    action: "Únete al Equipo",
+    variant: "outline",
+  },
+  {
+    icon: Share2,
+    title: "Difusión",
+    description:
+      "Ayúdanos a llegar a más personas compartiendo nuestro trabajo en redes sociales.",
+    action: "Compartir",
+    variant: "outline",
+  },
+];
+
+const necesidades = [
+  { item: "Insumos Médicos", icon: Stethoscope },
+  { item: "Juguetes Didácticos", icon: Gift },
+  { item: "Ropa para Niños", icon: Heart },
+  { item: "Alimentos no Perecederos", icon: HandHeart },
+];
+---
+
+<Layout>
+  <div class="text-center text-primary-textoTitle py-30">
+    <h1 class="text-5xl md:text-6xl font-bold mb-6">¿Cómo puedes ayudar?</h1>
+    <p class="text-xl md:text-2xl max-w-3xl mx-auto opacity-90">
+      Tu generosidad es la llave que abre un futuro lleno de sonrisas
+    </p>
+  </div>
+
+  <Section id="formas" class="py-24 bg-white">
+    <div class="max-w-6xl mx-auto">
+      <h2
+        class="text-4xl md:text-5xl font-bold text-foreground mb-12 text-center"
+      >
+        Formas de Colaborar
+      </h2>
+
+      <div class="grid md:grid-cols-2 gap-8 mb-16">
+        {
+          ways.map((way) => {
+            const Icon = way.icon;
+            return (
+              <Card className="border-2 hover:border-primary-100 transition-all hover:shadow-medium group">
+                <CardHeader>
+                  <div class="w-14 h-14 rounded-full bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <Icon className="h-7 w-7 text-white" />
+                  </div>
+                  <CardTitle className="text-2xl">{way.title}</CardTitle>
+                  <CardDescription className="text-base leading-relaxed">
+                    {way.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Button variant={way.variant as any} className="w-full">
+                    {way.action}
+                  </Button>
+                </CardContent>
+              </Card>
+            );
+          })
+        }
+      </div>
+    </div>
+  </Section>
+
+  <Section id="donaciones-materiales" class="py-24 bg-primary-bg-claro">
+    <div class="max-w-5xl mx-auto">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-6">
+            Donaciones Materiales
+          </h2>
+          <p class="text-lg text-muted-foreground mb-8">
+            Además de aportes económicos, recibimos donaciones de insumos y
+            materiales que son vitales para nuestras jornadas y el
+            acompañamiento a las familias.
+          </p>
+
+          <div class="grid grid-cols-2 gap-4">
+            {
+              necesidades.map((nec) => {
+                const Icon = nec.icon;
+                return (
+                  <div class="bg-white p-4 rounded-xl shadow-sm flex items-center gap-3">
+                    <Icon className="h-5 w-5 text-primary-100" />
+                    <span class="font-medium text-primary-textoTitle">
+                      {nec.item}
+                    </span>
+                  </div>
+                );
+              })
+            }
+          </div>
+
+          <div class="mt-8">
+            <Button href="/contacto" variant="secondary">
+              Coordinar Entrega
+            </Button>
+          </div>
+        </div>
+
+        <div class="relative">
+          <div
+            class="absolute inset-0 bg-gradient-to-br from-primary-100 to-primary-200 rounded-2xl transform rotate-3 opacity-20"
+          >
+          </div>
+          <div
+            class="bg-white border border-primary-border p-8 rounded-2xl shadow-md relative"
+          >
+            <h3 class="text-xl font-bold text-primary-textoTitle mb-4">
+              Datos Bancarios
+            </h3>
+            <div class="space-y-4 text-muted-foreground">
+              <div>
+                <p class="text-sm font-semibold text-primary-100">Banco</p>
+                <p>Banco Nación</p>
+              </div>
+              <div>
+                <p class="text-sm font-semibold text-primary-100">Titular</p>
+                <p>Fundación Simi Sumaq</p>
+              </div>
+              <div>
+                <p class="text-sm font-semibold text-primary-100">CBU</p>
+                <p class="font-mono bg-gray-100 p-2 rounded text-sm">
+                  0110123456789012345678
+                </p>
+              </div>
+              <div>
+                <p class="text-sm font-semibold text-primary-100">Alias</p>
+                <p class="font-mono bg-gray-100 p-2 rounded text-sm">
+                  FUNDACION.SIMI.SUMAQ
+                </p>
+              </div>
+              <div>
+                <p class="text-sm font-semibold text-primary-100">CUIT</p>
+                <p>30-12345678-9</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  <Section id="voluntariado" class="py-24 bg-white">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-4xl md:text-5xl font-bold text-foreground mb-6">
+        Únete como Voluntario
+      </h2>
+      <p class="text-xl text-muted-foreground mb-12">
+        Si eres profesional de la salud, estudiante o simplemente quieres donar
+        tu tiempo, hay un lugar para ti en Simi Sumaq.
+      </p>
+      <Button
+        href="/contacto"
+        size="lg"
+        variant="primary"
+        class="text-lg px-12 py-6 shadow-strong"
+      >
+        Quiero ser Voluntario
+      </Button>
+    </div>
+  </Section>
+</Layout>

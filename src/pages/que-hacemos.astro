@@ -1,0 +1,118 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/organismos/Navbar.astro";
+import Section from "../components/organismos/Section.astro";
+import TituloColores from "../components/atomos/TituloColores.astro";
+
+const servicios = [
+  {
+    titulo: "Cirugía Reconstructiva",
+    descripcion:
+      "Realizamos cirugías de labio leporino y paladar hendido con técnicas avanzadas para asegurar los mejores resultados estéticos y funcionales.",
+    items: [
+      "Queiloplastia",
+      "Palatoplastia",
+      "Injertos óseos",
+      "Rinoplastia secundaria",
+    ],
+  },
+  {
+    titulo: "Odontología y Ortodoncia",
+    descripcion:
+      "Tratamientos dentales integrales para corregir la alineación y salud bucal, fundamentales para la alimentación y el habla.",
+    items: [
+      "Ortopedia prequirúrgica",
+      "Ortodoncia correctiva",
+      "Odontopediatría",
+      "Higiene bucal",
+    ],
+  },
+  {
+    titulo: "Fonoaudiología",
+    descripcion:
+      "Terapia del lenguaje para mejorar la comunicación, la deglución y la respiración de nuestros pacientes.",
+    items: [
+      "Estimulación temprana",
+      "Reeducación del habla",
+      "Terapia miofuncional",
+      "Evaluación audiológica",
+    ],
+  },
+  {
+    titulo: "Apoyo Psicológico y Social",
+    descripcion:
+      "Acompañamiento emocional a pacientes y familias para fortalecer su autoestima y facilitar su integración social.",
+    items: [
+      "Psicología clínica",
+      "Talleres para padres",
+      "Asistencia social",
+      "Grupos de apoyo",
+    ],
+  },
+];
+---
+
+<Layout>
+  <Section
+    isBackgroundFoto
+    srcFotoBackground="https://scontent.cdninstagram.com/v/t51.82787-15/587421502_18074997716244868_8236584868316751440_n.webp?stp=dst-webp_s1080x1080&_nc_cat=103&ig_cache_key=Mzc3NjY1MDQ2OTYzNjU3MzAzMQ%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTQ0MC5zZHIuQzMifQ%3D%3D&_nc_ohc=69dxCuAuORUQ7kNvwHDLsO8&_nc_oc=AdkfrNB8pBqWIZOEicOGT4s9kaUcITIuiVFGDHD27twJCgyuAtfsab_2G2V8qr6JgGM&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=5FsVSEw-xjVYh8p1bw1Gkg&oh=00_AfmVsdGNLTnKHMcDALPPUcZQrSM0pqWjsRcag4mCdQzcBw&oe=69351466"
+    id="hero"
+    class="bg-linear-to-r from-primary-100 to-primary-200"
+  >
+    <div class="text-center text-primary-textoTitle py-20">
+      <TituloColores>Qué Hacemos</TituloColores>
+      <p class="text-xl md:text-2xl max-w-3xl mx-auto opacity-90">
+        Brindamos un tratamiento integral e interdisciplinario para transformar
+        vidas
+      </p>
+    </div>
+  </Section>
+
+  <Section id="servicios" class="py-24 bg-white">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid md:grid-cols-2 gap-12">
+        {
+          servicios.map((servicio, index) => (
+            <div class="bg-primary-bg-claro p-8 rounded-2xl hover:shadow-medium transition-all border border-transparent hover:border-primary-100">
+              <div class="flex items-center gap-4 mb-6">
+                <div class="w-12 h-12 rounded-full bg-primary-100 text-white flex items-center justify-center font-bold text-xl shrink-0">
+                  {index + 1}
+                </div>
+                <h3 class="text-2xl font-bold text-primary-textoTitle">
+                  {servicio.titulo}
+                </h3>
+              </div>
+              <p class="text-primary-textoBody mb-6 leading-relaxed">
+                {servicio.descripcion}
+              </p>
+              <ul class="space-y-2">
+                {servicio.items.map((item) => (
+                  <li class="flex items-center gap-2 text-primary-texto">
+                    <span class="w-2 h-2 rounded-full bg-primary-200" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </Section>
+
+  <Section id="enfoque" class="py-24 bg-white">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-4xl md:text-5xl font-bold text-primary-textoTitle mb-8">
+        Nuestro Enfoque Interdisciplinario
+      </h2>
+      <p class="text-xl text-primary-textoBody leading-relaxed mb-12">
+        Entendemos que la fisura labiopalatina requiere una mirada completa. No
+        tratamos solo una condición física, sino que acompañamos el desarrollo
+        integral del niño, asegurando que pueda comer, hablar, oír y sonreír con
+        total plenitud. Nuestro equipo trabaja de manera coordinada para que
+        cada etapa del tratamiento sea un paso firme hacia un futuro lleno de
+        oportunidades.
+      </p>
+    </div>
+  </Section>
+</Layout>

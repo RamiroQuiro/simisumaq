@@ -1,0 +1,150 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/organismos/Navbar.astro";
+import Section from "../components/organismos/Section.astro";
+import { Heart, Users, Target, Award } from "lucide-react";
+import TituloColores from "../components/atomos/TituloColores.astro";
+
+const valores = [
+  {
+    icon: Heart,
+    title: "Solidaridad",
+    description:
+      "Trabajamos con empatía y compromiso para acompañar a cada familia.",
+  },
+  {
+    icon: Users,
+    title: "Inclusión",
+    description:
+      "Promovemos la integración plena de cada niño y niña en la sociedad.",
+  },
+  {
+    icon: Target,
+    title: "Trabajo Interdisciplinario",
+    description:
+      "Coordinamos profesionales de distintas áreas para una atención integral.",
+  },
+  {
+    icon: Award,
+    title: "Compromiso con la Infancia",
+    description:
+      "Cada acción está guiada por el bienestar de los niños y sus familias.",
+  },
+];
+---
+
+<Layout>
+  <!-- Hero Section -->
+  <Section
+    isBackgroundFoto
+    srcFotoBackground="https://scontent.cdninstagram.com/v/t39.30808-6/549667550_1526092285495035_8729517126786975418_n.jpg?stp=dst-jpg_e35_s1080x1080_tt6&_nc_cat=107&ig_cache_key=MzcyNjUyMjA3OTUxMzQ1NDE5NA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE2MDB4MTA2Ni5zZHIuQzMifQ%3D%3D&_nc_ohc=oM1VWyE73yoQ7kNvwH-IziS&_nc_oc=AdkOZQe-Y2wzDrYENJjjozKRP0AmK8ZS8F-x9Q9k92x5dLwfjPyfAGbIWOJfbn2N80Q&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=TA_UnpNDUHK0eorc3SrDYA&oh=00_Afns_5x2CU41tfH2qkYdffOOau1CFfMafVgmimk6pq00ag&oe=6934E45E"
+    id="hero"
+    class="bg-linear-to-r from-primary-100 to-primary-200 relative"
+  >
+    <div class="text-center text-primary-textoTitle py-20">
+      <TituloColores>Sobre Nosotros</TituloColores>
+      <p class="text-xl md:text-2xl max-w-3xl mx-auto opacity-90">
+        Conoce nuestra historia y los valores que nos impulsan
+      </p>
+    </div>
+  </Section>
+
+  <!-- Historia Section -->
+  <Section id="historia" class="py-24 bg-white">
+    <div class="max-w-4xl mx-auto">
+      <h2
+        class="text-4xl md:text-5xl font-bold text-primary-textoTitle mb-12 text-center"
+      >
+        Nuestra Historia
+      </h2>
+
+      <div class="space-y-8 text-lg text-primary-textoBody leading-relaxed">
+        <p>
+          Simi Sumaq nació del encuentro entre profesionales que, día a día,
+          recibían a niñas y niños que necesitaban mucho más que un tratamiento
+          médico: necesitaban contención, acompañamiento, información y
+          oportunidades. Cada familia llegaba con dudas, miedos y esperanzas, y
+          cada una de esas historias fue sembrando la idea de crear un espacio
+          que las abrigara.
+        </p>
+
+        <div
+          class="bg-linear-to-r from-primary-100/10 to-primary-200/10 p-8 rounded-2xl border-l-4 border-primary-100"
+        >
+          <p class="text-2xl font-semibold text-primary-textoTitle mb-2">
+            26 de octubre de 2017
+          </p>
+          <p>
+            Ese sueño tomó forma y se convirtió en una asociación civil dedicada
+            a brindar atención integral para la fisura labiopalatina.
+          </p>
+        </div>
+
+        <p>
+          Desde entonces, Simi Sumaq crece con cada sonrisa recuperada, cada
+          avance logrado y cada familia que encuentra apoyo.
+        </p>
+
+        <p>
+          Nuestro nombre, <strong class="text-primary-100">"boca linda"</strong
+          >, simboliza la confianza, la palabra clara, la posibilidad de
+          comunicarse sin barreras y de integrarse plenamente. Trabajamos para
+          devolver sonrisas, para que cada niño y niña pueda hablar, reír,
+          aprender, y sentirse acompañado en todo su proceso.
+        </p>
+
+        <p>
+          Desde entonces, Simi Sumaq promueve acciones médicas, odontológicas,
+          quirúrgicas, fonoaudiológicas, psicológicas, psicopedagógicas y
+          sociales para acompañar a las personas con fisura labiopalatina y a
+          sus familias. Además, impulsa actividades de capacitación, encuentros
+          científicos y alianzas con instituciones públicas y privadas para
+          mejorar la atención en la provincia y la región.
+        </p>
+
+        <p>
+          Hoy, la asociación continúa creciendo, guiada por sus valores
+          fundacionales: solidaridad, inclusión, trabajo interdisciplinario y
+          compromiso con la infancia. Con cada tratamiento, cada taller y cada
+          encuentro, Simi Sumaq reafirma su misión de seguir multiplicando
+          sonrisas.
+        </p>
+
+        <p class="text-xl font-semibold text-primary-textoTitle italic">
+          Esta es nuestra historia: un camino hecho de compromiso, amor, ciencia
+          y comunidad.
+        </p>
+      </div>
+    </div>
+  </Section>
+
+  <!-- Valores Section -->
+  <Section id="valores" class="py-24 bg-primary-bg-claro">
+    <div class="max-w-6xl mx-auto">
+      <h2
+        class="text-4xl md:text-5xl font-bold text-foreground mb-12 text-center"
+      >
+        Nuestros Valores
+      </h2>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {
+          valores.map((valor) => {
+            const Icon = valor.icon;
+            return (
+              <div class="bg-white p-8 rounded-2xl shadow-subtle hover:shadow-medium transition-all text-center">
+                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-linear-to-br from-primary-100 to-primary-200 flex items-center justify-center">
+                  <Icon className="h-8 w-8 text-white" />
+                </div>
+                <h3 class="text-xl font-bold text-primary-textoTitle mb-3">
+                  {valor.title}
+                </h3>
+                <p class="text-muted-foreground">{valor.description}</p>
+              </div>
+            );
+          })
+        }
+      </div>
+    </div>
+  </Section>
+</Layout>

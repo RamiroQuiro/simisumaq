@@ -1,0 +1,169 @@
+---
+import { Calendar, MapPin, Clock, Users } from "lucide-react";
+import Layout from "../layouts/Layout.astro";
+import Section from "../components/organismos/Section.astro";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../components/organismos/Card";
+import Button from "../components/atomos/Button";
+import Navbar from "../components/organismos/Navbar.astro";
+import TituloColores from "../components/atomos/TituloColores.astro";
+import Carousel from "../components/organismos/Carousel";
+
+const eventosRealizados = [
+  {
+    titulo: "Campaña Sonrisas 2024",
+    fecha: "Noviembre 2024",
+    descripcion:
+      "Se realizaron 45 cirugías gratuitas en colaboración con el Ministerio de Salud. Un esfuerzo conjunto que devolvió la esperanza a decenas de familias.",
+    participantes: "45 niños atendidos",
+    imagenes: [
+      "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1584515933487-9bdb75f77f1e?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?auto=format&fit=crop&q=80&w=800",
+    ],
+  },
+  {
+    titulo: "Encuentro de Familias",
+    fecha: "Octubre 2024",
+    descripcion:
+      "Jornada recreativa y de integración para familias de pacientes. Compartimos experiencias, juegos y merienda en un ambiente de contención.",
+    participantes: "80 familias",
+    imagenes: [
+      "https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?auto=format&fit=crop&q=80&w=800",
+    ],
+  },
+  {
+    titulo: "Capacitación Regional",
+    fecha: "Septiembre 2024",
+    descripcion:
+      "Formación en atención interdisciplinaria para equipos de salud de la región. Disertantes internacionales compartieron las últimas técnicas.",
+    participantes: "120 profesionales",
+    imagenes: [
+      "https://images.unsplash.com/photo-1544531696-9348411883aa?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1558403194-611308249627?auto=format&fit=crop&q=80&w=800",
+    ],
+  },
+];
+---
+
+<Layout>
+  <!-- Hero Section -->
+  <Section
+    isBackgroundFoto
+    srcFotoBackground="https://scontent.cdninstagram.com/v/t51.82787-15/543781489_18081362353937659_4876798037903689288_n.jpg?stp=dst-jpg_e15_tt6&_nc_cat=106&ig_cache_key=MzcxOTIzMDg5NDgzOTc1NDY1NTE4MDgxMzYyMzQ3OTM3NjU5.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjEwODB4NjA3LnNkci5DMyJ9&_nc_ohc=pYTw-uXeH9kQ7kNvwEKZaN6&_nc_oc=AdkSEucitxCuzcI6JdBL3kgrr3rQj1I-JG2YqzvkM4N4IuO6sMs0l6Je9UQHwztVZ3o&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=FGPfxDeTw2T_DFaHQjh4cA&oh=00_Afl3M0u4Tvp-YPOD9RljrOluP3Xi0_eMDcZdN-4-D_6Ejw&oe=693538E7"
+    id="hero"
+    class="bg-linear-to-r from-primary-100 to-primary-200"
+  >
+    <div class="text-center text-primary-textoTitle py-20">
+      <TituloColores>Eventos y Actividades</TituloColores>
+      <p class="text-xl md:text-2xl max-w-3xl mx-auto opacity-90">
+        Conoce nuestras campañas, talleres y encuentros que transforman vidas
+      </p>
+    </div>
+  </Section>
+
+  <!-- Eventos Realizados -->
+  <Section id="realizados" class="py-24 bg-primary-bg-claro">
+    <div class="max-w-6xl mx-auto">
+      <h2
+        class="text-4xl md:text-5xl font-bold text-primary-textoTitle mb-12 text-center"
+      >
+        Eventos Realizados
+      </h2>
+
+      <div class="w-full flex flex-col gap-12">
+        {
+          eventosRealizados.map((evento) => (
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-primary-border hover:shadow-medium transition-all">
+              <div class="grid lg:grid-cols-2 gap-8 items-center">
+                {/* Contenido de Texto */}
+                <div class="flex flex-col h-full justify-center">
+                  <div class="mb-4">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary-bg-claro text-primary-100 text-sm font-semibold rounded-full mb-4">
+                      <Calendar className="h-4 w-4" />
+                      {evento.fecha}
+                    </div>
+                    <h3 class="text-3xl font-bold text-primary-textoTitle mb-4">
+                      {evento.titulo}
+                    </h3>
+                    <p class="text-primary-textoBody text-lg leading-relaxed mb-6">
+                      {evento.descripcion}
+                    </p>
+                  </div>
+
+                  <div class="mt-auto pt-6 border-t border-primary-border flex items-center gap-2 text-primary-textoTitle font-medium">
+                    <Users className="h-5 w-5 text-primary-100" />
+                    <span>{evento.participantes}</span>
+                  </div>
+                </div>
+
+                {/* Carrusel con estilo visual */}
+                <div class="relative h-[300px] lg:h-[400px] w-full">
+                  {/* Fondo rotado */}
+                  <div class="absolute inset-0 bg-gradient-to-br from-primary-100 to-primary-200 rounded-2xl transform rotate-3 opacity-20 scale-95 lg:scale-100" />
+
+                  {/* Contenedor del Carrusel */}
+                  <div class="absolute inset-0 bg-white rounded-2xl shadow-lg overflow-hidden border border-primary-border/50 transform -rotate-1 hover:rotate-0 transition-transform duration-300">
+                    <Carousel
+                      client:load
+                      images={evento.imagenes}
+                      className="h-full w-full"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </Section>
+
+  <!-- Calendario Placeholder -->
+  <Section id="calendario" class="py-24 bg-white">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-4xl md:text-5xl font-bold text-primary-textoTitle mb-8">
+        Calendario Anual
+      </h2>
+      <p class="text-xl text-primary-textoBody mb-12">
+        Planifica tu participación en nuestras actividades
+      </p>
+
+      <div
+        class="bg-linear-to-r from-primary-100/10 to-primary-200/10 p-12 rounded-2xl border-2 border-dashed border-primary-100"
+      >
+        <p class="text-primary-textoBody text-lg mb-6">
+          <strong>Sección en desarrollo:</strong> Aquí se puede mostrar un calendario
+          interactivo con todas las actividades del año.
+        </p>
+      </div>
+    </div>
+  </Section>
+
+  <!-- CTA Section -->
+  <Section
+    id="cta"
+    class="py-24 bg-linear-to-r from-primary-100 to-primary-200"
+  >
+    <div class="max-w-4xl mx-auto text-center text-primary-textoTitle">
+      <h2 class="text-4xl md:text-5xl font-bold mb-6">¿Quieres Participar?</h2>
+      <p class="text-xl mb-8 opacity-90">
+        Únete a nuestros eventos como voluntario, profesional o colaborador
+      </p>
+      <Button
+        href="/contacto"
+        variant="primary"
+        size="lg"
+        className="text-lg px-8 py-6"
+      >
+        Contactar
+      </Button>
+    </div>
+  </Section>
+</Layout>

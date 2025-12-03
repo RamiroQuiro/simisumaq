@@ -1,5 +1,10 @@
 ---
-const { isBackgroundFoto = false, id, className } = Astro.props;
+const {
+  isBackgroundFoto = false,
+  id,
+  className,
+  srcFotoBackground,
+} = Astro.props;
 ---
 
 <section
@@ -13,7 +18,7 @@ const { isBackgroundFoto = false, id, className } = Astro.props;
   {
     isBackgroundFoto && (
       <img
-        src={"/hero-image.webp"}
+        src={srcFotoBackground}
         alt="Niño sonriendo después de cirugía de labio leporino"
         class="absolute inset-0 w-full h-full object-cover"
       />

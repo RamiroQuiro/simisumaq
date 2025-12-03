@@ -1,4 +1,6 @@
 ---
+import Navbar from "../components/organismos/Navbar.astro";
+import Footer from "../pages/Landing/Footer.astro";
 import "../styles/global.css";
 ---
 
@@ -11,31 +13,31 @@ import "../styles/global.css";
     <meta name="generator" content={Astro.generator} />
 
     <!-- Meta Tags SEO Esenciales -->
-    <title>Fundación Simi Sumaq - Transformando Vidas con Esperanza</title>
+    <title>Asociación Simi Sumaq - Transformando Vidas con Esperanza</title>
     <meta
       name="description"
-      content="Fundación Simi Sumaq: asociación sin fines de lucro, cuyo objeto social es el desarrollo de actividades relacionadas con el tratamiento interdisciplinario de labio leporino y paladar hendido en niños FLAP"
+      content="Asociación Simi Sumaq: asociación sin fines de lucro, cuyo objeto social es el desarrollo de actividades relacionadas con el tratamiento interdisciplinario de labio leporino y paladar hendido en niños FLAP"
     />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta
       property="og:title"
-      content="Fundación Simi Sumaq - Transformando Vidas con Esperanza"
+      content="Asociación Simi Sumaq - Transformando Vidas con Esperanza"
     />
     <meta
       property="og:description"
-      content="Fundación Simi Sumaq: asociación sin fines de lucro, cuyo objeto social es el desarrollo de actividades relacionadas con el tratamiento interdisciplinario de labio leporino y paladar hendido en niños FLAP"
+      content="Asociación Simi Sumaq: asociación sin fines de lucro, cuyo objeto social es el desarrollo de actividades relacionadas con el tratamiento interdisciplinario de labio leporino y paladar hendido en niños FLAP"
     />
     <meta property="og:image" content="/og-image.jpg" />
-    <meta property="og:url" content="https://fundacionsimisumaq.org" />
-    <meta property="og:site_name" content="Fundación Simi Sumaq" />
+    <meta property="og:url" content="https://asociacionsimisumaq.org" />
+    <meta property="og:site_name" content="Asociación Simi Sumaq" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
-      content="Fundación Simi Sumaq - Transformando Vidas"
+      content="Asociación Simi Sumaq - Transformando Vidas"
     />
     <meta
       name="twitter:description"
@@ -46,14 +48,16 @@ import "../styles/global.css";
     <!-- SEO Técnico -->
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#2E86C1" />
-    <link rel="canonical" href="https://fundacionsimisumaq.org" />
+    <link rel="canonical" href="https://asociacionsimisumaq.org" />
 
     <!-- Preconexiones para mejor performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   </head>
   <body>
+    <Navbar />
     <slot />
+    <Footer />
   </body>
 </html>
 

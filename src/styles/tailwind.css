@@ -17,9 +17,25 @@
   --color-primary-resaltado: #e3d32b;
   --color-primary-texto: #757575;
   --color-primary-textoInput: #7f8a9aff;
-  --color-primary-textoTitle: #1A1A1A;
-  --color-primary-background: #FFFEFE;
+  --color-primary-textoTitle: #1a1a1a;
+  --color-primary-background: #fffefe;
   --color-primary-border: #bdbdbd40;
+
+  /* === SEMANTIC COLORS === */
+  --color-foreground: #1a1a1a;
+  --color-background: #ffffff;
+  --color-card: #ffffff;
+  --color-muted-foreground: #757575;
+  --color-accent: hsl(4 90% 58%);
+  --color-primary: hsl(4 90% 58%);
+  --color-secondary: hsl(24 95% 53%);
+
+  /* === SHADOWS === */
+  --shadow-subtle: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-medium: 0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-strong: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
 
   /* === BORDER RADIUS === */
   --radius-1: 2rem;
@@ -29,47 +45,47 @@
 
   /* === ANIMACIONES === */
   @keyframes abrirCat {
-    '0%': {
+    "0%": {
       transform: rotate(0deg);
     }
-    '10%': {
+    "10%": {
       transform: rotate(14deg);
     }
-    '20%': {
+    "20%": {
       transform: rotate(-8deg);
     }
-    '30%': {
+    "30%": {
       transform: rotate(14deg);
     }
-    '40%': {
+    "40%": {
       transform: rotate(-4deg);
     }
-    '50%': {
+    "50%": {
       transform: rotate(10deg);
     }
-    '60%': {
+    "60%": {
       transform: rotate(0deg);
     }
-    '100%': {
+    "100%": {
       transform: rotate(0deg);
     }
   }
 
   @keyframes aparecer {
-    '0%': {
+    "0%": {
       opacity: 0;
     }
-    '100%': {
+    "100%": {
       opacity: 1;
     }
   }
 
   @keyframes aparecerDeArriba {
-    '0%': {
+    "0%": {
       opacity: 0;
       transform: translateY(-10%);
     }
-    '80%': {
+    "80%": {
       opacity: 1;
       transform: translateY(0%);
     }
@@ -77,10 +93,9 @@
 
   /* === SHADOWS === */
   --shadow-shadow-caja-1: 10px 10px 25px -7px rgba(66, 66, 66, 0.7);
-  --shadow-xxxl:
-    5px 5px 5px rgba(0, 0, 0, 0.1), 15px 15px 15px rgba(0, 0, 0, 0.1),
-    20px 10px 20px rgba(0, 0, 0, 0.1), 50px 50px 80px rgba(0, 0, 0, 0.25),
-    inset 3px 3px 3px #fff;
+  --shadow-xxxl: 5px 5px 5px rgba(0, 0, 0, 0.1),
+    15px 15px 15px rgba(0, 0, 0, 0.1), 20px 10px 20px rgba(0, 0, 0, 0.1),
+    50px 50px 80px rgba(0, 0, 0, 0.25), inset 3px 3px 3px #fff;
 }
 
 /* === CLASES PERSONALIZADAS === */

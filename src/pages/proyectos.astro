@@ -1,0 +1,216 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/organismos/Navbar.astro";
+import Section from "../components/organismos/Section.astro";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../components/organismos/Card";
+import Button from "../components/atomos/Button";
+import { Heart, Users, Stethoscope, Smile } from "lucide-react";
+import TituloColores from "../components/atomos/TituloColores.astro";
+
+const proyectos = [
+  {
+    icon: Stethoscope,
+    title: "Atención Médica Integral",
+    description:
+      "Brindamos cirugías, tratamientos odontológicos y seguimiento médico completo para cada niño con fisura labiopalatina.",
+    resultados: "Más de 500 cirugías realizadas desde 2017",
+    color: "from-primary-100 to-primary-200",
+  },
+  {
+    icon: Users,
+    title: "Acompañamiento Familiar",
+    description:
+      "Apoyo psicológico, psicopedagógico y social para las familias durante todo el proceso de tratamiento.",
+    resultados: "200+ familias acompañadas anualmente",
+    color: "from-primary-200 to-primary-100",
+  },
+  {
+    icon: Heart,
+    title: "Capacitación Profesional",
+    description:
+      "Formación continua para profesionales de la salud en el tratamiento interdisciplinario de fisura labiopalatina.",
+    resultados: "15+ talleres y seminarios por año",
+    color: "from-primary-100 to-primary-150",
+  },
+  {
+    icon: Smile,
+    title: "Integración Social",
+    description:
+      "Actividades recreativas, culturales y educativas que promueven la inclusión y el desarrollo integral.",
+    resultados: "100+ niños participando en actividades",
+    color: "from-primary-150 to-primary-200",
+  },
+];
+
+const testimonios = [
+  {
+    nombre: "María González",
+    texto:
+      "Simi Sumaq no solo cambió la sonrisa de mi hijo, cambió nuestra vida entera. El acompañamiento fue fundamental.",
+    rol: "Madre de paciente",
+  },
+  {
+    nombre: "Dr. Carlos Méndez",
+    texto:
+      "Trabajar con Simi Sumaq me permitió ver el verdadero impacto de la medicina interdisciplinaria en la vida de los niños.",
+    rol: "Cirujano colaborador",
+  },
+  {
+    nombre: "Ana Rodríguez",
+    texto:
+      "Mi hija hoy puede hablar, sonreír y jugar con confianza. Gracias a todo el equipo de Simi Sumaq por su dedicación.",
+    rol: "Madre de paciente",
+  },
+];
+---
+
+<Layout>
+  <Section
+    isBackgroundFoto
+    srcFotoBackground="https://scontent.cdninstagram.com/v/t39.30808-6/554422661_1533088311462099_4312162062191904024_n.jpg?stp=dst-jpg_e35_s1080x1080_tt6&_nc_cat=102&ig_cache_key=MzczNTE5MTQ0MDM4MjE3OTIxMQ%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE5MjB4MTI4Mi5zZHIuQzMifQ%3D%3D&_nc_ohc=DBUGfeXcGmIQ7kNvwHaqySt&_nc_oc=AdlPFofQtyz5ATMao3M8vaTpZaqHa2Q_4gVz65_mSTTJQklGqedYa3kFzDV1KkppHm4&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=_SZLnyWusA5DWfu5Bv5itg&oh=00_Afn5R-9bBAvyFYAI55olIllFp24tc5EZVxiKyGC_UvG0hA&oe=6934F9F5"
+    id="hero"
+    class="bg-linear-to-r from-primary-100 to-primary-200"
+  >
+    <div class="text-center text-primary-textoTitle py-20">
+      <TituloColores> Nuestros Proyectos </TituloColores>
+      <p class="text-xl md:text-2xl max-w-3xl mx-auto opacity-90">
+        Transformando vidas a través de la atención integral y el compromiso con
+        cada familia
+      </p>
+    </div>
+  </Section>
+
+  <Section id="proyectos" class="py-24 bg-white">
+    <div class="max-w-6xl mx-auto">
+      <h2
+        class="text-4xl md:text-5xl font-bold text-primary-textoTitle mb-12 text-center"
+      >
+        Áreas de Trabajo
+      </h2>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        {
+          proyectos.map((proyecto) => {
+            const Icon = proyecto.icon;
+            return (
+              <Card className="border-2 hover:border-primary-100 transition-all hover:shadow-medium">
+                <CardHeader>
+                  <div
+                    class={`w-16 h-16 rounded-full bg-linear-to-br ${proyecto.color} flex items-center justify-center mb-4`}
+                  >
+                    <Icon className="h-8 w-8 text-white" />
+                  </div>
+                  <CardTitle className="text-2xl">{proyecto.title}</CardTitle>
+                  <CardDescription className="text-base leading-relaxed">
+                    {proyecto.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div class="bg-primary-bg-claro p-4 rounded-lg">
+                    <p class="text-sm font-semibold text-primary-100">
+                      Resultados:
+                    </p>
+                    <p class="text-muted-foreground">{proyecto.resultados}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })
+        }
+      </div>
+    </div>
+  </Section>
+
+  <!-- Testimonios Section -->
+  <Section id="testimonios" class="py-24 bg-primary-bg-claro">
+    <div class="max-w-6xl mx-auto">
+      <h2
+        class="text-4xl md:text-5xl font-bold text-foreground mb-8 text-center"
+      >
+        Testimonios
+      </h2>
+      <p class="text-xl text-muted-foreground text-center mb-12">
+        Las voces de quienes han vivido la experiencia Simi Sumaq
+      </p>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        {
+          testimonios.map((testimonio) => (
+            <div class="bg-white p-8 rounded-2xl shadow-subtle hover:shadow-medium transition-all">
+              <div class="mb-6">
+                <svg
+                  class="h-10 w-10 text-primary-100 opacity-50"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                </svg>
+              </div>
+              <p class="text-muted-foreground mb-6 leading-relaxed italic">
+                "{testimonio.texto}"
+              </p>
+              <div class="border-t border-primary-border pt-4">
+                <p class="font-semibold text-primary-textoTitle">
+                  {testimonio.nombre}
+                </p>
+                <p class="text-sm text-muted-foreground">{testimonio.rol}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </Section>
+
+  <!-- Galería de Resultados Placeholder -->
+  <!-- <Section id="resultados" class="py-24 bg-white">
+    <div class="max-w-6xl mx-auto text-center">
+      <h2 class="text-4xl md:text-5xl font-bold text-foreground mb-8">
+        Galería de Resultados
+      </h2>
+      <p class="text-xl text-muted-foreground mb-12">
+        Cada imagen cuenta una historia de esperanza y transformación
+      </p>
+
+      <div
+        class="bg-linear-to-r from-primary-100/10 to-primary-200/10 p-12 rounded-2xl border-2 border-dashed border-primary-100"
+      >
+        <p class="text-muted-foreground text-lg mb-6">
+          <strong>Sección en desarrollo:</strong> Aquí se mostrarán fotos de antes
+          y después de los tratamientos, actividades con los niños, y momentos especiales
+          de la fundación.
+        </p>
+        <p class="text-sm text-muted-foreground">
+          Por favor, proporciona las imágenes que deseas mostrar en esta
+          galería.
+        </p>
+      </div>
+    </div>
+  </Section> -->
+
+  <Section
+    id="cta"
+    class="py-24 bg-linear-to-r from-primary-100 to-primary-200"
+  >
+    <div class="max-w-4xl mx-auto text-center text-primary-textoTitle">
+      <h2 class="text-4xl md:text-5xl font-bold mb-6">Sé Parte del Cambio</h2>
+      <p class="text-xl mb-8 opacity-90">
+        Tu apoyo hace posible que cada proyecto se convierta en una sonrisa real
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <Button href="/como-ayudar" variant="outline" size="lg">
+          Cómo Ayudar
+        </Button>
+        <Button href="/contacto" variant="secondary" size="lg">
+          Contactar
+        </Button>
+      </div>
+    </div>
+  </Section>
+</Layout>
