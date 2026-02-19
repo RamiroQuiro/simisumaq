@@ -24,11 +24,12 @@ const links = [
 <nav
   class="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b border-primary-border transition-all duration-300"
   id="navbar"
+  transition:name="navbar"
 >
   <div class="mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex h-20 items-center justify-between">
       <!-- Logo -->
-      <a href="/" class="flex items-center gap-3 group">
+      <a href="/" class="flex items-center gap-3 group" transition:name="logo">
         <img
           src="/logo.jpeg"
           class="h-10 w-10 rounded-xl shadow-sm group-hover:shadow-md transition-all duration-300"
@@ -76,7 +77,7 @@ const links = [
               >
                 {link.name}
               </a>
-            )
+            ),
           )
         }
         <div class="ml-4 pl-4 border-l border-primary-border">
@@ -136,7 +137,7 @@ const links = [
             >
               {link.name}
             </a>
-          )
+          ),
         )
       }
       <div class="pt-4 mt-4 border-t border-primary-border">
@@ -154,26 +155,34 @@ const links = [
 </nav>
 
 <script>
-  const mobileMenuBtn = document.getElementById("mobile-menu-btn");
-  const mobileMenu = document.getElementById("mobile-menu");
-  const menuIcon = document.getElementById("menu-icon");
-  const closeIcon = document.getElementById("close-icon");
+  function setupNavbar() {
+    const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const menuIcon = document.getElementById("menu-icon");
+    const closeIcon = document.getElementById("close-icon");
 
-  if (mobileMenuBtn && mobileMenu && menuIcon && closeIcon) {
-    mobileMenuBtn.addEventListener("click", () => {
-      mobileMenu.classList.toggle("hidden");
-      menuIcon.classList.toggle("hidden");
-      closeIcon.classList.toggle("hidden");
-    });
-
-    // Close menu when clicking a link
-    const mobileLinks = mobileMenu.querySelectorAll("a");
-    mobileLinks.forEach((link) => {
-      link.addEventListener("click", () => {
-        mobileMenu.classList.add("hidden");
-        menuIcon.classList.remove("hidden");
-        closeIcon.classList.add("hidden");
+    if (mobileMenuBtn && mobileMenu && menuIcon && closeIcon) {
+      mobileMenuBtn.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
+        menuIcon.classList.toggle("hidden");
+        closeIcon.classList.toggle("hidden");
       });
-    });
+
+      // Close menu when clicking a link
+      const mobileLinks = mobileMenu.querySelectorAll("a");
+      mobileLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          mobileMenu.classList.add("hidden");
+          menuIcon.classList.remove("hidden");
+          closeIcon.classList.add("hidden");
+        });
+      });
+    }
   }
+
+  // Inicializar en la carga inicial
+  setupNavbar();
+
+  // Reinicializar después de cada navegación de View Transitions
+  document.addEventListener("astro:page-load", setupNavbar);
 </script>
