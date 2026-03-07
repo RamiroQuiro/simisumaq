@@ -4,22 +4,26 @@ import Navbar from "../components/organismos/Navbar.astro";
 import Section from "../components/organismos/Section.astro";
 import { User } from "lucide-react";
 
-const comision = [
-  { nombre: "Lic. Veronica Coria", cargo: "Presidente" },
-  { nombre: "Nombre Apellido", cargo: "Vicepresidente" },
-  { nombre: "María Luz Miranda", cargo: "Secretaria" },
-  { nombre: "Soledad Diaz", cargo: "Tesorera" },
-  { nombre: "Nombre Apellido", cargo: "Vocal Titular" },
-  { nombre: "Nombre Apellido", cargo: "Vocal Suplente" },
-];
-
-const equipoMedico = [
-  { nombre: "Dr. Nombre Apellido", especialidad: "Cirugía Plástica" },
-  { nombre: "Dra. Nombre Apellido", especialidad: "Odontología" },
-  { nombre: "Lic. Nombre Apellido", especialidad: "Fonoaudiología" },
-  { nombre: "Lic. Nombre Apellido", especialidad: "Psicología" },
-  { nombre: "Lic. Nombre Apellido", especialidad: "Trabajo Social" },
-  { nombre: "Dra. Nombre Apellido", especialidad: "Pediatría" },
+const equipo = [
+  {
+    nombre: "Cramaro Carolina",
+    cargo: "Médica cirujana infantil",
+    detalle: "Coordinadora Médica",
+  },
+  { nombre: "Abaca Thiago", cargo: "Licenciado en Fonoaudiología" },
+  { nombre: "Acosta Leonardo", cargo: "Profesor" },
+  { nombre: "Diaz Soledad", cargo: "Coordinadora de grupo de Padres" },
+  { nombre: "Ferreyra Luis", cargo: "Coordinador de Traslados" },
+  { nombre: "Gallardo Andrea", cargo: "Licenciada en Fonoaudiología" },
+  { nombre: "Mansilla Mariana", cargo: "Licenciada en Psicología" },
+  { nombre: "Miranda Luz", cargo: "Voluntaria" },
+  { nombre: "Pereyra Carlina", cargo: "Trabajadora Social" },
+  { nombre: "Roldan Xiomara", cargo: "Licenciada en Psicopedagogía" },
+  {
+    nombre: "Umaño Exequiel",
+    cargo: "Fotografo",
+    detalle: "Comunicación Institucional",
+  },
 ];
 ---
 
@@ -38,60 +42,34 @@ const equipoMedico = [
     </div>
   </Section>
 
-  <Section id="comision" class="py-24 bg-white">
+  <Section id="equipo" class="py-24 bg-white">
     <div class="max-w-6xl mx-auto">
-      <h2
-        class="text-4xl md:text-5xl font-bold text-primary-textoTitle mb-12 text-center"
-      >
-        Comisión Directiva
-      </h2>
-
-      <div class="grid md:grid-cols-3 gap-8">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {
-          comision.map((miembro) => (
-            <div class="bg-white p-6 rounded-2xl shadow-subtle hover:shadow-medium transition-all text-center border border-primary-border">
-              <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-primary-bg-claro flex items-center justify-center">
-                <User className="h-10 w-10 text-primary-texto" />
+          equipo.map((miembro) => (
+            <div class="bg-white p-8 rounded-2xl shadow-subtle hover:shadow-medium transition-all text-center border border-primary-border flex flex-col items-center">
+              <div class="w-24 h-24 mb-6 rounded-full bg-linear-to-br from-primary-100/10 to-primary-200/10 flex items-center justify-center">
+                <User className="h-10 w-10 text-primary-100" />
               </div>
-              <h3 class="text-xl font-bold text-primary-textoTitle mb-1">
+              <h3 class="text-xl font-bold text-primary-textoTitle mb-2">
                 {miembro.nombre}
               </h3>
-              <p class="text-primary-100 font-medium">{miembro.cargo}</p>
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </Section>
-
-  <Section id="profesionales" class="py-24 bg-primary-bg-claro">
-    <div class="max-w-6xl mx-auto">
-      <h2
-        class="text-4xl md:text-5xl font-bold text-primary-textoTitle mb-12 text-center"
-      >
-        Equipo Profesional
-      </h2>
-
-      <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {
-          equipoMedico.map((pro) => (
-            <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all text-center">
-              <div class="w-20 h-20 mx-auto mb-3 rounded-full bg-linear-to-br from-primary-100/10 to-primary-200/10 flex items-center justify-center">
-                <User className="h-8 w-8 text-primary-100" />
-              </div>
-              <h3 class="text-lg font-bold text-primary-textoTitle mb-1">
-                {pro.nombre}
-              </h3>
-              <p class="text-sm text-muted-foreground">{pro.especialidad}</p>
+              <p class="text-primary-100 font-semibold mb-1">{miembro.cargo}</p>
+              {miembro.detalle && (
+                <p class="text-sm text-muted-foreground italic">
+                  {miembro.detalle}
+                </p>
+              )}
             </div>
           ))
         }
       </div>
 
-      <div class="mt-16 text-center">
-        <p class="text-muted-foreground max-w-2xl mx-auto">
+      <div class="mt-20 text-center">
+        <p class="text-muted-foreground max-w-2xl mx-auto text-lg">
           Además, contamos con una red de voluntarios y colaboradores que hacen
-          posible cada una de nuestras actividades y campañas.
+          posible cada una de nuestras actividades y campañas brindando
+          esperanza a cada familia.
         </p>
       </div>
     </div>

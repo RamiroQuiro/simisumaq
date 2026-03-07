@@ -6,32 +6,29 @@ import Input from "../components/atomos/Input";
 import {
   Mail,
   Phone,
-  MapPin,
   Facebook,
   Instagram,
   Twitter,
   Send,
+  MessageCircle,
 } from "lucide-react";
 import TituloColores from "../components/atomos/TituloColores.astro";
+
+const CONTACT_EMAIL = "info@simisumaq.org";
+const WHATSAPP_PHONE = "543855063501";
 
 const contactInfo = [
   {
     icon: Mail,
     title: "Email",
-    value: "info@simisumaq.org",
-    link: "mailto:info@simisumaq.org",
+    value: CONTACT_EMAIL,
+    link: `mailto:${CONTACT_EMAIL}`,
   },
   {
     icon: Phone,
-    title: "Teléfono",
-    value: "+54 9 XXX XXX-XXXX",
-    link: "tel:+549XXXXXXXXX",
-  },
-  {
-    icon: MapPin,
-    title: "Dirección",
-    value: "Dirección de la Fundación, Ciudad, Provincia",
-    link: "#",
+    title: "Telefono",
+    value: "+54 9 385 506-3501",
+    link: "tel:+543855063501",
   },
 ];
 
@@ -55,23 +52,20 @@ const socialMedia = [
     class="bg-gradient-to-r from-primary-100 to-primary-200"
   >
     <div class="text-center text-primary-textoTitle py-20">
-      <TituloColores>Contáctanos</TituloColores>
+      <TituloColores>Contactanos</TituloColores>
       <p class="text-xl md:text-2xl max-w-3xl mx-auto opacity-90">
-        Estamos aquí para responder tus preguntas y recibir tu apoyo
+        Estamos aqui para responder tus preguntas y recibir tu apoyo
       </p>
     </div>
   </Section>
 
-  <!-- Información de Contacto -->
   <Section id="info" class="py-24 bg-white">
     <div class="max-w-6xl mx-auto">
-      <h2
-        class="text-4xl md:text-5xl font-bold text-foreground mb-12 text-center"
-      >
-        Información de Contacto
+      <h2 class="text-4xl md:text-5xl font-bold text-foreground mb-12 text-center">
+        Informacion de Contacto
       </h2>
 
-      <div class="grid md:grid-cols-3 gap-8 mb-16">
+      <div class="grid md:grid-cols-2 gap-8 mb-16">
         {
           contactInfo.map((info) => {
             const Icon = info.icon;
@@ -93,10 +87,9 @@ const socialMedia = [
         }
       </div>
 
-      <!-- Redes Sociales -->
       <div class="text-center">
         <h3 class="text-2xl font-bold text-primary-textoTitle mb-6">
-          Síguenos en Redes Sociales
+          Siguenos en Redes Sociales
         </h3>
         <div class="flex justify-center gap-6">
           {
@@ -118,30 +111,30 @@ const socialMedia = [
     </div>
   </Section>
 
-  <!-- Formulario de Contacto -->
   <Section id="formulario" class="py-24 bg-primary-bg-claro">
     <div class="max-w-3xl mx-auto">
-      <h2
-        class="text-4xl md:text-5xl font-bold text-foreground mb-8 text-center"
-      >
-        Envíanos un Mensaje
+      <h2 class="text-4xl md:text-5xl font-bold text-foreground mb-8 text-center">
+        Envianos un Mensaje
       </h2>
       <p class="text-xl text-muted-foreground text-center mb-12">
-        Completa el formulario y nos pondremos en contacto contigo a la brevedad
+        Completa el formulario y nos pondremos en contacto a la brevedad
       </p>
 
       <div class="bg-white p-8 md:p-12 rounded-2xl shadow-subtle">
-        <form class="space-y-6">
+        <form
+          id="contact-form"
+          class="space-y-6"
+          data-contact-email={CONTACT_EMAIL}
+          data-whatsapp-phone={WHATSAPP_PHONE}
+        >
           <div class="grid md:grid-cols-2 gap-6">
             <div>
-              <label
-                for="nombre"
-                class="block text-sm font-semibold text-primary-textoTitle mb-2"
-              >
+              <label for="nombre" class="block text-sm font-semibold text-primary-textoTitle mb-2">
                 Nombre Completo *
               </label>
               <Input
                 id="nombre"
+                name="nombre"
                 type="text"
                 placeholder="Tu nombre"
                 required
@@ -149,14 +142,12 @@ const socialMedia = [
               />
             </div>
             <div>
-              <label
-                for="email"
-                class="block text-sm font-semibold text-primary-textoTitle mb-2"
-              >
+              <label for="email" class="block text-sm font-semibold text-primary-textoTitle mb-2">
                 Email *
               </label>
               <Input
                 id="email"
+                name="email"
                 type="email"
                 placeholder="tu@email.com"
                 required
@@ -166,14 +157,12 @@ const socialMedia = [
           </div>
 
           <div>
-            <label
-              for="telefono"
-              class="block text-sm font-semibold text-primary-textoTitle mb-2"
-            >
-              Teléfono
+            <label for="telefono" class="block text-sm font-semibold text-primary-textoTitle mb-2">
+              Telefono
             </label>
             <Input
               id="telefono"
+              name="telefono"
               type="tel"
               placeholder="+54 9 XXX XXX-XXXX"
               className="w-full"
@@ -181,32 +170,28 @@ const socialMedia = [
           </div>
 
           <div>
-            <label
-              for="asunto"
-              class="block text-sm font-semibold text-primary-textoTitle mb-2"
-            >
+            <label for="asunto" class="block text-sm font-semibold text-primary-textoTitle mb-2">
               Asunto *
             </label>
             <Input
               id="asunto"
+              name="asunto"
               type="text"
-              placeholder="¿En qué podemos ayudarte?"
+              placeholder="En que podemos ayudarte?"
               required
               className="w-full"
             />
           </div>
 
           <div>
-            <label
-              for="mensaje"
-              class="block text-sm font-semibold text-primary-textoTitle mb-2"
-            >
+            <label for="mensaje" class="block text-sm font-semibold text-primary-textoTitle mb-2">
               Mensaje *
             </label>
             <textarea
               id="mensaje"
+              name="mensaje"
               rows="6"
-              placeholder="Escribe tu mensaje aquí..."
+              placeholder="Escribe tu mensaje aqui..."
               required
               class="w-full px-4 py-3 rounded-lg border border-primary-border focus:outline-none focus:ring-2 focus:ring-primary-100 focus:border-transparent resize-none"
             ></textarea>
@@ -220,20 +205,34 @@ const socialMedia = [
               class="mt-1 h-4 w-4 rounded border-primary-border text-primary-100 focus:ring-primary-100"
             />
             <label for="privacidad" class="text-sm text-muted-foreground">
-              Acepto la política de privacidad y el tratamiento de mis datos
-              personales *
+              Acepto la politica de privacidad y el tratamiento de mis datos personales *
             </label>
           </div>
 
-          <Button
-            type="submit"
-            variant="primary"
-            size="lg"
-            className="w-full text-lg"
-          >
-            <Send className="h-5 w-5 mr-2" />
-            Enviar Mensaje
-          </Button>
+          <div class="grid sm:grid-cols-2 gap-3">
+            <Button
+              type="submit"
+              variant="green"
+              size="lg"
+              className="w-full text-base justify-center"
+            >
+              <MessageCircle className="h-5 w-5 mr-2" />
+              Enviar por WhatsApp
+            </Button>
+
+            <Button
+              type="button"
+              id="send-email-btn"
+              variant="outline"
+              size="lg"
+              className="w-full text-base justify-center"
+            >
+              <Send className="h-5 w-5 mr-2" />
+              Enviar por Email
+            </Button>
+          </div>
+
+          <p id="contact-feedback" class="text-sm text-center text-muted-foreground min-h-5"></p>
 
           <p class="text-sm text-muted-foreground text-center">
             * Campos obligatorios
@@ -243,15 +242,94 @@ const socialMedia = [
     </div>
   </Section>
 
-  <!-- CTA Section -->
-
   <div class="max-w-4xl mx-auto text-center text-primary-textoTitle py-20">
-    <h2 class="text-4xl md:text-5xl font-bold mb-6">¿Listo para Ayudar?</h2>
+    <h2 class="text-4xl md:text-5xl font-bold mb-6">Listo para Ayudar?</h2>
     <p class="text-xl mb-8 opacity-90">
-      Tu apoyo puede cambiar la vida de un niño. Conoce cómo puedes colaborar
+      Tu apoyo puede cambiar la vida de un nino. Conoce como puedes colaborar
     </p>
     <Button href="/como-ayudar" size="lg" class="text-lg px-8 py-6">
-      Cómo Ayudar
+      Como Ayudar
     </Button>
   </div>
+
+  <script>
+    function setupContactForm() {
+      const form = document.getElementById("contact-form");
+      const emailBtn = document.getElementById("send-email-btn");
+      const feedback = document.getElementById("contact-feedback");
+
+      if (!(form instanceof HTMLFormElement) || !(emailBtn instanceof HTMLButtonElement)) return;
+      if (form.dataset.bound === "true") return;
+      form.dataset.bound = "true";
+
+      const contactEmail = form.dataset.contactEmail || "info@simisumaq.org";
+      const whatsappPhone = form.dataset.whatsappPhone || "543855063501";
+
+      const getField = (id) => {
+        const el = document.getElementById(id);
+        return el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement
+          ? el.value.trim()
+          : "";
+      };
+
+      const buildMessage = () => {
+        const nombre = getField("nombre");
+        const email = getField("email");
+        const telefono = getField("telefono");
+        const asunto = getField("asunto");
+        const mensaje = getField("mensaje");
+
+        const message = [
+          "Hola! Les escribo desde el formulario web de Simi Sumaq.",
+          "",
+          `Nombre: ${nombre}`,
+          `Email: ${email}`,
+          `Telefono: ${telefono || "No informado"}`,
+          `Asunto: ${asunto}`,
+          "",
+          "Mensaje:",
+          mensaje,
+        ].join("\n");
+
+        return { asunto, message };
+      };
+
+      const showFeedback = (text) => {
+        if (!feedback) return;
+        feedback.textContent = text;
+      };
+
+      const validate = () => {
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          showFeedback("Completa los campos obligatorios antes de enviar.");
+          return false;
+        }
+        return true;
+      };
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        if (!validate()) return;
+
+        const { message } = buildMessage();
+        const url = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(message)}`;
+        window.open(url, "_blank", "noopener,noreferrer");
+        showFeedback("Abrimos WhatsApp con tu mensaje listo para enviar.");
+      });
+
+      emailBtn.addEventListener("click", () => {
+        if (!validate()) return;
+
+        const { asunto, message } = buildMessage();
+        const subject = encodeURIComponent(asunto || "Consulta desde sitio web");
+        const body = encodeURIComponent(message);
+        window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`;
+        showFeedback("Abrimos tu cliente de email con el mensaje precargado.");
+      });
+    }
+
+    setupContactForm();
+    document.addEventListener("astro:page-load", setupContactForm);
+  </script>
 </Layout>

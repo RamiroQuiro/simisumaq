@@ -1,0 +1,29 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Section from "../components/organismos/Section.astro";
+import TituloColores from "../components/atomos/TituloColores.astro";
+import TiendaClient from "../components/organismos/TiendaClient.tsx";
+---
+
+<Layout>
+  <Section
+    isBackgroundFoto
+    srcFotoBackground="https://scontent.cdninstagram.com/v/t39.30808-6/520051886_1472391277531803_2520659764230515398_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=106&ig_cache_key=MzY3OTUyNTU2NjUyNTc4NDc5MQ%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjEwODB4MTA4MC5zZHIuQzMifQ%3D%3D&_nc_ohc=oaRmFbPVrP8Q7kNvwFFsGKe&_nc_oc=AdhBMLHmRnKb024DHwJld9by0GEUcRx3KnW2ZdXFt1aX-_yCsL8D9PonqAlNGDCMFaY&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=tggpETLHvOVqUvc9DQsM90&oh=00_AfE1CIPzqMUWuqAflqSX9Wich6vpQ0nPuAOZRTMxzjGRtQ&oe=69353BBE"
+    id="hero-tienda"
+    class="bg-linear-to-r from-primary-100 to-primary-200"
+  >
+    <div class="text-center text-primary-textoTitle py-20">
+      <TituloColores>Tienda Solidaria</TituloColores>
+      <p class="text-xl md:text-2xl max-w-3xl mx-auto opacity-90">
+        Llevate un recuerdo de Simi Sumaq y ayudanos a seguir transformando
+        vidas. Todo lo recaudado se destina a nuestras actividades y
+        acompañamiento a familias.
+      </p>
+    </div>
+  </Section>
+
+  <Section id="tienda" class="bg-primary-bg-claro">
+    <TiendaClient client:load />
+  </Section>
+</Layout>
+

@@ -5,19 +5,32 @@ import { Menu, X, ChevronDown } from "lucide-react";
 const links = [
   { name: "Inicio", href: "/" },
   {
-    name: "Sobre Nosotros",
+    name: "Nosotros",
     href: "/sobre-nosotros",
     dropdown: [
       { name: "Nuestra Historia", href: "/sobre-nosotros" },
-      { name: "Qué Hacemos", href: "/que-hacemos" },
+      { name: "Que Hacemos", href: "/que-hacemos" },
       { name: "Nuestro Equipo", href: "/equipo" },
     ],
   },
-  { name: "Proyectos", href: "/proyectos" },
-  { name: "Cómo Ayudar", href: "/como-ayudar" },
-  { name: "Eventos", href: "/eventos" },
-  { name: "Galería", href: "/galeria" },
-  { name: "Contacto", href: "/contacto" },
+  {
+    name: "Impacto",
+    href: "/proyectos",
+    dropdown: [
+      { name: "Proyectos", href: "/proyectos" },
+      { name: "Eventos", href: "/eventos" },
+      { name: "Galeria", href: "/galeria" },
+    ],
+  },
+  {
+    name: "Sumate",
+    href: "/como-ayudar",
+    dropdown: [
+      { name: "Como Ayudar", href: "/como-ayudar" },
+      { name: "Contacto", href: "/contacto" },
+    ],
+  },
+  { name: "Tienda", href: "/tienda" },
 ];
 ---
 
@@ -28,17 +41,16 @@ const links = [
 >
   <div class="mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex h-20 items-center justify-between">
-      <!-- Logo -->
       <a href="/" class="flex items-center gap-3 group" transition:name="logo">
         <img
           src="/logo.jpeg"
           class="h-10 w-10 rounded-xl shadow-sm group-hover:shadow-md transition-all duration-300"
-          alt="Logo Fundación Simi Sumaq"
+          alt="Logo Fundacion Simi Sumaq"
         />
         <div class="flex flex-col leading-none">
           <span
             class="text-lg font-bold text-primary-100 group-hover:text-primary-200 transition-colors"
-            >Asociación</span
+            >Asociacion</span
           >
           <span
             class="text-lg font-bold text-primary-200 group-hover:text-primary-100 transition-colors"
@@ -47,7 +59,6 @@ const links = [
         </div>
       </a>
 
-      <!-- Desktop Menu -->
       <div class="hidden lg:flex items-center gap-1">
         {
           links.map((link) =>
@@ -92,12 +103,11 @@ const links = [
         </div>
       </div>
 
-      <!-- Mobile Menu Button -->
       <div class="lg:hidden">
         <button
           id="mobile-menu-btn"
           class="p-2 text-primary-texto hover:text-primary-100 hover:bg-primary-bg-claro rounded-lg transition-colors"
-          aria-label="Abrir menú"
+          aria-label="Abrir menu"
         >
           <Menu className="h-6 w-6" id="menu-icon" />
           <X className="h-6 w-6 hidden" id="close-icon" />
@@ -106,7 +116,6 @@ const links = [
     </div>
   </div>
 
-  <!-- Mobile Menu -->
   <div
     id="mobile-menu"
     class="hidden lg:hidden bg-white border-t border-primary-border absolute w-full left-0 shadow-lg max-h-[calc(100vh-80px)] overflow-y-auto"
@@ -168,7 +177,6 @@ const links = [
         closeIcon.classList.toggle("hidden");
       });
 
-      // Close menu when clicking a link
       const mobileLinks = mobileMenu.querySelectorAll("a");
       mobileLinks.forEach((link) => {
         link.addEventListener("click", () => {
@@ -180,9 +188,6 @@ const links = [
     }
   }
 
-  // Inicializar en la carga inicial
   setupNavbar();
-
-  // Reinicializar después de cada navegación de View Transitions
   document.addEventListener("astro:page-load", setupNavbar);
 </script>
