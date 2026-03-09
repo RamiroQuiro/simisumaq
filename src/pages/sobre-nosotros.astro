@@ -1,5 +1,5 @@
----
-import Layout from "../layouts/Layout.astro";
+﻿---
+import Layout from "../layouts/LayoutSeo.astro";
 import Navbar from "../components/organismos/Navbar.astro";
 import Section from "../components/organismos/Section.astro";
 import { Heart, Users, Target, Award } from "lucide-react";
@@ -10,30 +10,30 @@ const valores = [
     icon: Heart,
     title: "Solidaridad",
     description:
-      "Trabajamos con empatía y compromiso para acompañar a cada familia.",
+      "Trabajamos con empatÃ­a y compromiso para acompaÃ±ar a cada familia.",
   },
   {
     icon: Users,
-    title: "Inclusión",
+    title: "InclusiÃ³n",
     description:
-      "Promovemos la integración plena de cada niño y niña en la sociedad.",
+      "Promovemos la integraciÃ³n plena de cada niÃ±o y niÃ±a en la sociedad.",
   },
   {
     icon: Target,
     title: "Trabajo Interdisciplinario",
     description:
-      "Coordinamos profesionales de distintas áreas para una atención integral.",
+      "Coordinamos el trabajo entre profesionales de distintas Ã¡reas para brindar atenciÃ³n integral.",
   },
   {
     icon: Award,
     title: "Compromiso con la Infancia",
     description:
-      "Cada acción está guiada por el bienestar de los niños y sus familias.",
+      "Cada acciÃ³n estÃ¡ guiada por el bienestar de los niÃ±os y sus familias.",
   },
 ];
 ---
 
-<Layout>
+<Layout title="Sobre nosotros | Historia y valores de Simi Sumaq" description="Conoce la historia de la asociacion, su mision y valores para transformar vidas con trabajo interdisciplinario." canonical="https://asociacionsimisumaq.org/sobre-nosotros">
   <!-- Hero Section -->
   <Section
     isBackgroundFoto
@@ -60,91 +60,101 @@ const valores = [
 
       <div class="space-y-8 text-lg text-primary-textoBody leading-relaxed">
         <p>
-          Simi Sumaq nació del encuentro entre profesionales que, día a día,
-          recibían a niñas y niños que necesitaban mucho más que un tratamiento
-          médico: necesitaban contención, acompañamiento, información y
-          oportunidades. Cada familia llegaba con dudas, miedos y esperanzas, y
-          cada una de esas historias fue sembrando la idea de crear un espacio
-          que las abrigara.
+          Simi Sumaq naciÃ³ del encuentro entre profesionales que, dÃ­a a dÃ­a,
+          recibÃ­an a niÃ±as y niÃ±os que necesitaban algo mÃ¡s que tratamiento
+          mÃ©dico: contenciÃ³n, acompaÃ±amiento, informaciÃ³n y oportunidades. Cada
+          familia llegaba con dudas, miedos y esperanzas; de esas historias
+          surgiÃ³ la idea de crear un espacio que las abrigara.
         </p>
 
         <div
           class="bg-linear-to-r from-primary-100/10 to-primary-200/10 p-8 rounded-2xl border-l-4 border-primary-100"
         >
+          <h2
+            class="text-2xl md:text-2xl font-bold text-primary-100 mb-12 text-left"
+          >
+            FundaciÃ³n y propÃ³sito
+          </h2>
           <p class="text-2xl font-semibold text-primary-textoTitle mb-2">
             26 de octubre de 2017
           </p>
+
           <p>
-            Ese sueño tomó forma y se convirtió en una asociación civil dedicada
-            a brindar atención integral para la fisura labiopalatina.
+            Ese sueÃ±o se concretÃ³: se constituyÃ³ una asociaciÃ³n civil dedicada a
+            brindar atenciÃ³n integral para la fisura labiopalatina. Desde
+            entonces trabajamos para devolver sonrisas y recuperar la confianza,
+            la palabra clara y la posibilidad de comunicarse sin barreras
+          </p>
+
+          <p>
+            Simi Sumaq crece con cada sonrisa recuperada, cada avance logrado y
+            cada familia que encuentra apoyo.
+          </p>
+
+          <p>
+            Nuestro nombre, <strong class="text-primary-100"
+              >"boca linda"</strong
+            >, simboliza la confianza, la palabra clara, la posibilidad de
+            comunicarse sin barreras y de integrarse plenamente. Trabajamos para
+            devolver sonrisas, para que cada niÃ±o y niÃ±a pueda hablar, reÃ­r,
+            aprender, y sentirse acompaÃ±ado en todo su proceso.
+          </p>
+
+          <p>
+            Desde entonces, Simi Sumaq promueve acciones mÃ©dicas, odontolÃ³gicas,
+            quirÃºrgicas, fonoaudiolÃ³gicas, psicolÃ³gicas, psicopedagÃ³gicas y
+            sociales para acompaÃ±ar a las personas con fisura labiopalatina y a
+            sus familias. AdemÃ¡s, impulsa actividades de capacitaciÃ³n,
+            encuentros cientÃ­ficos y alianzas con instituciones pÃºblicas y
+            privadas para mejorar la atenciÃ³n en la provincia y la regiÃ³n.
+          </p>
+
+          <p>
+            Hoy, la asociaciÃ³n continÃºa creciendo, guiada por sus valores
+            fundacionales: solidaridad, inclusiÃ³n, trabajo interdisciplinario y
+            compromiso con la infancia. Con cada tratamiento, cada taller y cada
+            encuentro, Simi Sumaq reafirma su misiÃ³n de seguir multiplicando
+            sonrisas.
+          </p>
+
+          <p class="text-xl font-semibold text-primary-textoTitle italic">
+            Esta es nuestra historia: un camino hecho de compromiso, amor,
+            ciencia y comunidad.
           </p>
         </div>
-
-        <p>
-          Desde entonces, Simi Sumaq crece con cada sonrisa recuperada, cada
-          avance logrado y cada familia que encuentra apoyo.
-        </p>
-
-        <p>
-          Nuestro nombre, <strong class="text-primary-100">"boca linda"</strong
-          >, simboliza la confianza, la palabra clara, la posibilidad de
-          comunicarse sin barreras y de integrarse plenamente. Trabajamos para
-          devolver sonrisas, para que cada niño y niña pueda hablar, reír,
-          aprender, y sentirse acompañado en todo su proceso.
-        </p>
-
-        <p>
-          Desde entonces, Simi Sumaq promueve acciones médicas, odontológicas,
-          quirúrgicas, fonoaudiológicas, psicológicas, psicopedagógicas y
-          sociales para acompañar a las personas con fisura labiopalatina y a
-          sus familias. Además, impulsa actividades de capacitación, encuentros
-          científicos y alianzas con instituciones públicas y privadas para
-          mejorar la atención en la provincia y la región.
-        </p>
-
-        <p>
-          Hoy, la asociación continúa creciendo, guiada por sus valores
-          fundacionales: solidaridad, inclusión, trabajo interdisciplinario y
-          compromiso con la infancia. Con cada tratamiento, cada taller y cada
-          encuentro, Simi Sumaq reafirma su misión de seguir multiplicando
-          sonrisas.
-        </p>
-
-        <p class="text-xl font-semibold text-primary-textoTitle italic">
-          Esta es nuestra historia: un camino hecho de compromiso, amor, ciencia
-          y comunidad.
-        </p>
       </div>
     </div>
-  </Section>
 
-  <!-- Valores Section -->
-  <Section id="valores" class="py-24 bg-primary-bg-claro">
-    <div class="max-w-6xl mx-auto">
-      <h2
-        class="text-4xl md:text-5xl font-bold text-foreground mb-12 text-center"
-      >
-        Nuestros Valores
-      </h2>
+    <!-- Valores Section -->
+    <Section id="valores" class="py-24 bg-primary-bg-claro">
+      <div class="max-w-6xl mx-auto">
+        <h2
+          class="text-4xl md:text-5xl font-bold text-foreground mb-12 text-center"
+        >
+          Nuestros Valores
+        </h2>
 
-      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {
-          valores.map((valor) => {
-            const Icon = valor.icon;
-            return (
-              <div class="bg-white p-8 rounded-2xl shadow-subtle hover:shadow-medium transition-all text-center">
-                <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-linear-to-br from-primary-100 to-primary-200 flex items-center justify-center">
-                  <Icon className="h-8 w-8 text-white" />
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {
+            valores.map((valor) => {
+              const Icon = valor.icon;
+              return (
+                <div class="bg-white p-8 rounded-2xl shadow-subtle hover:shadow-medium transition-all text-center">
+                  <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-linear-to-br from-primary-100 to-primary-200 flex items-center justify-center">
+                    <Icon className="h-8 w-8 text-white" />
+                  </div>
+                  <h3 class="text-xl font-bold text-primary-textoTitle mb-3">
+                    {valor.title}
+                  </h3>
+                  <p class="text-muted-foreground">{valor.description}</p>
                 </div>
-                <h3 class="text-xl font-bold text-primary-textoTitle mb-3">
-                  {valor.title}
-                </h3>
-                <p class="text-muted-foreground">{valor.description}</p>
-              </div>
-            );
-          })
-        }
+              );
+            })
+          }
+        </div>
       </div>
-    </div>
+    </Section>
   </Section>
 </Layout>
+
+

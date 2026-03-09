@@ -1,5 +1,5 @@
----
-import Layout from "../layouts/Layout.astro";
+﻿---
+import Layout from "../layouts/LayoutSeo.astro";
 import Navbar from "../components/organismos/Navbar.astro";
 import Ayudar from "./Landing/Ayudar.astro";
 import Footer from "./Landing/Footer.astro";
@@ -8,9 +8,13 @@ import Impacto from "./Landing/Impacto.astro";
 import Mision from "./Landing/Mision.astro";
 ---
 
-<Layout>
+<Layout title="Asociacion Simi Sumaq | Atencion integral para ninos con fisura labiopalatina" description="Acompanamos a ninos y familias con tratamiento interdisciplinario, contencion y oportunidades. Sumate como donante, voluntario o aliado." canonical="https://asociacionsimisumaq.org/">
   <Hero />
   <Mision />
   <Impacto />
   <Ayudar />
 </Layout>
+
+
+
+

@@ -1,5 +1,5 @@
----
-import Layout from "../layouts/Layout.astro";
+﻿---
+import Layout from "../layouts/LayoutSeo.astro";
 import Navbar from "../components/organismos/Navbar.astro";
 import Section from "../components/organismos/Section.astro";
 import Button from "../components/atomos/Button";
@@ -24,17 +24,17 @@ import {
 const ways = [
   {
     icon: DollarSign,
-    title: "Donación Única",
+    title: "DonaciÃ³n Ãšnica",
     description:
-      "Haz una diferencia inmediata con una donación única. $250 puede cambiar una vida para siempre.",
+      "Haz una diferencia inmediata con una donaciÃ³n Ãºnica. $250 puede cambiar una vida para siempre.",
     action: "Donar Ahora",
     variant: "primary",
   },
   {
     icon: Calendar,
-    title: "Donación Mensual",
+    title: "DonaciÃ³n Mensual",
     description:
-      "Únete a nuestra comunidad de patrocinadores mensuales y crea un impacto sostenible.",
+      "Ãšnete a nuestra comunidad de patrocinadores mensuales y crea un impacto sostenible.",
     action: "Ser Patrocinador",
     variant: "secondary",
   },
@@ -42,31 +42,31 @@ const ways = [
     icon: Users,
     title: "Voluntariado",
     description:
-      "Profesionales médicos pueden unirse a nuestras misiones y capacitar equipos locales.",
-    action: "Únete al Equipo",
+      "Profesionales mÃ©dicos pueden unirse a nuestras misiones y capacitar equipos locales.",
+    action: "Ãšnete al Equipo",
     variant: "outline",
   },
   {
     icon: Share2,
-    title: "Difusión",
+    title: "DifusiÃ³n",
     description:
-      "Ayúdanos a llegar a más personas compartiendo nuestro trabajo en redes sociales.",
+      "AyÃºdanos a llegar a mÃ¡s personas compartiendo nuestro trabajo en redes sociales.",
     action: "Compartir",
     variant: "outline",
   },
 ];
 
 const necesidades = [
-  { item: "Insumos Médicos", icon: Stethoscope },
-  { item: "Juguetes Didácticos", icon: Gift },
-  { item: "Ropa para Niños", icon: Heart },
+  { item: "Insumos MÃ©dicos", icon: Stethoscope },
+  { item: "Juguetes DidÃ¡cticos", icon: Gift },
+  { item: "Ropa para NiÃ±os", icon: Heart },
   { item: "Alimentos no Perecederos", icon: HandHeart },
 ];
 ---
 
-<Layout>
+<Layout title="Como ayudar | Donaciones, voluntariado y patrocinio - Simi Sumaq" description="Conoce formas concretas de ayudar: donaciones, voluntariado y patrocinio para que mas ninos accedan a tratamiento integral." canonical="https://asociacionsimisumaq.org/como-ayudar">
   <div class="text-center text-primary-textoTitle py-30">
-    <h1 class="text-5xl md:text-6xl font-bold mb-6">¿Cómo puedes ayudar?</h1>
+    <h1 class="text-5xl md:text-6xl font-bold mb-6">Â¿CÃ³mo puedes ayudar?</h1>
     <p class="text-xl md:text-2xl max-w-3xl mx-auto opacity-90">
       Tu generosidad es la llave que abre un futuro lleno de sonrisas
     </p>
@@ -116,9 +116,9 @@ const necesidades = [
             Donaciones Materiales
           </h2>
           <p class="text-lg text-muted-foreground mb-8">
-            Además de aportes económicos, recibimos donaciones de insumos y
+            AdemÃ¡s de aportes econÃ³micos, recibimos donaciones de insumos y
             materiales que son vitales para nuestras jornadas y el
-            acompañamiento a las familias.
+            acompaÃ±amiento a las familias.
           </p>
 
           <div class="grid grid-cols-2 gap-4">
@@ -158,11 +158,11 @@ const necesidades = [
             <div class="space-y-4 text-muted-foreground">
               <div>
                 <p class="text-sm font-semibold text-primary-100">Banco</p>
-                <p>Banco Nación</p>
+                <p>Banco NaciÃ³n</p>
               </div>
               <div>
                 <p class="text-sm font-semibold text-primary-100">Titular</p>
-                <p>Fundación Simi Sumaq</p>
+                <p>FundaciÃ³n Simi Sumaq</p>
               </div>
               <div>
                 <p class="text-sm font-semibold text-primary-100">CBU</p>
@@ -190,7 +190,7 @@ const necesidades = [
   <Section id="voluntariado" class="py-24 bg-white">
     <div class="max-w-4xl mx-auto text-center">
       <h2 class="text-4xl md:text-5xl font-bold text-foreground mb-6">
-        Únete como Voluntario
+        Ãšnete como Voluntario
       </h2>
       <p class="text-xl text-muted-foreground mb-12">
         Si eres profesional de la salud, estudiante o simplemente quieres donar
@@ -207,3 +207,5 @@ const necesidades = [
     </div>
   </Section>
 </Layout>
+
+
