@@ -75,38 +75,11 @@ const comisionDirectiva = [
       </div>
 
       <div class="mt-20 text-center">
-        <p class="text-muted-foreground max-w-2xl mx-auto text-lg">
+        <p class="text-muted-foreground max-w-4xl mx-auto text-lg">
           Además, contamos con una red de voluntarios y colaboradores que hacen
           posible cada una de nuestras actividades y campañas brindando
           esperanza a cada familia.
         </p>
-      </div>
-    </div>
-  </Section>
-  <Section id="comision-directiva" class="py-24 bg-primary-bg-claro">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-12">
-        <h2 class="text-4xl md:text-5xl font-bold text-primary-textoTitle mb-4">
-          Autoridades Comision Directiva
-        </h2>
-        <p class="text-lg text-primary-textoBody">
-          Conoce los cargos que conforman nuestra comision directiva
-        </p>
-      </div>
-
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {
-          comisionDirectiva.map((directivo) => (
-            <div class="bg-white p-8 rounded-2xl shadow-subtle hover:shadow-medium transition-all text-center border border-primary-border flex flex-col items-center">
-              <div class="w-24 h-24 mb-6 rounded-full bg-linear-to-br from-primary-100/10 to-primary-200/10 flex items-center justify-center">
-                <User className="h-10 w-10 text-primary-100" />
-              </div>
-              <h3 class="text-xl font-bold text-primary-textoTitle">
-                {directivo.cargo}
-              </h3>
-            </div>
-          ))
-        }
       </div>
     </div>
   </Section>
