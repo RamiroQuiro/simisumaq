@@ -5,12 +5,15 @@ import Section from "../components/organismos/Section.astro";
 import { User } from "lucide-react";
 
 const comisionDirectiva = [
-  { cargo: "Presidente" },
-  { cargo: "Secretario" },
-  { cargo: "Tesorero" },
-  { cargo: "Vocal 1" },
-  { cargo: "Vocal 2" },
-  { cargo: "Revisora de Cuenta" },
+  { cargo: "Presidente", nombre: "Lic. Veronica Coria" },
+  { cargo: "Secretaria", nombre: "Luz Miranda" },
+  { cargo: "Tesorera", nombre: "Soledad Diaz" },
+  { cargo: "Vocal 1", nombre: "Soldedad Guerra" },
+  { cargo: "Vocal 1 suplente", nombre: "Patricia Galeano" },
+  { cargo: "Vocal 2", nombre: "Marta Arias" },
+  { cargo: "Vocal 2 suplente", nombre: "Rita Chavez" },
+  { cargo: "Revisora de Cuenta", nombre: "Carlina Pereyra" },
+  { cargo: "Revisora de Cuenta suplente", nombre: "Carolina Cramaro" },
 ];
 ---
 
@@ -22,25 +25,26 @@ const comisionDirectiva = [
     id="comision-directiva"
   >
     <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-12">
+      <div class="text-center my-24">
         <h2 class="text-4xl md:text-5xl font-bold text-primary-textoTitle mb-4">
-          Autoridades Comision Directiva
+          Autoridades Comisión Directiva
         </h2>
         <p class="text-lg text-primary-textoBody">
-          Conoce los cargos que conforman nuestra comision directiva
+          Conoce los cargos que conforman nuestra comisión directiva
         </p>
       </div>
 
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
         {
           comisionDirectiva.map((directivo) => (
             <div class="bg-white p-8 rounded-2xl shadow-subtle hover:shadow-medium transition-all text-center border border-primary-border flex flex-col items-center">
               <div class="w-24 h-24 mb-6 rounded-full bg-linear-to-br from-primary-100/10 to-primary-200/10 flex items-center justify-center">
                 <User className="h-10 w-10 text-primary-100" />
               </div>
-              <h3 class="text-xl font-bold text-primary-textoTitle">
+              <h3 class=" font-bold text-primary-textoTitle">
                 {directivo.cargo}
               </h3>
+              <p class="text-primary-textoBody text-xl">{directivo.nombre}</p>
             </div>
           ))
         }
