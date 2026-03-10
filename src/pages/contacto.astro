@@ -1,5 +1,5 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import Layout, { FACEBOOK, INSTAGRAM, YOUTUBE } from "../layouts/Layout.astro";
 import Section from "../components/organismos/Section.astro";
 import Button from "../components/atomos/Button";
 import Input from "../components/atomos/Input";
@@ -11,10 +11,11 @@ import {
   Twitter,
   Send,
   MessageCircle,
+  Youtube,
 } from "lucide-react";
 import TituloColores from "../components/atomos/TituloColores.astro";
 
-const CONTACT_EMAIL = "info@simisumaq.org";
+const CONTACT_EMAIL = "simisumaq@gmail.com";
 const WHATSAPP_PHONE = "543855063501";
 
 const contactInfo = [
@@ -33,14 +34,24 @@ const contactInfo = [
 ];
 
 const socialMedia = [
-  { icon: Facebook, name: "Facebook", link: "#", color: "hover:text-blue-600" },
+  {
+    icon: Facebook,
+    name: "Facebook",
+    link: FACEBOOK,
+    color: "hover:text-blue-600",
+  },
   {
     icon: Instagram,
     name: "Instagram",
-    link: "#",
+    link: INSTAGRAM,
     color: "hover:text-pink-600",
   },
-  { icon: Twitter, name: "Twitter", link: "#", color: "hover:text-blue-400" },
+  {
+    icon: Youtube,
+    name: "Youtube",
+    link: YOUTUBE,
+    color: "hover:text-pink-600",
+  },
 ];
 ---
 
@@ -61,7 +72,9 @@ const socialMedia = [
 
   <Section id="info" class="py-24 bg-white">
     <div class="max-w-6xl mx-auto">
-      <h2 class="text-4xl md:text-5xl font-bold text-foreground mb-12 text-center">
+      <h2
+        class="text-4xl md:text-5xl font-bold text-foreground mb-12 text-center"
+      >
         Informacion de Contacto
       </h2>
 
@@ -98,6 +111,8 @@ const socialMedia = [
               return (
                 <a
                   href={social.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   class={`w-14 h-14 rounded-full bg-primary-bg-claro flex items-center justify-center text-primary-texto ${social.color} transition-all hover:scale-110`}
                   aria-label={social.name}
                 >
@@ -113,7 +128,9 @@ const socialMedia = [
 
   <Section id="formulario" class="py-24 bg-primary-bg-claro">
     <div class="max-w-3xl mx-auto">
-      <h2 class="text-4xl md:text-5xl font-bold text-foreground mb-8 text-center">
+      <h2
+        class="text-4xl md:text-5xl font-bold text-foreground mb-8 text-center"
+      >
         Envianos un Mensaje
       </h2>
       <p class="text-xl text-muted-foreground text-center mb-12">
@@ -129,7 +146,10 @@ const socialMedia = [
         >
           <div class="grid md:grid-cols-2 gap-6">
             <div>
-              <label for="nombre" class="block text-sm font-semibold text-primary-textoTitle mb-2">
+              <label
+                for="nombre"
+                class="block text-sm font-semibold text-primary-textoTitle mb-2"
+              >
                 Nombre Completo *
               </label>
               <Input
@@ -142,7 +162,10 @@ const socialMedia = [
               />
             </div>
             <div>
-              <label for="email" class="block text-sm font-semibold text-primary-textoTitle mb-2">
+              <label
+                for="email"
+                class="block text-sm font-semibold text-primary-textoTitle mb-2"
+              >
                 Email *
               </label>
               <Input
@@ -157,7 +180,10 @@ const socialMedia = [
           </div>
 
           <div>
-            <label for="telefono" class="block text-sm font-semibold text-primary-textoTitle mb-2">
+            <label
+              for="telefono"
+              class="block text-sm font-semibold text-primary-textoTitle mb-2"
+            >
               Telefono
             </label>
             <Input
@@ -170,7 +196,10 @@ const socialMedia = [
           </div>
 
           <div>
-            <label for="asunto" class="block text-sm font-semibold text-primary-textoTitle mb-2">
+            <label
+              for="asunto"
+              class="block text-sm font-semibold text-primary-textoTitle mb-2"
+            >
               Asunto *
             </label>
             <Input
@@ -184,7 +213,10 @@ const socialMedia = [
           </div>
 
           <div>
-            <label for="mensaje" class="block text-sm font-semibold text-primary-textoTitle mb-2">
+            <label
+              for="mensaje"
+              class="block text-sm font-semibold text-primary-textoTitle mb-2"
+            >
               Mensaje *
             </label>
             <textarea
@@ -205,7 +237,8 @@ const socialMedia = [
               class="mt-1 h-4 w-4 rounded border-primary-border text-primary-100 focus:ring-primary-100"
             />
             <label for="privacidad" class="text-sm text-muted-foreground">
-              Acepto la politica de privacidad y el tratamiento de mis datos personales *
+              Acepto la politica de privacidad y el tratamiento de mis datos
+              personales *
             </label>
           </div>
 
@@ -232,7 +265,11 @@ const socialMedia = [
             </Button>
           </div>
 
-          <p id="contact-feedback" class="text-sm text-center text-muted-foreground min-h-5"></p>
+          <p
+            id="contact-feedback"
+            class="text-sm text-center text-muted-foreground min-h-5"
+          >
+          </p>
 
           <p class="text-sm text-muted-foreground text-center">
             * Campos obligatorios
@@ -247,7 +284,7 @@ const socialMedia = [
     <p class="text-xl mb-8 opacity-90">
       Tu apoyo puede cambiar la vida de un nino. Conoce como puedes colaborar
     </p>
-    <Button href="/como-ayudar" size="lg" class="text-lg px-8 py-6">
+    <Button href="/como-ayudar" size="lg" className="text-lg px-8 py-6">
       Como Ayudar
     </Button>
   </div>
@@ -258,7 +295,11 @@ const socialMedia = [
       const emailBtn = document.getElementById("send-email-btn");
       const feedback = document.getElementById("contact-feedback");
 
-      if (!(form instanceof HTMLFormElement) || !(emailBtn instanceof HTMLButtonElement)) return;
+      if (
+        !(form instanceof HTMLFormElement) ||
+        !(emailBtn instanceof HTMLButtonElement)
+      )
+        return;
       if (form.dataset.bound === "true") return;
       form.dataset.bound = "true";
 
@@ -267,7 +308,8 @@ const socialMedia = [
 
       const getField = (id) => {
         const el = document.getElementById(id);
-        return el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement
+        return el instanceof HTMLInputElement ||
+          el instanceof HTMLTextAreaElement
           ? el.value.trim()
           : "";
       };
@@ -322,7 +364,9 @@ const socialMedia = [
         if (!validate()) return;
 
         const { asunto, message } = buildMessage();
-        const subject = encodeURIComponent(asunto || "Consulta desde sitio web");
+        const subject = encodeURIComponent(
+          asunto || "Consulta desde sitio web",
+        );
         const body = encodeURIComponent(message);
         window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`;
         showFeedback("Abrimos tu cliente de email con el mensaje precargado.");

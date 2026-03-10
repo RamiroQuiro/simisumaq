@@ -14,22 +14,25 @@ const ways = [
     icon: DollarSign,
     title: "Donación Única",
     description:
-      "Haz una diferencia inmediata con una donación única. $250 puede cambiar una vida para siempre.",
+      "Haz una diferencia inmediata con una donación única. $150.000 puede cambiar una vida para siempre.",
     action: "Donar Ahora",
+    href: "https://wa.me/543855063501?text=Hola,%20quiero%20hacer%20una%20donaci%C3%B3n%20%C3%BAnica",
   },
   {
     icon: Calendar,
     title: "Donación Mensual",
     description:
-      "Únete a nuestra comunidad de patrocinadores mensuales y crea un impacto sostenible.",
+      "Únete a nuestra comunidad de patrocinadores mensuales con $1500 o anual $16000 para todo el año.",
     action: "Ser Patrocinador",
+    href: "https://wa.me/543855063501?text=Hola,%20quiero%20ser%20patrocinador",
   },
   {
     icon: Users,
     title: "Voluntariado",
     description:
-      "Profesionales médicos pueden unirse a nuestras misiones y capacitar equipos locales.",
+      "Profesionale de diferentes áreas pueden unirse a nuestras misiones y apoyar en diferentes actividades.",
     action: "Únete al Equipo",
+    href: "https://wa.me/543855063501?text=Hola,%20quiero%20unirme%20como%20voluntario",
   },
   {
     icon: Share2,
@@ -37,6 +40,7 @@ const ways = [
     description:
       "Ayúdanos a llegar a más personas compartiendo nuestro trabajo en redes sociales.",
     action: "Compartir",
+    href: "https://wa.me/543855063501?text=Hola,%20quiero%20ayudar%20a%20difundir%20su%20causa",
   },
 ];
 ---
@@ -71,7 +75,13 @@ const ways = [
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button variant="outline" className="w-full border-2">
+              <Button
+                variant="outline"
+                href={way.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full border-2"
+              >
                 {way.action}
               </Button>
             </CardContent>
@@ -92,9 +102,12 @@ const ways = [
       escuela y de perseguir sus sueños. Únete a nosotros hoy.
     </p>
     <Button
+      href="https://wa.me/543855063501?text=Hola,%20quiero%20hacer%20una%20donaci%C3%B3n"
+      target="_blank"
+      rel="noopener noreferrer"
       size="lg"
       variant="secondary"
-      class="text-lg px-12 py-6 shadow-strong"
+      className="text-lg px-12 py-6 shadow-strong"
     >
       Dona Ahora
     </Button>

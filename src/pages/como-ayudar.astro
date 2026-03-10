@@ -24,49 +24,53 @@ import {
 const ways = [
   {
     icon: DollarSign,
-    title: "DonaciÃ³n Ãšnica",
+    title: "Donación Única",
     description:
-      "Haz una diferencia inmediata con una donaciÃ³n Ãºnica. $250 puede cambiar una vida para siempre.",
+      "Haz una diferencia inmediata con una donación única. $150.000 puede cambiar una vida para siempre.",
     action: "Donar Ahora",
-    variant: "primary",
+    href: "https://wa.me/543855063501?text=Hola,%20quiero%20hacer%20una%20donaci%C3%B3n%20%C3%BAnica",
   },
   {
     icon: Calendar,
-    title: "DonaciÃ³n Mensual",
+    title: "Donación Mensual",
     description:
-      "Ãšnete a nuestra comunidad de patrocinadores mensuales y crea un impacto sostenible.",
+      "Únete a nuestra comunidad de patrocinadores mensuales con $1500 o anual $16000 para todo el año.",
     action: "Ser Patrocinador",
-    variant: "secondary",
+    href: "https://wa.me/543855063501?text=Hola,%20quiero%20ser%20patrocinador",
   },
   {
     icon: Users,
     title: "Voluntariado",
     description:
-      "Profesionales mÃ©dicos pueden unirse a nuestras misiones y capacitar equipos locales.",
-    action: "Ãšnete al Equipo",
-    variant: "outline",
+      "Profesionale de diferentes áreas pueden unirse a nuestras misiones y apoyar en diferentes actividades.",
+    action: "Únete al Equipo",
+    href: "https://wa.me/543855063501?text=Hola,%20quiero%20unirme%20como%20voluntario",
   },
   {
     icon: Share2,
-    title: "DifusiÃ³n",
+    title: "Comparte Nuestra Causa",
     description:
-      "AyÃºdanos a llegar a mÃ¡s personas compartiendo nuestro trabajo en redes sociales.",
+      "Ayúdanos a llegar a más personas compartiendo nuestro trabajo en redes sociales.",
     action: "Compartir",
-    variant: "outline",
+    href: "https://wa.me/543855063501?text=Hola,%20quiero%20ayudar%20a%20difundir%20su%20causa",
   },
 ];
 
 const necesidades = [
-  { item: "Insumos MÃ©dicos", icon: Stethoscope },
-  { item: "Juguetes DidÃ¡cticos", icon: Gift },
-  { item: "Ropa para NiÃ±os", icon: Heart },
+  { item: "Insumos Médicos", icon: Stethoscope },
+  { item: "Juguetes Didácticos", icon: Gift },
+  { item: "Ropa para Niños", icon: Heart },
   { item: "Alimentos no Perecederos", icon: HandHeart },
 ];
 ---
 
-<Layout title="Como ayudar | Donaciones, voluntariado y patrocinio - Simi Sumaq" description="Conoce formas concretas de ayudar: donaciones, voluntariado y patrocinio para que mas ninos accedan a tratamiento integral." canonical="https://asociacionsimisumaq.org/como-ayudar">
+<Layout
+  title="Como ayudar | Donaciones, voluntariado y patrocinio - Simi Sumaq"
+  description="Conoce formas concretas de ayudar: donaciones, voluntariado y patrocinio para que mas ninos accedan a tratamiento integral."
+  canonical="https://simisumq.org/como-ayudar"
+>
   <div class="text-center text-primary-textoTitle py-30">
-    <h1 class="text-5xl md:text-6xl font-bold mb-6">Â¿CÃ³mo puedes ayudar?</h1>
+    <h1 class="text-5xl md:text-6xl font-bold mb-6">¿Cómo puedes ayudar?</h1>
     <p class="text-xl md:text-2xl max-w-3xl mx-auto opacity-90">
       Tu generosidad es la llave que abre un futuro lleno de sonrisas
     </p>
@@ -96,7 +100,12 @@ const necesidades = [
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Button variant={way.variant as any} className="w-full">
+                  <Button
+                    href={way.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full"
+                  >
                     {way.action}
                   </Button>
                 </CardContent>
@@ -116,9 +125,9 @@ const necesidades = [
             Donaciones Materiales
           </h2>
           <p class="text-lg text-muted-foreground mb-8">
-            AdemÃ¡s de aportes econÃ³micos, recibimos donaciones de insumos y
+            Además de aportes económicos, recibimos donaciones de insumos y
             materiales que son vitales para nuestras jornadas y el
-            acompaÃ±amiento a las familias.
+            acompañamiento a las familias.
           </p>
 
           <div class="grid grid-cols-2 gap-4">
@@ -158,11 +167,11 @@ const necesidades = [
             <div class="space-y-4 text-muted-foreground">
               <div>
                 <p class="text-sm font-semibold text-primary-100">Banco</p>
-                <p>Banco NaciÃ³n</p>
+                <p>Banco Nación</p>
               </div>
               <div>
                 <p class="text-sm font-semibold text-primary-100">Titular</p>
-                <p>FundaciÃ³n Simi Sumaq</p>
+                <p>Asociación Civil Simi Sumaq</p>
               </div>
               <div>
                 <p class="text-sm font-semibold text-primary-100">CBU</p>
@@ -173,12 +182,12 @@ const necesidades = [
               <div>
                 <p class="text-sm font-semibold text-primary-100">Alias</p>
                 <p class="font-mono bg-gray-100 p-2 rounded text-sm">
-                  FUNDACION.SIMI.SUMAQ
+                  ASOCIACION.SIMISUMAQ
                 </p>
               </div>
               <div>
                 <p class="text-sm font-semibold text-primary-100">CUIT</p>
-                <p>30-12345678-9</p>
+                <p>30-71606383-2</p>
               </div>
             </div>
           </div>
@@ -190,22 +199,22 @@ const necesidades = [
   <Section id="voluntariado" class="py-24 bg-white">
     <div class="max-w-4xl mx-auto text-center">
       <h2 class="text-4xl md:text-5xl font-bold text-foreground mb-6">
-        Ãšnete como Voluntario
+        Únete como Voluntario
       </h2>
       <p class="text-xl text-muted-foreground mb-12">
         Si eres profesional de la salud, estudiante o simplemente quieres donar
         tu tiempo, hay un lugar para ti en Simi Sumaq.
       </p>
       <Button
-        href="/contacto"
+        href="https://wa.me/543855063501?text=Hola,%20quiero%20unirme%20como%20voluntario"
+        target="_blank"
+        rel="noopener noreferrer"
         size="lg"
         variant="primary"
-        class="text-lg px-12 py-6 shadow-strong"
+        className="text-lg px-12 py-6 shadow-strong"
       >
         Quiero ser Voluntario
       </Button>
     </div>
   </Section>
 </Layout>
-
-

@@ -57,12 +57,13 @@ const buttonVariants = {
 };
 
 // Definimos las props del componente para que TypeScript nos ayude
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: keyof typeof buttonVariants.variants.variant;
   size?: keyof typeof buttonVariants.variants.size;
   weight?: keyof typeof buttonVariants.variants.weight;
   href?: string;
+  target?: string;
+  rel?: string;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -79,15 +80,15 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           buttonVariants.defaultVariants
             .weight) as keyof typeof buttonVariants.variants.weight
       ],
-      className
+      className,
     );
 
     return href ? (
-      <a href={href} className={finalClassName} {...props} />
+      <a href={href} className={finalClassName} {...(props as any)} />
     ) : (
-      <button className={finalClassName} ref={ref} {...props} />
+      <button className={finalClassName} ref={ref} {...(props as any)} />
     );
-  }
+  },
 );
 
 Button.displayName = "Button";

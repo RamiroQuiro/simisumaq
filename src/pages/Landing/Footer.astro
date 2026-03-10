@@ -1,6 +1,27 @@
 ---
-import Section from "../../components/organismos/Section.astro";
 import { Facebook, Heart, Instagram, Twitter, Youtube } from "lucide-react";
+import { FACEBOOK, INSTAGRAM, YOUTUBE } from "../../layouts/Layout.astro";
+
+const socialMedia = [
+  {
+    icon: Facebook,
+    name: "Facebook",
+    link: FACEBOOK,
+    color: "hover:text-blue-600",
+  },
+  {
+    icon: Instagram,
+    name: "Instagram",
+    link: INSTAGRAM,
+    color: "hover:text-pink-600",
+  },
+  {
+    icon: Youtube,
+    name: "Youtube",
+    link: YOUTUBE,
+    color: "hover:text-pink-600",
+  },
+];
 ---
 
 <footer id="footer" class="bg-primary-textoTitle mt-12 text-white py-12">
@@ -80,16 +101,28 @@ import { Facebook, Heart, Instagram, Twitter, Youtube } from "lucide-react";
       <div>
         <h3 class="font-bold mb-4">Síguenos</h3>
         <div class="flex gap-4">
-          <a href="#" class="hover:text-primary transition-colors">
+          <a
+            href={FACEBOOK}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-primary transition-colors"
+          >
             <Facebook className="h-6 w-6" />
           </a>
-          <a href="#" class="hover:text-primary transition-colors">
-            <Twitter className="h-6 w-6" />
-          </a>
-          <a href="#" class="hover:text-primary transition-colors">
+          <a
+            href={INSTAGRAM}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-primary transition-colors"
+          >
             <Instagram className="h-6 w-6" />
           </a>
-          <a href="#" class="hover:text-primary transition-colors">
+          <a
+            href={YOUTUBE}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-primary transition-colors"
+          >
             <Youtube className="h-6 w-6" />
           </a>
         </div>
