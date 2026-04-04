@@ -1,6 +1,6 @@
 ---
 import Button from "../../components/atomos/Button";
-import { Heart } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 ---
 
 <nav
@@ -14,30 +14,85 @@ import { Heart } from "lucide-react";
         <span class="text-xl font-bold text-primary-200">Simi Sumaq</span>
       </div>
 
-      <div class="hidden md:flex items-center gap-8">
+      <div class="hidden md:flex items-center gap-6">
         <a
-          href="#inicio"
-          class="text-sm font-medium text-primary-texto hover:text-primary-textoTitle transition-colors"
+          href="/"
+          class="px-4 py-4 text-sm font-medium text-primary-texto hover:text-primary-textoTitle transition-colors"
         >
           Inicio
         </a>
+
+        <!-- Nosotros -->
+        <div class="group relative">
+          <button class="flex items-center gap-1 text-sm font-medium text-primary-texto hover:text-primary-textoTitle transition-colors py-4">
+            Nosotros
+            <ChevronDown className="h-4 w-4 transition-transform group-hover:rotate-180" />
+          </button>
+          <div class="absolute left-0 top-full mt-0 hidden w-48 rounded-b-md bg-white p-2 shadow-lg ring-1 ring-black/5 group-hover:block">
+            <a href="/sobre-nosotros" class="block rounded-md px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary-200 transition-colors">Sobre Nosotros</a>
+            <a href="/historia" class="block rounded-md px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary-200 transition-colors">Historia</a>
+            <a href="/que-hacemos" class="block rounded-md px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary-200 transition-colors">Qué Hacemos</a>
+            <a href="/comision" class="block rounded-md px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary-200 transition-colors">Comisión Directiva</a>
+            <a href="/equipo" class="block rounded-md px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary-200 transition-colors">Equipo</a>
+          </div>
+        </div>
+
+        <!-- Nuestro Enfoque -->
+        <div class="group relative">
+          <button class="flex items-center gap-1 text-sm font-medium text-primary-texto hover:text-primary-textoTitle transition-colors py-4">
+            Nuestro Enfoque
+            <ChevronDown className="h-4 w-4 transition-transform group-hover:rotate-180" />
+          </button>
+          <div class="absolute left-0 top-full mt-0 hidden w-56 rounded-b-md bg-white p-2 shadow-lg ring-1 ring-black/5 group-hover:block">
+            <a href="/que-es-flap" class="block rounded-md px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary-200 transition-colors">Qué es la FLAP</a>
+            <a href="/servicios" class="block rounded-md px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary-200 transition-colors">Servicios que brindamos</a>
+          </div>
+        </div>
+
+        <!-- Pacientes y Familias -->
+        <div class="group relative">
+          <button class="flex items-center gap-1 text-sm font-medium text-primary-texto hover:text-primary-textoTitle transition-colors py-4">
+            Pacientes y Familias
+            <ChevronDown className="h-4 w-4 transition-transform group-hover:rotate-180" />
+          </button>
+          <div class="absolute left-0 top-full mt-0 hidden w-48 rounded-b-md bg-white p-2 shadow-lg ring-1 ring-black/5 group-hover:block">
+            <a href="/diagnostico" class="block rounded-md px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary-200 transition-colors">Diagnóstico</a>
+            <a href="/foro" class="block rounded-md px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary-200 transition-colors">Foro</a>
+            <a href="/psicologia" class="block rounded-md px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary-200 transition-colors">Psicología</a>
+            <a href="/psicopedagogia" class="block rounded-md px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary-200 transition-colors">Psicopedagogía</a>
+            <a href="/recursos" class="block rounded-md px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary-200 transition-colors">Recursos</a>
+          </div>
+        </div>
+
+        <!-- Impacto -->
+        <div class="group relative">
+          <button class="flex items-center gap-1 text-sm font-medium text-primary-texto hover:text-primary-textoTitle transition-colors py-4">
+            Impacto
+            <ChevronDown className="h-4 w-4 transition-transform group-hover:rotate-180" />
+          </button>
+          <div class="absolute left-0 top-full mt-0 hidden w-48 rounded-b-md bg-white p-2 shadow-lg ring-1 ring-black/5 group-hover:block">
+            <a href="/eventos" class="block rounded-md px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary-200 transition-colors">Eventos</a>
+            <a href="/testimonios" class="block rounded-md px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary-200 transition-colors">Testimonios</a>
+          </div>
+        </div>
+
+        <!-- Sumate -->
+        <div class="group relative">
+          <button class="flex items-center gap-1 text-sm font-medium text-primary-texto hover:text-primary-textoTitle transition-colors py-4">
+            Sumate
+            <ChevronDown className="h-4 w-4 transition-transform group-hover:rotate-180" />
+          </button>
+          <div class="absolute left-0 top-full mt-0 hidden w-48 rounded-b-md bg-white p-2 shadow-lg ring-1 ring-black/5 group-hover:block">
+            <a href="/como-ayudar" class="block rounded-md px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary-200 transition-colors">Cómo Ayudar</a>
+            <a href="/contacto" class="block rounded-md px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary-200 transition-colors">Contacto</a>
+          </div>
+        </div>
+
         <a
-          href="#mision"
-          class="text-sm font-medium text-primary-texto hover:text-primary-textoTitle transition-colors"
+          href="/tienda"
+          class="px-2 py-4 text-sm font-medium text-primary-texto hover:text-primary-textoTitle transition-colors"
         >
-          Nuestra Misión
-        </a>
-        <a
-          href="#impacto"
-          class="text-sm font-medium text-primary-texto hover:text-primary-textoTitle transition-colors"
-        >
-          Impacto
-        </a>
-        <a
-          href="#ayudar"
-          class="text-sm font-medium text-primary-texto hover:text-primary-textoTitle transition-colors"
-        >
-          Cómo Ayudar
+          Tienda
         </a>
       </div>
 

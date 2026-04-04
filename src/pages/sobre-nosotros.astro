@@ -1,4 +1,4 @@
-�---
+---
 import Layout from "../layouts/LayoutSeo.astro";
 import Navbar from "../components/organismos/Navbar.astro";
 import Section from "../components/organismos/Section.astro";
@@ -33,7 +33,11 @@ const valores = [
 ];
 ---
 
-<Layout title="Sobre nosotros | Historia y valores de Simi Sumaq" description="Conoce la historia de la asociacion, su mision y valores para transformar vidas con trabajo interdisciplinario." canonical="https://asociacionsimisumaq.org/sobre-nosotros">
+<Layout
+  title="Sobre nosotros | Historia y valores de Simi Sumaq"
+  description="Conoce la historia de la asociacion, su mision y valores para transformar vidas con trabajo interdisciplinario."
+  canonical="https://asociacionsimisumaq.org/sobre-nosotros"
+>
   <!-- Hero Section -->
   <Section
     isBackgroundFoto
@@ -90,7 +94,8 @@ const valores = [
             Simi Sumaq crece con cada sonrisa recuperada, cada avance logrado y
             cada familia que encuentra apoyo.
           </p>
-
+        </div>
+        <div>
           <p>
             Nuestro nombre, <strong class="text-primary-100"
               >"boca linda"</strong
@@ -156,5 +161,3 @@ const valores = [
     </Section>
   </Section>
 </Layout>
-
-
