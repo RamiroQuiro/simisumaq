@@ -10,64 +10,20 @@ import {
   CardTitle,
 } from "../components/organismos/Card";
 import Button from "../components/atomos/Button";
-import { Heart, Users, Stethoscope, Smile } from "lucide-react";
+import * as LucideIcons from "lucide-react";
 import TituloColores from "../components/atomos/TituloColores.astro";
+import { getCollection } from "astro:content";
 
-const proyectos = [
-  {
-    icon: Stethoscope,
-    title: "Atención Médica Integral",
-    description:
-      "Brindamos cirugías, tratamientos odontológicos y seguimiento médico completo para cada niño con fisura labiopalatina.",
-    resultados: "Más de 500 cirugías realizadas desde 2017",
-    color: "from-primary-100 to-primary-200",
-  },
-  {
-    icon: Users,
-    title: "Acompañamiento Familiar",
-    description:
-      "Apoyo psicológico, psicopedagógico y social para las familias durante todo el proceso de tratamiento.",
-    resultados: "200+ familias acompañadas anualmente",
-    color: "from-primary-200 to-primary-100",
-  },
-  {
-    icon: Heart,
-    title: "Capacitación Profesional",
-    description:
-      "Formación continua para profesionales de la salud en el tratamiento interdisciplinario de fisura labiopalatina.",
-    resultados: "15+ talleres y seminarios por año",
-    color: "from-primary-100 to-primary-150",
-  },
-  {
-    icon: Smile,
-    title: "Integración Social",
-    description:
-      "Actividades recreativas, culturales y educativas que promueven la inclusión y el desarrollo integral.",
-    resultados: "100+ niños participando en actividades",
-    color: "from-primary-150 to-primary-200",
-  },
-];
+const proyectosEntries = await getCollection("proyectos");
+const proyectos = proyectosEntries
+  .sort((a, b) => (a.data.orden || 99) - (b.data.orden || 99))
+  .map((e) => e.data);
 
-const testimonios = [
-  {
-    nombre: "María González",
-    texto:
-      "Simi Sumaq no solo cambió la sonrisa de mi hijo, cambió nuestra vida entera. El acompañamiento fue fundamental.",
-    rol: "Madre de paciente",
-  },
-  {
-    nombre: "Dr. Carlos Méndez",
-    texto:
-      "Trabajar con Simi Sumaq me permitió ver el verdadero impacto de la medicina interdisciplinaria en la vida de los niños.",
-    rol: "Cirujano colaborador",
-  },
-  {
-    nombre: "Ana Rodríguez",
-    texto:
-      "Mi hija hoy puede hablar, sonreír y jugar con confianza. Gracias a todo el equipo de Simi Sumaq por su dedicación.",
-    rol: "Madre de paciente",
-  },
-];
+const testimoniosEntries = await getCollection("testimonios");
+const testimonios = testimoniosEntries.map((e) => e.data);
+
+// Mapa para convertir el string del JSON al componente de Lucide
+const iconMap = LucideIcons;
 ---
 
 <Layout title="Proyectos | Atencion integral y acompanamiento familiar - Simi Sumaq" description="Descubre los proyectos de salud, contencion y desarrollo que impulsamos para ninos con fisura labiopalatina." canonical="https://asociacionsimisumaq.org/proyectos">
@@ -97,7 +53,8 @@ const testimonios = [
       <div class="grid md:grid-cols-2 gap-8">
         {
           proyectos.map((proyecto) => {
-            const Icon = proyecto.icon;
+            // @ts-ignore
+            const Icon = iconMap[proyecto.icon] || LucideIcons.HelpCircle;
             return (
               <Card className="border-2 hover:border-primary-100 transition-all hover:shadow-medium">
                 <CardHeader>

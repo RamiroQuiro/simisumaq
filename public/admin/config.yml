@@ -1,0 +1,93 @@
+backend:
+  name: github
+  repo: RamiroQuiro/simisumaq
+  branch: main
+
+media_folder: "public/assets/cms"
+public_folder: "/assets/cms"
+
+collections:
+  - name: "equipo"
+    label: "Equipo"
+    folder: "src/content/equipo"
+    create: true
+    slug: "{{slug}}"
+    extension: "json"
+    format: "json"
+    fields:
+      - { label: "Nombre", name: "nombre", widget: "string" }
+      - { label: "Cargo", name: "cargo", widget: "string" }
+      - { label: "Detalle (opcional)", name: "detalle", widget: "string", required: false }
+
+  - name: "eventos"
+    label: "Eventos"
+    folder: "src/content/eventos"
+    create: true
+    slug: "{{slug}}"
+    extension: "json"
+    format: "json"
+    fields:
+      - { label: "Título", name: "titulo", widget: "string" }
+      - { label: "Fecha", name: "fecha", widget: "string", hint: "Ej: Noviembre 2024" }
+      - { label: "Descripción", name: "descripcion", widget: "text" }
+      - { label: "Participantes/Impacto", name: "participantes", widget: "string", hint: "Ej: 45 niños atendidos" }
+      - { label: "Imágenes", name: "imagenes", widget: "list", field: { label: "URL de Imagen", name: "url", widget: "image" } }
+
+  - name: "proyectos"
+    label: "Áreas de Trabajo (Proyectos)"
+    folder: "src/content/proyectos"
+    create: true
+    slug: "{{slug}}"
+    extension: "json"
+    format: "json"
+    fields:
+      - { label: "Título", name: "title", widget: "string" }
+      - { label: "Descripción", name: "description", widget: "text" }
+      - { label: "Resultados", name: "resultados", widget: "string", hint: "Ej: 500+ cirugías" }
+      - { 
+          label: "Ícono", 
+          name: "icon", 
+          widget: "select", 
+          options: ["Stethoscope", "Users", "Heart", "Smile", "Calendar", "Activity"] 
+        }
+      - { 
+          label: "Color (Degradado)", 
+          name: "color", 
+          widget: "select", 
+          options: [
+            { label: "Celeste a Azul", value: "from-primary-100 to-primary-200" },
+            { label: "Azul a Celeste", value: "from-primary-200 to-primary-100" },
+            { label: "Celeste a Rosa", value: "from-primary-100 to-primary-150" },
+            { label: "Rosa a Celeste", value: "from-primary-150 to-primary-200" }
+          ] 
+        }
+      - { label: "Orden de visualización", name: "orden", widget: "number", default: 10 }
+
+  - name: "testimonios"
+    label: "Testimonios"
+    folder: "src/content/testimonios"
+    create: true
+    slug: "{{slug}}"
+    extension: "json"
+    format: "json"
+    fields:
+      - { label: "Nombre", name: "nombre", widget: "string" }
+      - { label: "Texto del testimonio", name: "texto", widget: "text" }
+      - { label: "Rol", name: "rol", widget: "string", hint: "Ej: Madre de paciente" }
+
+  - name: "galeria"
+    label: "Galería de Fotos"
+    folder: "src/content/galeria"
+    create: true
+    slug: "{{slug}}"
+    extension: "json"
+    format: "json"
+    fields:
+      - { label: "Nombre/Alt text", name: "nombre", widget: "string" }
+      - { label: "Imagen", name: "path", widget: "image" }
+      - { 
+          label: "Categoría", 
+          name: "categoria", 
+          widget: "select", 
+          options: ["general", "cirugias", "talleres", "eventos", "testimonios"] 
+        }

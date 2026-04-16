@@ -13,43 +13,10 @@ import Button from "../components/atomos/Button";
 import Navbar from "../components/organismos/Navbar.astro";
 import TituloColores from "../components/atomos/TituloColores.astro";
 import Carousel from "../components/organismos/Carousel";
+import { getCollection } from "astro:content";
 
-const eventosRealizados = [
-  {
-    titulo: "Campaña Sonrisas 2024",
-    fecha: "Noviembre 2024",
-    descripcion:
-      "Se realizaron 45 cirugías gratuitas en colaboración con el Ministerio de Salud. Un esfuerzo conjunto que devolvió la esperanza a decenas de familias.",
-    participantes: "45 niños atendidos",
-    imagenes: [
-      "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1584515933487-9bdb75f77f1e?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?auto=format&fit=crop&q=80&w=800",
-    ],
-  },
-  {
-    titulo: "Encuentro de Familias",
-    fecha: "Octubre 2024",
-    descripcion:
-      "Jornada recreativa y de integración para familias de pacientes. Compartimos experiencias, juegos y merienda en un ambiente de contención.",
-    participantes: "80 familias",
-    imagenes: [
-      "https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?auto=format&fit=crop&q=80&w=800",
-    ],
-  },
-  {
-    titulo: "Capacitación Regional",
-    fecha: "Septiembre 2024",
-    descripcion:
-      "Formación en atención interdisciplinaria para equipos de salud de la región. Disertantes internacionales compartieron las últimas técnicas.",
-    participantes: "120 profesionales",
-    imagenes: [
-      "https://images.unsplash.com/photo-1544531696-9348411883aa?auto=format&fit=crop&q=80&w=800",
-      "https://images.unsplash.com/photo-1558403194-611308249627?auto=format&fit=crop&q=80&w=800",
-    ],
-  },
-];
+const eventosEntries = await getCollection("eventos");
+const eventosRealizados = eventosEntries.map((e) => e.data);
 ---
 
 <Layout

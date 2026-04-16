@@ -3,37 +3,10 @@ import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/organismos/Navbar.astro";
 import Section from "../components/organismos/Section.astro";
 import { User } from "lucide-react";
+import { getCollection } from "astro:content";
 
-const equipo = [
-  {
-    nombre: "Cramaro Carolina",
-    cargo: "Médica cirujana infantil",
-    detalle: "Coordinadora Médica",
-  },
-  { nombre: "Abaca Thiago", cargo: "Licenciado en Fonoaudiología" },
-  { nombre: "Acosta Leonardo", cargo: "Profesor" },
-  { nombre: "Diaz Soledad", cargo: "Coordinadora de grupo de Padres" },
-  { nombre: "Ferreyra Luis", cargo: "Coordinador de Traslados" },
-  { nombre: "Gallardo Andrea", cargo: "Licenciada en Fonoaudiología" },
-  { nombre: "Mansilla Mariana", cargo: "Licenciada en Psicología" },
-  { nombre: "Miranda Luz", cargo: "Voluntaria" },
-  { nombre: "Pereyra Carlina", cargo: "Trabajadora Social" },
-  { nombre: "Roldan Xiomara", cargo: "Licenciada en Psicopedagogía" },
-  {
-    nombre: "Umaño Exequiel",
-    cargo: "Fotografo",
-    detalle: "Comunicación Institucional",
-  },
-];
-
-const comisionDirectiva = [
-  { cargo: "Presidente" },
-  { cargo: "Secretario" },
-  { cargo: "Tesorero" },
-  { cargo: "Vocal 1" },
-  { cargo: "Vocal 2" },
-  { cargo: "Revisora de Cuenta" },
-];
+const equipoEntries = await getCollection("equipo");
+const equipo = equipoEntries.map((e) => e.data);
 ---
 
 <Layout>

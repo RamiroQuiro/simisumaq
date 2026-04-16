@@ -3,14 +3,10 @@ import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/organismos/Navbar.astro";
 import Section from "../components/organismos/Section.astro";
 import { Image, Video, Filter } from "lucide-react";
+import { getCollection } from "astro:content";
 
-const imagenes = [
-  { id: "1", nombre: "Todas", path: "/galeria/1.webp" },
-  { id: "2", nombre: "Cirugías", path: "/galeria/2.webp" },
-  { id: "3", nombre: "Talleres", path: "/galeria/3.webp" },
-  { id: "4", nombre: "Eventos", path: "/galeria/4.webp" },
-  { id: "5", nombre: "Testimonios", path: "/galeria/5.webp" },
-];
+const galeriaEntries = await getCollection("galeria");
+const imagenes = galeriaEntries.map((e) => e.data);
 ---
 
 <Layout>
