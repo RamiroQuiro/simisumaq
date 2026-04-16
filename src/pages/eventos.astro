@@ -14,7 +14,6 @@ import Navbar from "../components/organismos/Navbar.astro";
 import TituloColores from "../components/atomos/TituloColores.astro";
 import Carousel from "../components/organismos/Carousel";
 import { getCollection } from "astro:content";
-
 const eventosEntries = await getCollection("eventos");
 const eventosRealizados = eventosEntries.map((e) => e.data);
 ---
@@ -63,9 +62,7 @@ const eventosRealizados = eventosEntries.map((e) => e.data);
                     <h3 class="text-3xl font-bold text-primary-textoTitle mb-4">
                       {evento.titulo}
                     </h3>
-                    <p class="text-primary-textoBody text-lg leading-relaxed mb-6">
-                      {evento.descripcion}
-                    </p>
+                    <div class="text-primary-textoBody text-lg leading-relaxed mb-6 space-y-4" set:html={evento.descripcion} />
                   </div>
 
                   <div class="mt-auto pt-6 border-t border-primary-border flex items-center gap-2 text-primary-textoTitle font-medium">
