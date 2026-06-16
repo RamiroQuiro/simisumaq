@@ -2,10 +2,11 @@ module.exports = {
   apps: [
     {
       name: "simisumaq",
-      script: "npx",
-      args: "serve dist -s -p 4324",
+      script: "dist/server/entry.mjs",
       env: {
         NODE_ENV: "production",
+        HOST: "0.0.0.0",
+        PORT: 4324,
       },
     },
   ],

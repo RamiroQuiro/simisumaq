@@ -1,4 +1,6 @@
-�---
+---
+export const prerender = false;
+return Astro.redirect("/");
 import Layout from "../layouts/LayoutSeo.astro";
 import Navbar from "../components/organismos/Navbar.astro";
 import Section from "../components/organismos/Section.astro";
@@ -12,17 +14,12 @@ import {
 import Button from "../components/atomos/Button";
 import * as LucideIcons from "lucide-react";
 import TituloColores from "../components/atomos/TituloColores.astro";
-import { getCollection } from "astro:content";
+import { db } from "../db/client";
+import { proyectos, testimonios } from "../db/schema";
 
-const proyectosEntries = await getCollection("proyectos");
-const proyectos = proyectosEntries
-  .sort((a, b) => (a.data.orden || 99) - (b.data.orden || 99))
-  .map((e) => e.data);
+const proyectosData = db.select().from(proyectos).all().sort((a, b) => (a.orden || 99) - (b.orden || 99));
+const testimoniosData = db.select().from(testimonios).all();
 
-const testimoniosEntries = await getCollection("testimonios");
-const testimonios = testimoniosEntries.map((e) => e.data);
-
-// Mapa para convertir el string del JSON al componente de Lucide
 const iconMap = LucideIcons;
 ---
 
@@ -52,7 +49,7 @@ const iconMap = LucideIcons;
 
       <div class="grid md:grid-cols-2 gap-8">
         {
-          proyectos.map((proyecto) => {
+          proyectosData.map((proyecto) => {
             // @ts-ignore
             const Icon = iconMap[proyecto.icon] || LucideIcons.HelpCircle;
             return (
@@ -98,7 +95,7 @@ const iconMap = LucideIcons;
 
       <div class="grid md:grid-cols-3 gap-8">
         {
-          testimonios.map((testimonio) => (
+          testimoniosData.map((testimonio) => (
             <div class="bg-white p-8 rounded-2xl shadow-subtle hover:shadow-medium transition-all">
               <div class="mb-6">
                 <svg

@@ -1,0 +1,105 @@
+---
+export const prerender = false;
+import Layout from "../../layouts/LayoutSeo.astro";
+import Section from "../../components/organismos/Section.astro";
+import Navbar from "../../components/organismos/Navbar.astro";
+import Button from "../../components/atomos/Button";
+import TituloColores from "../../components/atomos/TituloColores.astro";
+import Carousel from "../../components/organismos/Carousel";
+import { Calendar, Users, ArrowLeft } from "lucide-react";
+import { db } from "../../db/client";
+import { eventos } from "../../db/schema";
+import { eq } from "drizzle-orm";
+
+const { id } = Astro.params;
+const evento = db.select().from(eventos).where(eq(eventos.id, Number(id))).get();
+
+if (!evento) {
+  return Astro.redirect("/eventos");
+}
+
+const imagenes = JSON.parse(evento.imagenes || "[]");
+---
+
+<Layout
+  title={`${evento.titulo} | Simi Sumaq`}
+  description={evento.descripcion.substring(0, 160)}
+  canonical={`https://asociacionsimisumaq.org/eventos/${evento.id}`}
+>
+  <!-- Hero Section -->
+  <Section
+    isBackgroundFoto
+    srcFotoBackground="https://scontent.cdninstagram.com/v/t51.82787-15/543781489_18081362353937659_4876798037903689288_n.jpg?stp=dst-jpg_e15_tt6&_nc_cat=106&ig_cache_key=MzcxOTIzMDg5NDgzOTc1NDY1NTE4MDgxMzYyMzQ3OTM3NjU5.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjEwODB4NjA3LnNkci5DMyJ9&_nc_ohc=pYTw-uXeH9kQ7kNvwEKZaN6&_nc_oc=AdkSEucitxCuzcI6JdBL3kgrr3rQj1I-JG2YqzvkM4N4IuO6sMs0l6Je9UQHwztVZ3o&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent.cdninstagram.com&_nc_gid=FGPfxDeTw2T_DFaHQjh4cA&oh=00_Afl3M0u4Tvp-YPOD9RljrOluP3Xi0_eMDcZdN-4-D_6Ejw&oe=693538E7"
+    id="hero"
+    class="bg-linear-to-r from-primary-100 to-primary-200"
+  >
+    <div class="text-center text-primary-textoTitle py-20">
+      <TituloColores>{evento.titulo}</TituloColores>
+      <p class="text-xl md:text-2xl max-w-3xl mx-auto opacity-90">
+        {evento.fecha}
+      </p>
+    </div>
+  </Section>
+
+  <!-- Contenido del Evento -->
+  <Section id="detalle" class="py-24 bg-primary-bg-claro">
+    <div class="max-w-4xl mx-auto">
+      <!-- Botón volver -->
+      <a
+        href="/eventos"
+        class="inline-flex items-center gap-2 text-primary-100 hover:text-primary-200 transition-colors mb-8"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Volver a eventos
+      </a>
+
+      <!-- Info badges -->
+      <div class="flex flex-wrap gap-4 mb-8">
+        <div class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full text-primary-textoTitle font-medium shadow-sm">
+          <Calendar className="h-5 w-5 text-primary-100" />
+          {evento.fecha}
+        </div>
+        <div class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full text-primary-textoTitle font-medium shadow-sm">
+          <Users className="h-5 w-5 text-primary-100" />
+          {evento.participantes}
+        </div>
+      </div>
+
+      <!-- Descripción completa -->
+      <div class="bg-white rounded-2xl shadow-sm border border-primary-border p-8 mb-8">
+        <div class="prose prose-lg max-w-none text-primary-textoBody leading-relaxed" set:html={evento.descripcion} />
+      </div>
+
+      <!-- Galería de imágenes -->
+      {imagenes.length > 0 && (
+        <div class="bg-white rounded-2xl shadow-sm border border-primary-border p-8">
+          <h2 class="text-2xl font-bold text-primary-textoTitle mb-6">Imágenes del evento</h2>
+          <div class="h-[400px] w-full rounded-xl overflow-hidden">
+            <Carousel client:load images={imagenes} className="h-full w-full" />
+          </div>
+        </div>
+      )}
+    </div>
+  </Section>
+
+  <!-- CTA -->
+  <Section
+    id="cta"
+    class="py-24 bg-linear-to-r from-primary-100 to-primary-200"
+  >
+    <div class="max-w-4xl mx-auto text-center text-primary-textoTitle">
+      <h2 class="text-4xl md:text-5xl font-bold mb-6">¿Quieres Participar?</h2>
+      <p class="text-xl mb-8 opacity-90">
+        Únete a nuestros eventos como voluntario, profesional o colaborador
+      </p>
+      <Button
+        href="/contacto"
+        variant="primary"
+        size="lg"
+        className="text-lg px-8 py-6"
+      >
+        Contactar
+      </Button>
+    </div>
+  </Section>
+</Layout>

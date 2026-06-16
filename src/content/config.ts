@@ -5,6 +5,7 @@ const equipoCollection = defineCollection({
   schema: z.object({
     nombre: z.string(),
     cargo: z.string(),
+    foto: z.string().optional(),
     detalle: z.string().optional(),
   }),
 });

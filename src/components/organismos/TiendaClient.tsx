@@ -11,7 +11,7 @@ import Button from "../atomos/Button";
 import { ShoppingBag, Plus, Minus, Trash2, MessageCircle } from "lucide-react";
 
 type Product = {
-  id: string;
+  id: number;
   name: string;
   description: string;
   price: number;
@@ -23,39 +23,16 @@ type CartItem = {
   quantity: number;
 };
 
-const products: Product[] = [
-  {
-    id: "remera",
-    name: "Remera Simi Sumaq",
-    description: "Remera de algodon con el logo de la Asociacion.",
-    price: 8000,
-    image: "https://picsum.photos/seed/simisumaq-remera/640/480",
-  },
-  {
-    id: "taza",
-    name: "Taza Solidaria",
-    description: "Taza ceramica con frase inspiradora.",
-    price: 6500,
-    image: "https://picsum.photos/seed/simisumaq-taza/640/480",
-  },
-  {
-    id: "gorra",
-    name: "Gorra Bordada",
-    description: "Gorra ajustable con bordado frontal.",
-    price: 9000,
-    image: "https://picsum.photos/seed/simisumaq-gorra/640/480",
-  },
-  {
-    id: "bolsa",
-    name: "Bolsa Ecologica",
-    description: "Bolsa reutilizable para tus compras solidarias.",
-    price: 4500,
-    image: "https://picsum.photos/seed/simisumaq-bolsa/640/480",
-  },
-];
-
 const TiendaClient: React.FC = () => {
+  const [products, setProducts] = React.useState<Product[]>([]);
   const [cart, setCart] = React.useState<CartItem[]>([]);
+
+  React.useEffect(() => {
+    fetch("/api/tienda")
+      .then((res) => res.json())
+      .then((data) => setProducts(data))
+      .catch(() => setProducts([]));
+  }, []);
 
   const addToCart = (product: Product) => {
     setCart((prev) => {

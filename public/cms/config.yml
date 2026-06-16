@@ -3,8 +3,11 @@ backend:
   repo: RamiroQuiro/simisumaq
   branch: main
 
-media_folder: "public/assets/cms"
-public_folder: "/assets/cms"
+site_url: https://asociacionsimisumaq.org
+display_url: https://asociacionsimisumaq.org
+
+media_folder: "public/galeria"
+public_folder: "/galeria"
 
 collections:
   - name: "equipo"
@@ -17,6 +20,7 @@ collections:
     fields:
       - { label: "Nombre", name: "nombre", widget: "string" }
       - { label: "Cargo", name: "cargo", widget: "string" }
+      - { label: "Foto (opcional)", name: "foto", widget: "image", required: false }
       - { label: "Detalle (opcional)", name: "detalle", widget: "string", required: false }
 
   - name: "eventos"
@@ -29,7 +33,7 @@ collections:
     fields:
       - { label: "Título", name: "titulo", widget: "string" }
       - { label: "Fecha", name: "fecha", widget: "string", hint: "Ej: Noviembre 2024" }
-      - { label: "Descripción", name: "descripcion", widget: "text" }
+      - { label: "Descripción", name: "descripcion", widget: "html" }
       - { label: "Participantes/Impacto", name: "participantes", widget: "string", hint: "Ej: 45 niños atendidos" }
       - { label: "Imágenes", name: "imagenes", widget: "list", field: { label: "URL de Imagen", name: "url", widget: "image" } }
 

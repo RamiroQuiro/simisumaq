@@ -1,12 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Navbar from "../components/organismos/Navbar.astro";
 import Section from "../components/organismos/Section.astro";
 import { User } from "lucide-react";
-import { getCollection } from "astro:content";
+import { db } from "../db/client";
+import { equipo } from "../db/schema";
 
-const equipoEntries = await getCollection("equipo");
-const equipo = equipoEntries.map((e) => e.data);
+const equipoData = db.select().from(equipo).all();
 ---
 
 
@@ -29,10 +28,13 @@ const equipo = equipoEntries.map((e) => e.data);
     <div class="max-w-6xl mx-auto">
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {
-          equipo.map((miembro) => (
+          equipoData.map((miembro) => (
             <div class="bg-white p-8 rounded-2xl shadow-subtle hover:shadow-medium transition-all text-center border border-primary-border flex flex-col items-center">
-              <div class="w-24 h-24 mb-6 rounded-full bg-linear-to-br from-primary-100/10 to-primary-200/10 flex items-center justify-center">
-                <User className="h-10 w-10 text-primary-100" />
+              <div class="w-24 h-24 mb-6 rounded-full bg-linear-to-br from-primary-100/10 to-primary-200/10 flex items-center justify-center overflow-hidden">
+                {miembro.foto
+                  ? <img src={miembro.foto} alt={miembro.nombre} class="w-full h-full object-cover rounded-full" />
+                  : <User className="h-10 w-10 text-primary-100" />
+                }
               </div>
               <h3 class="text-xl font-bold text-primary-textoTitle mb-2">
                 {miembro.nombre}

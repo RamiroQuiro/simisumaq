@@ -1,0 +1,90 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+import { db } from "../../db/client";
+import { equipo, eventos, proyectos, galeria, tienda } from "../../db/schema";
+
+const equipoCount = db.select().from(equipo).all().length;
+const eventosCount = db.select().from(eventos).all().length;
+const proyectosCount = db.select().from(proyectos).all().length;
+const galeriaCount = db.select().from(galeria).all().length;
+const tiendaCount = db.select().from(tienda).all().length;
+---
+
+<AdminLayout title="Dashboard">
+  <div class="mb-8">
+    <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
+    <p class="text-gray-500 mt-1">Resumen del contenido del sitio</p>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <a href="/admin/equipo" class="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center">
+          <svg class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </div>
+        <div>
+          <p class="text-2xl font-bold text-gray-900">{equipoCount}</p>
+          <p class="text-sm text-gray-500">Miembros del equipo</p>
+        </div>
+      </div>
+    </a>
+
+    <a href="/admin/eventos" class="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 rounded-lg bg-green-50 flex items-center justify-center">
+          <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <div>
+          <p class="text-2xl font-bold text-gray-900">{eventosCount}</p>
+          <p class="text-sm text-gray-500">Eventos</p>
+        </div>
+      </div>
+    </a>
+
+    <a href="/admin/proyectos" class="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 rounded-lg bg-purple-50 flex items-center justify-center">
+          <svg class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+          </svg>
+        </div>
+        <div>
+          <p class="text-2xl font-bold text-gray-900">{proyectosCount}</p>
+          <p class="text-sm text-gray-500">Proyectos</p>
+        </div>
+      </div>
+    </a>
+
+    <a href="/admin/galeria" class="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 rounded-lg bg-yellow-50 flex items-center justify-center">
+          <svg class="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <div>
+          <p class="text-2xl font-bold text-gray-900">{galeriaCount}</p>
+          <p class="text-sm text-gray-500">Fotos en galería</p>
+        </div>
+      </div>
+    </a>
+
+    <a href="/admin/tienda" class="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-shadow">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 rounded-lg bg-orange-50 flex items-center justify-center">
+          <svg class="h-6 w-6 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
+        </div>
+        <div>
+          <p class="text-2xl font-bold text-gray-900">{tiendaCount}</p>
+          <p class="text-sm text-gray-500">Productos en tienda</p>
+        </div>
+      </div>
+    </a>
+  </div>
+</AdminLayout>

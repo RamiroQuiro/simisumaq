@@ -1,0 +1,424 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+import { db } from "../../db/client";
+import { eventos } from "../../db/schema";
+import { desc } from "drizzle-orm";
+import RichTextEditor from "../../components/admin/RichTextEditor";
+
+const items = db.select().from(eventos).orderBy(desc(eventos.fechaISO)).all();
+---
+
+<AdminLayout title="Eventos">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">Eventos</h1>
+      <p class="text-gray-500 mt-1">{items.length} eventos</p>
+    </div>
+    <button
+      id="btn-create"
+      class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-red-500 to-orange-500 text-white text-sm font-medium hover:from-red-600 hover:to-orange-600 transition-all"
+    >
+      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+      </svg>
+      Nuevo evento
+    </button>
+  </div>
+
+  <div class="space-y-4">
+    {items.map((item) => (
+      <div class="bg-white rounded-xl border border-gray-200 p-4 sm:p-6">
+        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-700">
+                {item.fecha}
+              </span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-1">{item.titulo}</h3>
+            <p class="text-sm text-gray-500 mb-2">{item.participantes}</p>
+            <div class="text-sm text-gray-600 line-clamp-2" set:html={item.descripcion.substring(0, 200) + (item.descripcion.length > 200 ? '...' : '')} />
+          </div>
+          <div class="flex items-center gap-2 sm:shrink-0">
+            <button
+              class="btn-edit p-2 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+              data-id={item.id}
+              data-titulo={item.titulo}
+              data-fecha={item.fecha}
+              data-fechaiso={item.fechaISO || ""}
+              data-descripcion={item.descripcion}
+              data-participantes={item.participantes}
+              data-imagenes={item.imagenes}
+            >
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+            </button>
+            <button
+              class="btn-delete p-2 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+              data-id={item.id}
+              data-nombre={item.titulo}
+            >
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <!-- Create Modal -->
+  <div id="create-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="fixed inset-0 bg-black/50" id="create-overlay"></div>
+    <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-2xl p-6 max-h-[90vh] overflow-y-auto">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4">Nuevo evento</h3>
+      <form id="create-form" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Título *</label>
+          <input type="text" name="titulo" required class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Fecha *</label>
+          <input type="date" name="fechaISO" required class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
+          <input type="hidden" name="fecha" id="create-fecha-texto" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Descripción *</label>
+          <input type="hidden" name="descripcion" id="create-descripcion-hidden" value="" />
+          <div id="create-editor-container">
+            <RichTextEditor
+              client:load
+              content=""
+              editorKey="create-editor"
+            />
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Participantes *</label>
+          <input type="text" name="participantes" required placeholder="Ej: 45 niños atendidos" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Imágenes</label>
+          <div id="create-dropzone" class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-red-400 transition-colors cursor-pointer">
+            <svg class="h-8 w-8 text-gray-400 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <p class="text-sm text-gray-500">Click o arrastrá varias imágenes</p>
+            <p class="text-xs text-gray-400 mt-1">JPG, PNG, WebP o GIF. Máx 5MB c/u.</p>
+            <input type="file" name="files" accept="image/*" multiple class="hidden" id="create-file-input" />
+          </div>
+          <div id="create-preview" class="flex flex-wrap gap-2 mt-3"></div>
+          <input type="hidden" name="imagenes" id="create-imagenes" value="[]" />
+        </div>
+        <div id="create-upload-status" class="hidden text-sm text-center py-2"></div>
+        <div class="flex gap-3 pt-2">
+          <button type="button" class="btn-cancel-create flex-1 px-4 py-2.5 rounded-lg border border-gray-300 text-gray-700 text-sm font-medium hover:bg-gray-50 transition-colors">
+            Cancelar
+          </button>
+          <button type="submit" id="create-submit" class="flex-1 px-4 py-2.5 rounded-lg bg-gradient-to-r from-red-500 to-orange-500 text-white text-sm font-medium hover:from-red-600 hover:to-orange-600 transition-all">
+            Crear
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Modal -->
+  <div id="edit-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="fixed inset-0 bg-black/50" id="edit-overlay"></div>
+    <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-2xl p-6 max-h-[90vh] overflow-y-auto">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4">Editar evento</h3>
+      <form id="edit-form" class="space-y-4">
+        <input type="hidden" name="id" id="edit-id" />
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Título *</label>
+          <input type="text" name="titulo" id="edit-titulo" required class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Fecha *</label>
+          <input type="date" name="fechaISO" id="edit-fechaISO" required class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
+          <input type="hidden" name="fecha" id="edit-fecha-texto" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Descripción *</label>
+          <input type="hidden" name="descripcion" id="edit-descripcion-hidden" value="" />
+          <div id="edit-editor-container">
+            <RichTextEditor
+              client:load
+              content=""
+              editorKey="edit-editor"
+            />
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Participantes *</label>
+          <input type="text" name="participantes" id="edit-participantes" required class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Imágenes actuales</label>
+          <div id="edit-current-images" class="flex flex-wrap gap-2 mb-2"></div>
+          <input type="hidden" name="imagenes" id="edit-imagenes" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Agregar más imágenes</label>
+          <div id="edit-dropzone" class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-red-400 transition-colors cursor-pointer">
+            <svg class="h-8 w-8 text-gray-400 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <p class="text-sm text-gray-500">Agregá más imágenes al evento</p>
+            <input type="file" name="files" accept="image/*" multiple class="hidden" id="edit-file-input" />
+          </div>
+          <div id="edit-preview" class="flex flex-wrap gap-2 mt-3"></div>
+        </div>
+        <div id="edit-upload-status" class="hidden text-sm text-center py-2"></div>
+        <div class="flex gap-3 pt-2">
+          <button type="button" class="btn-cancel-edit flex-1 px-4 py-2.5 rounded-lg border border-gray-300 text-gray-700 text-sm font-medium hover:bg-gray-50 transition-colors">
+            Cancelar
+          </button>
+          <button type="submit" id="edit-submit" class="flex-1 px-4 py-2.5 rounded-lg bg-gradient-to-r from-red-500 to-orange-500 text-white text-sm font-medium hover:from-red-600 hover:to-orange-600 transition-all">
+            Guardar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script is:inline>
+    async function uploadFile(file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      return data.url;
+    }
+
+    function setupDropzone(dropzoneId, inputId, previewId) {
+      const dropzone = document.getElementById(dropzoneId);
+      const input = document.getElementById(inputId);
+      const preview = document.getElementById(previewId);
+
+      dropzone.addEventListener("click", () => input.click());
+      dropzone.addEventListener("dragover", (e) => { e.preventDefault(); dropzone.classList.add("border-red-400", "bg-red-50"); });
+      dropzone.addEventListener("dragleave", () => { dropzone.classList.remove("border-red-400", "bg-red-50"); });
+      dropzone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropzone.classList.remove("border-red-400", "bg-red-50");
+        if (e.dataTransfer.files.length) { input.files = e.dataTransfer.files; input.dispatchEvent(new Event("change")); }
+      });
+      input.addEventListener("change", () => {
+        for (const file of input.files) {
+          const thumb = document.createElement("div");
+          thumb.className = "relative w-16 h-16 rounded-lg overflow-hidden border border-gray-200";
+          thumb.innerHTML = '<img class="w-full h-full object-cover" />';
+          thumb.querySelector("img").src = URL.createObjectURL(file);
+          thumb.dataset.file = file.name;
+          preview.appendChild(thumb);
+        }
+      });
+    }
+
+    setupDropzone("create-dropzone", "create-file-input", "create-preview");
+    setupDropzone("edit-dropzone", "edit-file-input", "edit-preview");
+
+    /* ---- Listen for RichTextEditor changes ---- */
+    window.addEventListener("rich-editor-change:create-editor", (e) => {
+      document.getElementById("create-descripcion-hidden").value = e.detail.html;
+    });
+    window.addEventListener("rich-editor-change:edit-editor", (e) => {
+      document.getElementById("edit-descripcion-hidden").value = e.detail.html;
+    });
+
+    /* ---- Create Modal ---- */
+    let createExistingImages = [];
+
+    document.getElementById("btn-create").addEventListener("click", () => {
+      createExistingImages = [];
+      document.getElementById("create-preview").innerHTML = "";
+      document.getElementById("create-imagenes").value = "[]";
+      document.getElementById("create-descripcion-hidden").value = "";
+      window.dispatchEvent(new CustomEvent("rich-editor-load:create-editor", { detail: { content: "" } }));
+      document.getElementById("create-modal").classList.remove("hidden");
+    });
+    document.getElementById("create-overlay").addEventListener("click", () => {
+      document.getElementById("create-modal").classList.add("hidden");
+    });
+    document.querySelectorAll(".btn-cancel-create").forEach(b => b.addEventListener("click", () => {
+      document.getElementById("create-modal").classList.add("hidden");
+    }));
+
+    document.getElementById("create-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const fileInput = document.getElementById("create-file-input");
+      const status = document.getElementById("create-upload-status");
+      const submitBtn = document.getElementById("create-submit");
+
+      const fechaISO = form.querySelector('[name="fechaISO"]').value;
+      if (fechaISO) {
+        const [year, month, day] = fechaISO.split("-");
+        const meses = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+        form.querySelector('[name="fecha"]').value = parseInt(day) + " de " + meses[parseInt(month) - 1] + " de " + year;
+      }
+
+      const descripcion = document.getElementById("create-descripcion-hidden").value;
+      if (!descripcion || descripcion === "<p></p>") {
+        status.textContent = "La descripción es obligatoria";
+        status.className = "text-sm text-center py-2 text-red-600";
+        status.classList.remove("hidden");
+        submitBtn.disabled = false;
+        return;
+      }
+
+      submitBtn.disabled = true;
+      status.textContent = "Subiendo imágenes...";
+      status.className = "text-sm text-center py-2 text-gray-500";
+      status.classList.remove("hidden");
+
+      try {
+        const urls = [...createExistingImages];
+        if (fileInput.files.length) {
+          for (const file of fileInput.files) {
+            status.textContent = "Subiendo " + file.name + "...";
+            const url = await uploadFile(file);
+            urls.push(url);
+          }
+        }
+
+        const formData = new FormData(form);
+        formData.set("imagenes", JSON.stringify(urls));
+        formData.set("descripcion", descripcion);
+        await fetch("/api/eventos", { method: "POST", body: formData });
+        window.location.reload();
+      } catch (err) {
+        status.textContent = err.message;
+        status.className = "text-sm text-center py-2 text-red-600";
+        submitBtn.disabled = false;
+      }
+    });
+
+    /* ---- Edit Modal ---- */
+    let editExistingImages = [];
+
+    document.querySelectorAll(".btn-edit").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.getElementById("edit-id").value = btn.dataset.id;
+        document.getElementById("edit-titulo").value = btn.dataset.titulo;
+        document.getElementById("edit-fechaISO").value = btn.dataset.fechaiso;
+        document.getElementById("edit-fecha-texto").value = btn.dataset.fecha;
+        document.getElementById("edit-descripcion-hidden").value = btn.dataset.descripcion;
+        document.getElementById("edit-participantes").value = btn.dataset.participantes;
+
+        /* Load content into the edit RichTextEditor */
+        window.dispatchEvent(new CustomEvent("rich-editor-load:edit-editor", {
+          detail: { content: btn.dataset.descripcion || "" }
+        }));
+
+        try {
+          editExistingImages = JSON.parse(btn.dataset.imagenes || "[]");
+        } catch { editExistingImages = []; }
+
+        const currentContainer = document.getElementById("edit-current-images");
+        currentContainer.innerHTML = "";
+        editExistingImages.forEach((url, i) => {
+          const thumb = document.createElement("div");
+          thumb.className = "relative w-16 h-16 rounded-lg overflow-hidden border border-gray-200 group/img";
+          thumb.innerHTML = `
+            <img class="w-full h-full object-cover" src="${url}" />
+            <button type="button" class="absolute inset-0 bg-red-500/70 text-white text-xs opacity-0 group-hover/img:opacity-100 transition-opacity" data-remove="${i}">✕</button>
+          `;
+          currentContainer.appendChild(thumb);
+        });
+
+        currentContainer.querySelectorAll("[data-remove]").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const idx = parseInt(btn.dataset.remove);
+            editExistingImages.splice(idx, 1);
+            btn.parentElement.remove();
+          });
+        });
+
+        document.getElementById("edit-imagenes").value = JSON.stringify(editExistingImages);
+        document.getElementById("edit-preview").innerHTML = "";
+        document.getElementById("edit-file-input").value = "";
+
+        document.getElementById("edit-modal").classList.remove("hidden");
+      });
+    });
+    document.getElementById("edit-overlay").addEventListener("click", () => {
+      document.getElementById("edit-modal").classList.add("hidden");
+    });
+    document.querySelectorAll(".btn-cancel-edit").forEach(b => b.addEventListener("click", () => {
+      document.getElementById("edit-modal").classList.add("hidden");
+    }));
+
+    document.getElementById("edit-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const fileInput = document.getElementById("edit-file-input");
+      const status = document.getElementById("edit-upload-status");
+      const submitBtn = document.getElementById("edit-submit");
+
+      const fechaISO = document.getElementById("edit-fechaISO").value;
+      if (fechaISO) {
+        const [year, month, day] = fechaISO.split("-");
+        const meses = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+        document.getElementById("edit-fecha-texto").value = parseInt(day) + " de " + meses[parseInt(month) - 1] + " de " + year;
+      }
+
+      const descripcion = document.getElementById("edit-descripcion-hidden").value;
+      if (!descripcion || descripcion === "<p></p>") {
+        status.textContent = "La descripción es obligatoria";
+        status.className = "text-sm text-center py-2 text-red-600";
+        status.classList.remove("hidden");
+        submitBtn.disabled = false;
+        return;
+      }
+
+      submitBtn.disabled = true;
+
+      try {
+        const urls = [...editExistingImages];
+        if (fileInput.files.length) {
+          status.textContent = "Subiendo nuevas imágenes...";
+          status.className = "text-sm text-center py-2 text-gray-500";
+          status.classList.remove("hidden");
+          for (const file of fileInput.files) {
+            status.textContent = "Subiendo " + file.name + "...";
+            const url = await uploadFile(file);
+            urls.push(url);
+          }
+        }
+
+        const id = document.getElementById("edit-id").value;
+        const data = {
+          titulo: document.getElementById("edit-titulo").value,
+          fecha: document.getElementById("edit-fecha-texto").value,
+          fechaISO: document.getElementById("edit-fechaISO").value,
+          descripcion: descripcion,
+          participantes: document.getElementById("edit-participantes").value,
+          imagenes: JSON.stringify(urls),
+        };
+        await fetch("/api/eventos?id=" + id, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+        window.location.reload();
+      } catch (err) {
+        status.textContent = err.message;
+        status.className = "text-sm text-center py-2 text-red-600";
+        submitBtn.disabled = false;
+      }
+    });
+
+    document.querySelectorAll(".btn-delete").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        if (!confirm('¿Eliminar "' + btn.dataset.nombre + '"?')) return;
+        await fetch("/api/eventos?id=" + btn.dataset.id, { method: "DELETE" });
+        window.location.reload();
+      });
+    });
+  </script>
+</AdminLayout>

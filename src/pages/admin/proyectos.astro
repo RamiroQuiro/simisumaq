@@ -1,0 +1,213 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+import { db } from "../../db/client";
+import { proyectos } from "../../db/schema";
+
+const items = db.select().from(proyectos).all().sort((a, b) => (a.orden || 99) - (b.orden || 99));
+const iconOptions = ["Stethoscope", "Users", "Heart", "Smile", "Calendar", "Activity"];
+const colorOptions = [
+  { label: "Celeste a Azul", value: "from-primary-100 to-primary-200" },
+  { label: "Azul a Celeste", value: "from-primary-200 to-primary-100" },
+  { label: "Celeste a Rosa", value: "from-primary-100 to-primary-150" },
+  { label: "Rosa a Celeste", value: "from-primary-150 to-primary-200" },
+];
+---
+
+<AdminLayout title="Proyectos">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">Proyectos</h1>
+      <p class="text-gray-500 mt-1">{items.length} proyectos</p>
+    </div>
+    <button
+      onclick="document.getElementById('create-modal').classList.remove('hidden')"
+      class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-red-500 to-orange-500 text-white text-sm font-medium hover:from-red-600 hover:to-orange-600 transition-all"
+    >
+      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+      </svg>
+      Nuevo proyecto
+    </button>
+  </div>
+
+  <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-gray-200 bg-gray-50">
+            <th class="text-left px-4 py-3 font-medium text-gray-600">Orden</th>
+            <th class="text-left px-4 py-3 font-medium text-gray-600">Título</th>
+            <th class="text-left px-4 py-3 font-medium text-gray-600 hidden md:table-cell">Ícono</th>
+            <th class="text-left px-4 py-3 font-medium text-gray-600 hidden lg:table-cell">Resultado</th>
+            <th class="text-right px-4 py-3 font-medium text-gray-600">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {items.map((item) => (
+            <tr class="border-b border-gray-100 last:border-b-0 hover:bg-gray-50">
+              <td class="px-4 py-3 text-gray-500">{item.orden || 99}</td>
+              <td class="px-4 py-3 font-medium text-gray-900">{item.title}</td>
+              <td class="px-4 py-3 text-gray-500 hidden md:table-cell">{item.icon}</td>
+              <td class="px-4 py-3 text-gray-500 hidden lg:table-cell">{item.resultados}</td>
+              <td class="px-4 py-3 text-right">
+                <div class="flex items-center justify-end gap-2">
+                  <button
+                    onclick={`editItem(${JSON.stringify(item).replace(/"/g, '&quot;')})`}
+                    class="p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                  >
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                  </button>
+                  <button
+                    onclick={`deleteItem(${item.id}, '${item.title.replace(/'/g, "\\'")}')`}
+                    class="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                  >
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Create Modal -->
+  <div id="create-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="fixed inset-0 bg-black/50" onclick="document.getElementById('create-modal').classList.add('hidden')"></div>
+    <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4">Nuevo proyecto</h3>
+      <form method="POST" action="/api/proyectos" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Título *</label>
+          <input type="text" name="title" required class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Descripción *</label>
+          <textarea name="description" required rows="3" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Resultados *</label>
+          <input type="text" name="resultados" required placeholder="Ej: 500+ cirugías" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Ícono *</label>
+            <select name="icon" required class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
+              {iconOptions.map((opt) => <option value={opt}>{opt}</option>)}
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Color *</label>
+            <select name="color" required class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
+              {colorOptions.map((opt) => <option value={opt.value}>{opt.label}</option>)}
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Orden</label>
+          <input type="number" name="orden" value="10" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
+        </div>
+        <div class="flex gap-3 pt-2">
+          <button type="button" onclick="document.getElementById('create-modal').classList.add('hidden')" class="flex-1 px-4 py-2.5 rounded-lg border border-gray-300 text-gray-700 text-sm font-medium hover:bg-gray-50 transition-colors">
+            Cancelar
+          </button>
+          <button type="submit" class="flex-1 px-4 py-2.5 rounded-lg bg-gradient-to-r from-red-500 to-orange-500 text-white text-sm font-medium hover:from-red-600 hover:to-orange-600 transition-all">
+            Crear
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Modal -->
+  <div id="edit-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="fixed inset-0 bg-black/50" onclick="document.getElementById('edit-modal').classList.add('hidden')"></div>
+    <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4">Editar proyecto</h3>
+      <form id="edit-form" class="space-y-4">
+        <input type="hidden" name="id" id="edit-id" />
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Título *</label>
+          <input type="text" name="title" id="edit-title" required class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Descripción *</label>
+          <textarea name="description" id="edit-description" required rows="3" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Resultados *</label>
+          <input type="text" name="resultados" id="edit-resultados" required class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Ícono *</label>
+            <select name="icon" id="edit-icon" required class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
+              {iconOptions.map((opt) => <option value={opt}>{opt}</option>)}
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Color *</label>
+            <select name="color" id="edit-color" required class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
+              {colorOptions.map((opt) => <option value={opt.value}>{opt.label}</option>)}
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Orden</label>
+          <input type="number" name="orden" id="edit-orden" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
+        </div>
+        <div class="flex gap-3 pt-2">
+          <button type="button" onclick="document.getElementById('edit-modal').classList.add('hidden')" class="flex-1 px-4 py-2.5 rounded-lg border border-gray-300 text-gray-700 text-sm font-medium hover:bg-gray-50 transition-colors">
+            Cancelar
+          </button>
+          <button type="submit" class="flex-1 px-4 py-2.5 rounded-lg bg-gradient-to-r from-red-500 to-orange-500 text-white text-sm font-medium hover:from-red-600 hover:to-orange-600 transition-all">
+            Guardar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script is:inline>
+    function editItem(item) {
+      document.getElementById('edit-id').value = item.id;
+      document.getElementById('edit-title').value = item.title;
+      document.getElementById('edit-description').value = item.description;
+      document.getElementById('edit-resultados').value = item.resultados;
+      document.getElementById('edit-icon').value = item.icon;
+      document.getElementById('edit-color').value = item.color;
+      document.getElementById('edit-orden').value = item.orden || 99;
+      document.getElementById('edit-modal').classList.remove('hidden');
+    }
+
+    document.getElementById('edit-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('edit-id').value;
+      const data = {
+        title: document.getElementById('edit-title').value,
+        description: document.getElementById('edit-description').value,
+        resultados: document.getElementById('edit-resultados').value,
+        icon: document.getElementById('edit-icon').value,
+        color: document.getElementById('edit-color').value,
+        orden: parseInt(document.getElementById('edit-orden').value) || 99,
+      };
+      await fetch(`/api/proyectos?id=${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      window.location.reload();
+    });
+
+    async function deleteItem(id, name) {
+      if (!confirm(`¿Eliminar "${name}"?`)) return;
+      await fetch(`/api/proyectos?id=${id}`, { method: 'DELETE' });
+      window.location.reload();
+    }
+  </script>
+</AdminLayout>

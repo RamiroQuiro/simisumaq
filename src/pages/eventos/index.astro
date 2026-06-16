@@ -1,21 +1,26 @@
 ---
 import { Calendar, MapPin, Clock, Users } from "lucide-react";
-import Layout from "../layouts/LayoutSeo.astro";
-import Section from "../components/organismos/Section.astro";
+import Layout from "../../layouts/LayoutSeo.astro";
+import Section from "../../components/organismos/Section.astro";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../components/organismos/Card";
-import Button from "../components/atomos/Button";
-import Navbar from "../components/organismos/Navbar.astro";
-import TituloColores from "../components/atomos/TituloColores.astro";
-import Carousel from "../components/organismos/Carousel";
-import { getCollection } from "astro:content";
-const eventosEntries = await getCollection("eventos");
-const eventosRealizados = eventosEntries.map((e) => e.data);
+} from "../../components/organismos/Card";
+import Button from "../../components/atomos/Button";
+import Navbar from "../../components/organismos/Navbar.astro";
+import TituloColores from "../../components/atomos/TituloColores.astro";
+import Carousel from "../../components/organismos/Carousel";
+import { db } from "../../db/client";
+import { eventos } from "../../db/schema";
+import { desc } from "drizzle-orm";
+
+const eventosRealizados = db.select().from(eventos).orderBy(desc(eventos.fechaISO)).all().map((e) => ({
+  ...e,
+  imagenes: JSON.parse(e.imagenes || "[]"),
+}));
 ---
 
 <Layout
@@ -62,7 +67,10 @@ const eventosRealizados = eventosEntries.map((e) => e.data);
                     <h3 class="text-3xl font-bold text-primary-textoTitle mb-4">
                       {evento.titulo}
                     </h3>
-                    <div class="text-primary-textoBody text-lg leading-relaxed mb-6 space-y-4" set:html={evento.descripcion} />
+                    <div class="text-primary-textoBody text-lg leading-relaxed mb-6 space-y-4" set:html={evento.descripcion.substring(0, 200) + (evento.descripcion.length > 200 ? '...' : '')} />
+                    <Button href={`/eventos/${evento.id}`} variant="primary" size="sm">
+                      Ver más
+                    </Button>
                   </div>
 
                   <div class="mt-auto pt-6 border-t border-primary-border flex items-center gap-2 text-primary-textoTitle font-medium">
