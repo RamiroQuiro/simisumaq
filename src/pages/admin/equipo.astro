@@ -3,7 +3,7 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
 import { db } from "../../db/client";
 import { equipo } from "../../db/schema";
 
-const items = db.select().from(equipo).all();
+const items = await db.select().from(equipo);
 ---
 
 <AdminLayout title="Equipo">

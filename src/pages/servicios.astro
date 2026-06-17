@@ -1,46 +1,77 @@
 ---
-export const prerender = true;
 import Layout from "../layouts/Layout.astro";
 import Section from "../components/organismos/Section.astro";
+import TituloColores from "../components/atomos/TituloColores.astro";
+import { db } from "../db/client";
+import { servicios } from "../db/schema";
+
+const allServicios = await db.select().from(servicios);
+const items = allServicios.sort((a, b) => (a.orden || 99) - (b.orden || 99));
 ---
 
-<Layout>
-  <Section class="bg-primary-bg-claro min-h-screen">
-    <div class="max-w-4xl mx-auto my-24 text-center">
-      <h1 class="text-4xl md:text-5xl font-bold text-primary-textoTitle mb-6">
-        Servicios que brindamos
-      </h1>
-      <div
-        class="max-w-2xl mx-auto text-left text-lg text-primary-textoBody bg-white p-8 rounded-2xl shadow-subtle border border-primary-border mt-8"
-      >
-        <ul class="space-y-6">
-          <li class="flex items-center gap-3">
-            <span class="w-3 h-3 rounded-full bg-primary-100 flex-shrink-0"
-            ></span>
-            <span>Talleres de Lecto escritura</span>
-          </li>
-          <li class="flex items-center gap-3">
-            <span class="w-3 h-3 rounded-full bg-primary-100 flex-shrink-0"
-            ></span>
-            <span>Taller de coro</span>
-          </li>
-          <li class="flex items-center gap-3">
-            <span class="w-3 h-3 rounded-full bg-primary-100 flex-shrink-0"
-            ></span>
-            <span>Taller para padres</span>
-          </li>
-          <li class="flex items-center gap-3">
-            <span class="w-3 h-3 rounded-full bg-primary-100 flex-shrink-0"
-            ></span>
-            <span>Atención de consultorio de Fonoaudiología y Psicología</span>
-          </li>
-        </ul>
-      </div>
-      <p class="text-lg text-primary-textoBody mt-8">
-        Los niños que nacen con fisura labio palatina necesitan más que una
-        cirugía. También pueden necesitar apoyo nutricional, atención dental,
-        tratamiento de ortodoncia y terapia del habla
+<Layout title="Servicios | Simi Sumaq" description="Conoce los servicios integrales e interdisciplinarios que brinda la Asociación Simi Sumaq." canonical="https://asociacionsimisumaq.org/servicios">
+  <Section
+    isBackgroundFoto
+    srcFotoBackground="/banner1.webp"
+    id="hero"
+    class="bg-linear-to-r from-primary-100 to-primary-200"
+  >
+    <div class="text-center text-primary-textoTitle py-20">
+      <TituloColores>Servicios</TituloColores>
+      <p class="text-xl md:text-2xl max-w-3xl mx-auto opacity-90">
+        Brindamos un tratamiento integral e interdisciplinario para transformar
+        y seguir multiplicando sonrisas.
       </p>
+    </div>
+  </Section>
+
+  <Section id="servicios" class="py-24 bg-white">
+    <div class="max-w-6xl mx-auto">
+      {
+        items.length > 0 ? (
+          <div class="grid md:grid-cols-2 gap-12">
+            {items.map((servicio, index) => {
+              const parsedItems = JSON.parse(servicio.items || "[]");
+              return (
+                <div class="bg-primary-bg-claro rounded-2xl hover:shadow-medium transition-all border border-transparent hover:border-primary-100 overflow-hidden">
+                  {servicio.cover && (
+                    <div class="h-48 w-full overflow-hidden">
+                      <img src={servicio.cover} alt={servicio.titulo} class="w-full h-full object-cover" />
+                    </div>
+                  )}
+                  <div class="p-8">
+                  <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 rounded-full bg-primary-100 text-white flex items-center justify-center font-bold text-xl shrink-0">
+                      {index + 1}
+                    </div>
+                    <h3 class="text-2xl font-bold text-primary-textoTitle">
+                      {servicio.titulo}
+                    </h3>
+                  </div>
+                  <p class="text-primary-textoBody mb-6 leading-relaxed">
+                    {servicio.descripcion}
+                  </p>
+                  <ul class="space-y-2">
+                    {parsedItems.map((item: string) => (
+                      <li class="flex items-center gap-2 text-primary-texto">
+                        <span class="w-2 h-2 rounded-full bg-primary-200" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div class="text-center py-16">
+            <p class="text-xl text-primary-texto">
+              Próximamente publicaremos nuestros servicios.
+            </p>
+          </div>
+        )
+      }
     </div>
   </Section>
 </Layout>

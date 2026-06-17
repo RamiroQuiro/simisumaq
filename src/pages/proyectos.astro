@@ -1,6 +1,5 @@
 ---
 export const prerender = false;
-return Astro.redirect("/");
 import Layout from "../layouts/LayoutSeo.astro";
 import Navbar from "../components/organismos/Navbar.astro";
 import Section from "../components/organismos/Section.astro";
@@ -17,8 +16,9 @@ import TituloColores from "../components/atomos/TituloColores.astro";
 import { db } from "../db/client";
 import { proyectos, testimonios } from "../db/schema";
 
-const proyectosData = db.select().from(proyectos).all().sort((a, b) => (a.orden || 99) - (b.orden || 99));
-const testimoniosData = db.select().from(testimonios).all();
+const rawProyectos = await db.select().from(proyectos);
+const proyectosData = rawProyectos.sort((a, b) => (a.orden || 99) - (b.orden || 99));
+const testimoniosData = await db.select().from(testimonios);
 
 const iconMap = LucideIcons;
 ---
@@ -53,7 +53,12 @@ const iconMap = LucideIcons;
             // @ts-ignore
             const Icon = iconMap[proyecto.icon] || LucideIcons.HelpCircle;
             return (
-              <Card className="border-2 hover:border-primary-100 transition-all hover:shadow-medium">
+              <Card className="border-2 hover:border-primary-100 transition-all hover:shadow-medium overflow-hidden">
+                {proyecto.cover && (
+                  <div class="h-48 w-full overflow-hidden">
+                    <img src={proyecto.cover} alt={proyecto.title} class="w-full h-full object-cover" />
+                  </div>
+                )}
                 <CardHeader>
                   <div
                     class={`w-16 h-16 rounded-full bg-linear-to-br ${proyecto.color} flex items-center justify-center mb-4`}

@@ -3,7 +3,7 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
 import { db } from "../../db/client";
 import { galeria } from "../../db/schema";
 
-const items = db.select().from(galeria).all();
+const items = await db.select().from(galeria);
 const categorias = ["general", "cirugias", "talleres", "eventos", "testimonios"];
 ---
 

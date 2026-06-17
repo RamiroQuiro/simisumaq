@@ -1,11 +1,15 @@
-import Database from "better-sqlite3";
-import { drizzle } from "drizzle-orm/better-sqlite3";
 import * as schema from "./schema";
+import { createClient } from "@libsql/client";
+import { drizzle } from "drizzle-orm/libsql";
+import { mkdirSync, existsSync } from "fs";
 import { resolve } from "path";
 
-const DB_PATH = resolve(process.cwd(), "data/simisumaq.db");
+const dataDir = resolve(process.cwd(), "data");
+if (!existsSync(dataDir)) {
+  mkdirSync(dataDir, { recursive: true });
+}
 
-const sqlite = new Database(DB_PATH);
-sqlite.pragma("journal_mode = WAL");
+const client = createClient({ url: "file:data/simisumaq.db" });
+const db = drizzle(client, { schema });
 
-export const db = drizzle(sqlite, { schema });
+export { db };

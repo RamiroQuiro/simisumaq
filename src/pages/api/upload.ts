@@ -1,14 +1,30 @@
 import type { APIRoute } from "astro";
-import { writeFileSync, existsSync, mkdirSync } from "fs";
-import { resolve, extname } from "path";
+import { writeFileSync, existsSync, mkdirSync, readdirSync, statSync } from "fs";
+import { resolve, extname, join } from "path";
 
 const UPLOAD_DIR = resolve(process.cwd(), "public/galeria");
-const MAX_SIZE = 5 * 1024 * 1024; // 5MB
+const MAX_SIZE = 5 * 1024 * 1024; // 5MB por archivo
+const MAX_TOTAL_STORAGE = 500 * 1024 * 1024; // 500MB total
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 const ALLOWED_EXTENSIONS = [".jpg", ".jpeg", ".png", ".webp", ".gif"];
 
 if (!existsSync(UPLOAD_DIR)) {
   mkdirSync(UPLOAD_DIR, { recursive: true });
+}
+
+function getDirSize(dir: string): number {
+  let total = 0;
+  if (!existsSync(dir)) return 0;
+  for (const entry of readdirSync(dir)) {
+    const fullPath = join(dir, entry);
+    const stat = statSync(fullPath);
+    if (stat.isDirectory()) {
+      total += getDirSize(fullPath);
+    } else {
+      total += stat.size;
+    }
+  }
+  return total;
 }
 
 export const POST: APIRoute = async ({ request }) => {
@@ -26,6 +42,15 @@ export const POST: APIRoute = async ({ request }) => {
     if (file.size > MAX_SIZE) {
       return new Response(
         JSON.stringify({ error: `El archivo supera el límite de ${MAX_SIZE / 1024 / 1024}MB` }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
+    const currentUsage = getDirSize(UPLOAD_DIR);
+    if (currentUsage + file.size > MAX_TOTAL_STORAGE) {
+      const remainingMB = ((MAX_TOTAL_STORAGE - currentUsage) / 1024 / 1024).toFixed(1);
+      return new Response(
+        JSON.stringify({ error: `Almacenamiento lleno. Quedan ${remainingMB}MB disponibles. Eliminá archivos viejos desde el admin.` }),
         { status: 400, headers: { "Content-Type": "application/json" } }
       );
     }
@@ -58,8 +83,11 @@ export const POST: APIRoute = async ({ request }) => {
 
     writeFileSync(filepath, buffer);
 
+    const newUsage = getDirSize(UPLOAD_DIR);
+    const usageMB = (newUsage / 1024 / 1024).toFixed(1);
+
     return new Response(
-      JSON.stringify({ url: `/galeria/${filename}`, filename }),
+      JSON.stringify({ url: `/galeria/${filename}`, filename, storageUsed: `${usageMB}MB` }),
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
   } catch (err) {

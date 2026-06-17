@@ -12,7 +12,7 @@ export default defineConfig({
   server: {
     host: true,
     port: 4324,
-    allowedHosts: true,
+    allowedHosts: ['asociacionsimisumaq.org', '172.16.3.94'],
   },
   security: {
     checkOrigin: false,
@@ -26,8 +26,5 @@ export default defineConfig({
   integrations: [react(), sitemap()],
   vite: {
     plugins: [tailwindcss()],
-    optimizeDeps: {
-      exclude: ["better-sqlite3"],
-    },
   },
 });

@@ -1,6 +1,6 @@
 import { defineMiddleware } from "astro:middleware";
-import { db } from "../db/client";
-import { users } from "../db/schema";
+import { db } from "./db/client";
+import { users } from "./db/schema";
 import { eq } from "drizzle-orm";
 
 const SESSION_SECRET = process.env.SESSION_SECRET || "simisumaq-secret-2024";
@@ -38,12 +38,12 @@ export const onRequest = defineMiddleware(async (context, next) => {
       return context.redirect("/admin/login");
     }
 
-    const user = db.select().from(users).where(eq(users.id, session.userId)).get();
-    if (!user) {
+    const rows = await db.select().from(users).where(eq(users.id, session.userId));
+    if (!rows[0]) {
       return context.redirect("/admin/login");
     }
 
-    context.locals.user = user;
+    context.locals.user = rows[0];
   }
 
   return next();

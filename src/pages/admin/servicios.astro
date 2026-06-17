@@ -1,24 +1,17 @@
 ---
 import AdminLayout from "../../layouts/AdminLayout.astro";
 import { db } from "../../db/client";
-import { proyectos } from "../../db/schema";
+import { servicios } from "../../db/schema";
 
-const allProyectos = await db.select().from(proyectos);
-const items = allProyectos.sort((a, b) => (a.orden || 99) - (b.orden || 99));
-const iconOptions = ["Stethoscope", "Users", "Heart", "Smile", "Calendar", "Activity"];
-const colorOptions = [
-  { label: "Celeste a Azul", value: "from-primary-100 to-primary-200" },
-  { label: "Azul a Celeste", value: "from-primary-200 to-primary-100" },
-  { label: "Celeste a Rosa", value: "from-primary-100 to-primary-150" },
-  { label: "Rosa a Celeste", value: "from-primary-150 to-primary-200" },
-];
+const allServicios = await db.select().from(servicios);
+const items = allServicios.sort((a, b) => (a.orden || 99) - (b.orden || 99));
 ---
 
-<AdminLayout title="Proyectos">
+<AdminLayout title="Servicios">
   <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
     <div>
-      <h1 class="text-2xl font-bold text-gray-900">Proyectos</h1>
-      <p class="text-gray-500 mt-1">{items.length} proyectos</p>
+      <h1 class="text-2xl font-bold text-gray-900">Servicios</h1>
+      <p class="text-gray-500 mt-1">{items.length} servicios</p>
     </div>
     <button
       id="btn-create"
@@ -27,7 +20,7 @@ const colorOptions = [
       <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
       </svg>
-      Nuevo proyecto
+      Nuevo servicio
     </button>
   </div>
 
@@ -37,10 +30,8 @@ const colorOptions = [
         <thead>
           <tr class="border-b border-gray-200 bg-gray-50">
             <th class="text-left px-4 py-3 font-medium text-gray-600">Orden</th>
-            <th class="text-left px-4 py-3 font-medium text-gray-600">Portada</th>
             <th class="text-left px-4 py-3 font-medium text-gray-600">Título</th>
-            <th class="text-left px-4 py-3 font-medium text-gray-600 hidden md:table-cell">Ícono</th>
-            <th class="text-left px-4 py-3 font-medium text-gray-600 hidden lg:table-cell">Resultado</th>
+            <th class="text-left px-4 py-3 font-medium text-gray-600 hidden md:table-cell">Items</th>
             <th class="text-right px-4 py-3 font-medium text-gray-600">Acciones</th>
           </tr>
         </thead>
@@ -48,26 +39,21 @@ const colorOptions = [
           {items.map((item) => (
             <tr class="border-b border-gray-100 last:border-b-0 hover:bg-gray-50">
               <td class="px-4 py-3 text-gray-500">{item.orden || 99}</td>
-              <td class="px-4 py-3">
-                {item.cover ? (
-                  <img src={item.cover} alt={item.title} class="w-12 h-8 rounded object-cover border border-gray-200" />
-                ) : (
-                  <span class="text-xs text-gray-400 italic">Sin portada</span>
-                )}
+              <td class="px-4 py-3 font-medium text-gray-900">{item.titulo}</td>
+              <td class="px-4 py-3 text-gray-500 hidden md:table-cell">
+                {(() => {
+                  const parsedItems = JSON.parse(item.items || "[]");
+                  return `${parsedItems.length} items`;
+                })()}
               </td>
-              <td class="px-4 py-3 font-medium text-gray-900">{item.title}</td>
-              <td class="px-4 py-3 text-gray-500 hidden md:table-cell">{item.icon}</td>
-              <td class="px-4 py-3 text-gray-500 hidden lg:table-cell">{item.resultados}</td>
               <td class="px-4 py-3 text-right">
                 <div class="flex items-center justify-end gap-2">
                   <button
                     class="btn-edit p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
                     data-id={item.id}
-                    data-title={item.title}
-                    data-description={item.description}
-                    data-resultados={item.resultados}
-                    data-icon={item.icon}
-                    data-color={item.color}
+                    data-titulo={item.titulo}
+                    data-descripcion={item.descripcion}
+                    data-items={item.items}
                     data-orden={item.orden || 99}
                     data-cover={item.cover || ""}
                   >
@@ -78,7 +64,7 @@ const colorOptions = [
                   <button
                     class="btn-delete p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
                     data-id={item.id}
-                    data-nombre={item.title}
+                    data-titulo={item.titulo}
                   >
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -97,19 +83,19 @@ const colorOptions = [
   <div id="create-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
     <div class="fixed inset-0 bg-black/50" id="create-overlay"></div>
     <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
-      <h3 class="text-lg font-semibold text-gray-900 mb-4">Nuevo proyecto</h3>
+      <h3 class="text-lg font-semibold text-gray-900 mb-4">Nuevo servicio</h3>
       <form id="create-form" class="space-y-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Título *</label>
-          <input type="text" name="title" required class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
+          <input type="text" name="titulo" required class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Descripción *</label>
-          <textarea name="description" required rows="3" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"></textarea>
+          <textarea name="descripcion" required rows="3" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"></textarea>
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Resultados *</label>
-          <input type="text" name="resultados" required placeholder="Ej: 500+ cirugías" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
+          <label class="block text-sm font-medium text-gray-700 mb-1">Items (uno por línea)</label>
+          <textarea name="items" rows="5" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" placeholder={"Queiloplastia\nPalatoplastia\nInjertos óseos"}></textarea>
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Foto de portada (opcional)</label>
@@ -123,20 +109,6 @@ const colorOptions = [
           <div id="create-cover-preview" class="mt-2 flex justify-center"></div>
           <input type="hidden" name="cover" id="create-cover-url" value="" />
         </div>
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Ícono *</label>
-            <select name="icon" required class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
-              {iconOptions.map((opt) => <option value={opt}>{opt}</option>)}
-            </select>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Color *</label>
-            <select name="color" required class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
-              {colorOptions.map((opt) => <option value={opt.value}>{opt.label}</option>)}
-            </select>
-          </div>
-        </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Orden</label>
           <input type="number" name="orden" value="10" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
@@ -145,7 +117,7 @@ const colorOptions = [
           <button type="button" class="btn-cancel-create flex-1 px-4 py-2.5 rounded-lg border border-gray-300 text-gray-700 text-sm font-medium hover:bg-gray-50 transition-colors">
             Cancelar
           </button>
-          <button type="submit" id="create-submit" class="flex-1 px-4 py-2.5 rounded-lg bg-gradient-to-r from-red-500 to-orange-500 text-white text-sm font-medium hover:from-red-600 hover:to-orange-600 transition-all">
+          <button type="submit" class="flex-1 px-4 py-2.5 rounded-lg bg-gradient-to-r from-red-500 to-orange-500 text-white text-sm font-medium hover:from-red-600 hover:to-orange-600 transition-all">
             Crear
           </button>
         </div>
@@ -157,20 +129,20 @@ const colorOptions = [
   <div id="edit-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
     <div class="fixed inset-0 bg-black/50" id="edit-overlay"></div>
     <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
-      <h3 class="text-lg font-semibold text-gray-900 mb-4">Editar proyecto</h3>
+      <h3 class="text-lg font-semibold text-gray-900 mb-4">Editar servicio</h3>
       <form id="edit-form" class="space-y-4">
         <input type="hidden" name="id" id="edit-id" />
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Título *</label>
-          <input type="text" name="title" id="edit-title" required class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
+          <input type="text" name="titulo" id="edit-titulo" required class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Descripción *</label>
-          <textarea name="description" id="edit-description" required rows="3" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"></textarea>
+          <textarea name="descripcion" id="edit-descripcion" required rows="3" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"></textarea>
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Resultados *</label>
-          <input type="text" name="resultados" id="edit-resultados" required class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
+          <label class="block text-sm font-medium text-gray-700 mb-1">Items (uno por línea)</label>
+          <textarea name="items" id="edit-items" rows="5" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"></textarea>
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Portada actual</label>
@@ -188,20 +160,6 @@ const colorOptions = [
           </div>
           <div id="edit-cover-preview" class="mt-2 flex justify-center"></div>
         </div>
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Ícono *</label>
-            <select name="icon" id="edit-icon" required class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
-              {iconOptions.map((opt) => <option value={opt}>{opt}</option>)}
-            </select>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Color *</label>
-            <select name="color" id="edit-color" required class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
-              {colorOptions.map((opt) => <option value={opt.value}>{opt.label}</option>)}
-            </select>
-          </div>
-        </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Orden</label>
           <input type="number" name="orden" id="edit-orden" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
@@ -210,7 +168,7 @@ const colorOptions = [
           <button type="button" class="btn-cancel-edit flex-1 px-4 py-2.5 rounded-lg border border-gray-300 text-gray-700 text-sm font-medium hover:bg-gray-50 transition-colors">
             Cancelar
           </button>
-          <button type="submit" id="edit-submit" class="flex-1 px-4 py-2.5 rounded-lg bg-gradient-to-r from-red-500 to-orange-500 text-white text-sm font-medium hover:from-red-600 hover:to-orange-600 transition-all">
+          <button type="submit" class="flex-1 px-4 py-2.5 rounded-lg bg-gradient-to-r from-red-500 to-orange-500 text-white text-sm font-medium hover:from-red-600 hover:to-orange-600 transition-all">
             Guardar
           </button>
         </div>
@@ -271,8 +229,6 @@ const colorOptions = [
     document.getElementById("create-form").addEventListener("submit", async (e) => {
       e.preventDefault();
       const form = e.target;
-      const submitBtn = document.getElementById("create-submit");
-      submitBtn.disabled = true;
       try {
         let coverUrl = document.getElementById("create-cover-url").value;
         const coverInput = document.getElementById("create-cover-input");
@@ -281,22 +237,20 @@ const colorOptions = [
         }
         const formData = new FormData(form);
         formData.set("cover", coverUrl || "");
-        await fetch("/api/proyectos", { method: "POST", body: formData });
+        await fetch("/api/servicios", { method: "POST", body: formData });
         window.location.reload();
       } catch (err) {
         alert(err.message);
-        submitBtn.disabled = false;
       }
     });
 
     document.querySelectorAll(".btn-edit").forEach(btn => {
       btn.addEventListener("click", () => {
         document.getElementById("edit-id").value = btn.dataset.id;
-        document.getElementById("edit-title").value = btn.dataset.title;
-        document.getElementById("edit-description").value = btn.dataset.description;
-        document.getElementById("edit-resultados").value = btn.dataset.resultados;
-        document.getElementById("edit-icon").value = btn.dataset.icon;
-        document.getElementById("edit-color").value = btn.dataset.color;
+        document.getElementById("edit-titulo").value = btn.dataset.titulo;
+        document.getElementById("edit-descripcion").value = btn.dataset.descripcion;
+        const parsedItems = JSON.parse(btn.dataset.items || "[]");
+        document.getElementById("edit-items").value = parsedItems.join("\n");
         document.getElementById("edit-orden").value = btn.dataset.orden;
 
         const currentCover = btn.dataset.cover || "";
@@ -330,25 +284,23 @@ const colorOptions = [
 
     document.getElementById("edit-form").addEventListener("submit", async (e) => {
       e.preventDefault();
-      const submitBtn = document.getElementById("edit-submit");
-      submitBtn.disabled = true;
+      const id = document.getElementById("edit-id").value;
+      const itemsStr = document.getElementById("edit-items").value;
+      const items = itemsStr.split("\n").map(s => s.trim()).filter(Boolean);
       try {
         let coverUrl = document.getElementById("edit-cover-url").value;
         const coverInput = document.getElementById("edit-cover-input");
         if (coverInput.files.length) {
           coverUrl = await uploadFile(coverInput.files[0]);
         }
-        const id = document.getElementById("edit-id").value;
         const data = {
-          title: document.getElementById("edit-title").value,
-          description: document.getElementById("edit-description").value,
-          resultados: document.getElementById("edit-resultados").value,
-          icon: document.getElementById("edit-icon").value,
-          color: document.getElementById("edit-color").value,
+          titulo: document.getElementById("edit-titulo").value,
+          descripcion: document.getElementById("edit-descripcion").value,
+          items: JSON.stringify(items),
           orden: parseInt(document.getElementById("edit-orden").value) || 99,
           cover: coverUrl || null,
         };
-        await fetch("/api/proyectos?id=" + id, {
+        await fetch("/api/servicios?id=" + id, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
@@ -356,14 +308,13 @@ const colorOptions = [
         window.location.reload();
       } catch (err) {
         alert(err.message);
-        submitBtn.disabled = false;
       }
     });
 
     document.querySelectorAll(".btn-delete").forEach(btn => {
       btn.addEventListener("click", async () => {
-        if (!confirm('¿Eliminar "' + btn.dataset.nombre + '"?')) return;
-        await fetch("/api/proyectos?id=" + btn.dataset.id, { method: "DELETE" });
+        if (!confirm('¿Eliminar "' + btn.dataset.titulo + '"?')) return;
+        await fetch("/api/servicios?id=" + btn.dataset.id, { method: "DELETE" });
         window.location.reload();
       });
     });

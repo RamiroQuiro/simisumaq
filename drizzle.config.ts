@@ -5,6 +5,6 @@ export default defineConfig({
   out: "./drizzle",
   dialect: "sqlite",
   dbCredentials: {
-    url: "./data/simisumaq.db",
+    url: "file:data/simisumaq.db",
   },
 });

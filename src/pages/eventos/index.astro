@@ -17,10 +17,14 @@ import { db } from "../../db/client";
 import { eventos } from "../../db/schema";
 import { desc } from "drizzle-orm";
 
-const eventosRealizados = db.select().from(eventos).orderBy(desc(eventos.fechaISO)).all().map((e) => ({
-  ...e,
-  imagenes: JSON.parse(e.imagenes || "[]"),
-}));
+const rawEventos = await db.select().from(eventos).orderBy(desc(eventos.fechaISO));
+const eventosRealizados = rawEventos.map((e) => {
+  const imagenes = JSON.parse(e.imagenes || "[]");
+  if (e.cover && !imagenes.includes(e.cover)) {
+    imagenes.unshift(e.cover);
+  }
+  return { ...e, imagenes };
+});
 ---
 
 <Layout

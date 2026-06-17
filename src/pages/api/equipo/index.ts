@@ -7,7 +7,8 @@ export const GET: APIRoute = async ({ url }) => {
   const id = url.searchParams.get("id");
 
   if (id) {
-    const item = db.select().from(equipo).where(eq(equipo.id, parseInt(id))).get();
+    const rows = await db.select().from(equipo).where(eq(equipo.id, parseInt(id)));
+    const item = rows[0];
     if (!item) {
       return new Response(JSON.stringify({ error: "Not found" }), { status: 404 });
     }
@@ -16,7 +17,7 @@ export const GET: APIRoute = async ({ url }) => {
     });
   }
 
-  const items = db.select().from(equipo).all();
+  const items = await db.select().from(equipo);
   return new Response(JSON.stringify(items), {
     headers: { "Content-Type": "application/json" },
   });
@@ -33,7 +34,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     return new Response(JSON.stringify({ error: "Missing fields" }), { status: 400 });
   }
 
-  db.insert(equipo).values({ nombre, cargo, foto, detalle }).run();
+  await db.insert(equipo).values({ nombre, cargo, foto, detalle });
   return redirect("/admin/equipo");
 };
 
@@ -44,7 +45,7 @@ export const PUT: APIRoute = async ({ request, url }) => {
   }
 
   const data = await request.json();
-  db.update(equipo).set(data).where(eq(equipo.id, parseInt(id))).run();
+  await db.update(equipo).set(data).where(eq(equipo.id, parseInt(id)));
   return new Response(JSON.stringify({ success: true }), {
     headers: { "Content-Type": "application/json" },
   });
@@ -56,7 +57,7 @@ export const DELETE: APIRoute = async ({ url }) => {
     return new Response(JSON.stringify({ error: "Missing id" }), { status: 400 });
   }
 
-  db.delete(equipo).where(eq(equipo.id, parseInt(id))).run();
+  await db.delete(equipo).where(eq(equipo.id, parseInt(id)));
   return new Response(JSON.stringify({ success: true }), {
     headers: { "Content-Type": "application/json" },
   });

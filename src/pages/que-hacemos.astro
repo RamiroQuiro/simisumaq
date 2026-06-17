@@ -1,59 +1,23 @@
-�---
+---
 export const prerender = true;
 import Layout from "../layouts/LayoutSeo.astro";
 import Navbar from "../components/organismos/Navbar.astro";
 import Section from "../components/organismos/Section.astro";
 import TituloColores from "../components/atomos/TituloColores.astro";
+import { db } from "../db/client";
+import { servicios as serviciosSchema } from "../db/schema";
 
-const servicios = [
-  {
-    titulo: "Cirugía Reconstructiva",
-    descripcion:
-      "Realizamos cirugías de labio leporino y paladar hendido con técnicas avanzadas para asegurar los mejores resultados estéticos y funcionales.",
-    items: [
-      "Queiloplastia",
-      "Palatoplastia",
-      "Injertos óseos",
-      "Rinoplastia secundaria",
-    ],
-  },
-  // {
-  //   titulo: "Odontología y Ortodoncia",
-  //   descripcion:
-  //     "Tratamientos dentales integrales para corregir la alineación y salud bucal, fundamentales para la alimentación y el habla.",
-  //   items: [
-  //     "Ortopedia prequirúrgica",
-  //     "Ortodoncia correctiva",
-  //     "Odontopediatría",
-  //     "Higiene bucal",
-  //   ],
-  // },
-  {
-    titulo: "Fonoaudiología",
-    descripcion:
-      "Terapia del lenguaje para mejorar la comunicación, la deglución y la respiración de nuestros pacientes.",
-    items: [
-      "Estimulación temprana",
-      "Reeducación del habla",
-      "Terapia miofuncional",
-      "Evaluación audiológica",
-    ],
-  },
-  {
-    titulo: "Apoyo Psicológico y Social",
-    descripcion:
-      "Acompañamiento emocional a pacientes y familias para fortalecer su autoestima y facilitar su integración social.",
-    items: [
-      "Psicología clínica",
-      "Talleres para padres",
-      "Asistencia social",
-      "Grupos de apoyo",
-    ],
-  },
-];
+const allServicios = await db.select().from(serviciosSchema);
+const serviciosData = allServicios.sort(
+  (a, b) => (a.orden || 99) - (b.orden || 99),
+);
 ---
 
-<Layout title="Que hacemos | Servicios interdisciplinarios - Simi Sumaq" description="Brindamos cirugia reconstructiva, fonoaudiologia y apoyo psicologico-social para una atencion integral." canonical="https://asociacionsimisumaq.org/que-hacemos">
+<Layout
+  title="Que hacemos | Servicios interdisciplinarios - Simi Sumaq"
+  description="Brindamos cirugia reconstructiva, fonoaudiologia y apoyo psicologico-social para una atencion integral."
+  canonical="https://asociacionsimisumaq.org/que-hacemos"
+>
   <Section
     isBackgroundFoto
     srcFotoBackground="/banner1.webp"
@@ -73,7 +37,7 @@ const servicios = [
     <div class="max-w-6xl mx-auto">
       <div class="grid md:grid-cols-2 gap-12">
         {
-          servicios.map((servicio, index) => (
+          serviciosData?.map((servicio, index) => (
             <div class="bg-primary-bg-claro p-8 rounded-2xl hover:shadow-medium transition-all border border-transparent hover:border-primary-100">
               <div class="flex items-center gap-4 mb-6">
                 <div class="w-12 h-12 rounded-full bg-primary-100 text-white flex items-center justify-center font-bold text-xl shrink-0">
@@ -87,7 +51,7 @@ const servicios = [
                 {servicio.descripcion}
               </p>
               <ul class="space-y-2">
-                {servicio.items.map((item) => (
+                {JSON.parse(servicio.items || "[]").map((item: string) => (
                   <li class="flex items-center gap-2 text-primary-texto">
                     <span class="w-2 h-2 rounded-full bg-primary-200" />
                     {item}
@@ -117,5 +81,3 @@ const servicios = [
     </div>
   </Section>
 </Layout>
-
-

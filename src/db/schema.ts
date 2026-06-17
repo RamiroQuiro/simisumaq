@@ -22,6 +22,7 @@ export const eventos = sqliteTable("eventos", {
   descripcion: text("descripcion").notNull(),
   participantes: text("participantes").notNull(),
   imagenes: text("imagenes").notNull().default("[]"),
+  cover: text("cover"),
 });
 
 export const proyectos = sqliteTable("proyectos", {
@@ -32,6 +33,7 @@ export const proyectos = sqliteTable("proyectos", {
   icon: text("icon").notNull(),
   color: text("color").notNull(),
   orden: integer("orden").default(99),
+  cover: text("cover"),
 });
 
 export const galeria = sqliteTable("galeria", {
@@ -55,4 +57,19 @@ export const testimonios = sqliteTable("testimonios", {
   nombre: text("nombre").notNull(),
   texto: text("texto").notNull(),
   rol: text("rol").notNull(),
+});
+
+export const comision = sqliteTable("comision", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  cargo: text("cargo").notNull(),
+  nombre: text("nombre").notNull(),
+});
+
+export const servicios = sqliteTable("servicios", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  titulo: text("titulo").notNull(),
+  descripcion: text("descripcion").notNull(),
+  items: text("items").notNull().default("[]"),
+  orden: integer("orden").default(99),
+  cover: text("cover"),
 });

@@ -1,21 +1,13 @@
 ---
-export const prerender = true;
+export const prerender = false;
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/organismos/Navbar.astro";
 import Section from "../components/organismos/Section.astro";
 import { User } from "lucide-react";
+import { db } from "../db/client";
+import { comision } from "../db/schema";
 
-const comisionDirectiva = [
-  { cargo: "Presidente", nombre: "Lic. Veronica Coria" },
-  { cargo: "Secretaria", nombre: "Luz Miranda" },
-  { cargo: "Tesorera", nombre: "Soledad Diaz" },
-  { cargo: "Vocal 1", nombre: "Soldedad Guerra" },
-  { cargo: "Vocal 1 suplente", nombre: "Patricia Galeano" },
-  { cargo: "Vocal 2", nombre: "Marta Arias" },
-  { cargo: "Vocal 2 suplente", nombre: "Rita Chavez" },
-  { cargo: "Revisora de Cuenta", nombre: "Carlina Pereyra" },
-  { cargo: "Revisora de Cuenta suplente", nombre: "Carolina Cramaro" },
-];
+const comisionDirectiva = await db.select().from(comision);
 ---
 
 <Layout>
