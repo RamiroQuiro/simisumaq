@@ -34,7 +34,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   const cover = formData.get("cover") as string || null;
 
   if (!titulo || !fecha || !descripcion || !participantes) {
-    return new Response(JSON.stringify({ error: "Missing fields" }), { status: 400 });
+    return new Response(JSON.stringify({ error: "Faltan campos obligatorios" }), { status: 400 });
   }
 
   let imagenes: string[];
@@ -42,6 +42,13 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     imagenes = JSON.parse(imagenesRaw);
   } catch {
     imagenes = [];
+  }
+
+  if (imagenes.length > 10) {
+    return new Response(
+      JSON.stringify({ error: "Límite superado: Se permite un máximo de 10 imágenes por evento." }),
+      { status: 400, headers: { "Content-Type": "application/json" } }
+    );
   }
 
   await db.insert(eventos).values({ titulo, fecha, fechaISO: fechaISO || null, descripcion, participantes, imagenes: JSON.stringify(imagenes), cover: cover || null });
@@ -55,6 +62,21 @@ export const PUT: APIRoute = async ({ request, url }) => {
   }
 
   const data = await request.json();
+  if (data.imagenes) {
+    let imgs: string[] = [];
+    try {
+      imgs = typeof data.imagenes === "string" ? JSON.parse(data.imagenes) : data.imagenes;
+    } catch {
+      imgs = [];
+    }
+    if (imgs.length > 10) {
+      return new Response(
+        JSON.stringify({ error: "Límite superado: Se permite un máximo de 10 imágenes por evento." }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
+      );
+    }
+  }
+
   await db.update(eventos).set(data).where(eq(eventos.id, parseInt(id)));
   return new Response(JSON.stringify({ success: true }), {
     headers: { "Content-Type": "application/json" },

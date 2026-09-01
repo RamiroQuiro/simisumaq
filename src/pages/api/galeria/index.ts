@@ -30,7 +30,15 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   const categoria = formData.get("categoria") as string || null;
 
   if (!nombre || !path) {
-    return new Response(JSON.stringify({ error: "Missing fields" }), { status: 400 });
+    return new Response(JSON.stringify({ error: "Faltan campos obligatorios" }), { status: 400 });
+  }
+
+  const existing = await db.select().from(galeria);
+  if (existing.length >= 60) {
+    return new Response(
+      JSON.stringify({ error: "Límite alcanzado: La galería admite un máximo de 60 fotos. Eliminá imágenes viejas antes de agregar nuevas." }),
+      { status: 400, headers: { "Content-Type": "application/json" } }
+    );
   }
 
   await db.insert(galeria).values({ nombre, path, categoria });

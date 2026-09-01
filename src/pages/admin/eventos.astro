@@ -120,7 +120,7 @@ const items = await db.select().from(eventos).orderBy(desc(eventos.fechaISO));
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
             <p class="text-sm text-gray-500">Click o arrastrá varias imágenes</p>
-            <p class="text-xs text-gray-400 mt-1">JPG, PNG, WebP o GIF. Máx 5MB c/u.</p>
+            <p class="text-xs text-gray-400 mt-1">Formatos de imagen. Máx 10 fotos por evento (se optimizan automáticamente a WebP).</p>
             <input type="file" name="files" accept="image/*" multiple class="hidden" id="create-file-input" />
           </div>
           <div id="create-preview" class="flex flex-wrap gap-2 mt-3"></div>
@@ -198,6 +198,7 @@ const items = await db.select().from(eventos).orderBy(desc(eventos.fechaISO));
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
             <p class="text-sm text-gray-500">Agregá más imágenes al evento</p>
+            <p class="text-xs text-gray-400 mt-1">Máx 10 fotos por evento en total.</p>
             <input type="file" name="files" accept="image/*" multiple class="hidden" id="edit-file-input" />
           </div>
           <div id="edit-preview" class="flex flex-wrap gap-2 mt-3"></div>
