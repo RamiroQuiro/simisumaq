@@ -12,7 +12,7 @@ export default defineConfig({
   server: {
     host: true,
     port: 4324,
-    allowedHosts: ['asociacionsimisumaq.org', '172.16.3.94'],
+    allowedHosts: ['asociacionsimisumaq.org', '172.16.3.94','simisumaq.org'],
   },
   security: {
     checkOrigin: false,
