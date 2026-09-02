@@ -220,39 +220,112 @@ const items = await db.select().from(eventos).orderBy(desc(eventos.fechaISO));
     async function uploadFile(file) {
       const formData = new FormData();
       formData.append("file", file);
-      const res = await fetch("/api/upload", { method: "POST", body: formData });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
-      return data.url;
+      let res;
+      try {
+        res = await fetch("/api/upload", { method: "POST", body: formData });
+      } catch {
+        throw new Error("No se pudo conectar con el servidor al subir la imagen");
+      }
+      if (!res.ok) {
+        let msg = "Error al subir la imagen";
+        try { const errData = await res.json(); if (errData.error) msg = errData.error; } catch {}
+        throw new Error(msg);
+      }
+      try {
+        const data = await res.json();
+        return data.url;
+      } catch {
+        throw new Error("Respuesta inesperada del servidor al subir la imagen");
+      }
     }
 
-    function setupDropzone(dropzoneId, inputId, previewId) {
+    /* ---- Helpers de previews con drag & drop ---- */
+
+    function createThumb(file, idx, filesArr, rerenderFn) {
+      const thumb = document.createElement("div");
+      thumb.className = "relative w-16 h-16 rounded-lg overflow-hidden border border-gray-200 group/img cursor-grab active:cursor-grabbing";
+      thumb.draggable = true;
+      thumb.dataset.index = String(idx);
+      const img = document.createElement("img");
+      img.className = "w-full h-full object-cover pointer-events-none";
+      img.src = URL.createObjectURL(file);
+      img.alt = file.name;
+      thumb.appendChild(img);
+
+      const rmBtn = document.createElement("button");
+      rmBtn.type = "button";
+      rmBtn.className = "absolute top-0 right-0 w-5 h-5 bg-red-500 text-white rounded-bl-lg text-xs flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity z-10";
+      rmBtn.textContent = "\u2715";
+      rmBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        URL.revokeObjectURL(img.src);
+        filesArr.splice(idx, 1);
+        rerenderFn();
+      });
+      thumb.appendChild(rmBtn);
+
+      thumb.addEventListener("dragstart", (e) => {
+        e.dataTransfer.setData("text/plain", String(idx));
+        thumb.classList.add("opacity-50");
+      });
+      thumb.addEventListener("dragend", () => thumb.classList.remove("opacity-50"));
+      thumb.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "move";
+        thumb.classList.add("border-red-400");
+      });
+      thumb.addEventListener("dragleave", () => thumb.classList.remove("border-red-400"));
+      thumb.addEventListener("drop", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        thumb.classList.remove("border-red-400");
+        const fromIdx = parseInt(e.dataTransfer.getData("text/plain"), 10);
+        const toIdx = parseInt(thumb.dataset.index, 10);
+        if (fromIdx !== toIdx && !isNaN(fromIdx)) {
+          const [moved] = filesArr.splice(fromIdx, 1);
+          filesArr.splice(toIdx, 0, moved);
+          rerenderFn();
+        }
+      });
+
+      return thumb;
+    }
+
+    function renderPreviews(container, filesArr, rerenderFn) {
+      container.innerHTML = "";
+      filesArr.forEach((file, i) => {
+        container.appendChild(createThumb(file, i, filesArr, rerenderFn));
+      });
+    }
+
+    /* ---- Dropzone para múltiples archivos (galería) ---- */
+
+    function setupDropzone(dropzoneId, inputId, previewId, filesArr) {
       const dropzone = document.getElementById(dropzoneId);
       const input = document.getElementById(inputId);
       const preview = document.getElementById(previewId);
+      const rerender = () => renderPreviews(preview, filesArr, rerender);
 
       dropzone.addEventListener("click", () => input.click());
       dropzone.addEventListener("dragover", (e) => { e.preventDefault(); dropzone.classList.add("border-red-400", "bg-red-50"); });
-      dropzone.addEventListener("dragleave", () => { dropzone.classList.remove("border-red-400", "bg-red-50"); });
+      dropzone.addEventListener("dragleave", () => dropzone.classList.remove("border-red-400", "bg-red-50"));
       dropzone.addEventListener("drop", (e) => {
         e.preventDefault();
         dropzone.classList.remove("border-red-400", "bg-red-50");
-        if (e.dataTransfer.files.length) { input.files = e.dataTransfer.files; input.dispatchEvent(new Event("change")); }
+        if (e.dataTransfer.files.length) {
+          for (const file of e.dataTransfer.files) filesArr.push(file);
+          rerender();
+          input.value = "";
+        }
       });
       input.addEventListener("change", () => {
-        for (const file of input.files) {
-          const thumb = document.createElement("div");
-          thumb.className = "relative w-16 h-16 rounded-lg overflow-hidden border border-gray-200";
-          thumb.innerHTML = '<img class="w-full h-full object-cover" />';
-          thumb.querySelector("img").src = URL.createObjectURL(file);
-          thumb.dataset.file = file.name;
-          preview.appendChild(thumb);
-        }
+        for (const file of input.files) filesArr.push(file);
+        rerender();
+        input.value = "";
       });
     }
 
-    setupDropzone("create-dropzone", "create-file-input", "create-preview");
-    setupDropzone("edit-dropzone", "edit-file-input", "edit-preview");
+    /* ---- Dropzone para un solo archivo (portada) ---- */
 
     function setupSingleDropzone(dropzoneId, inputId, previewId, hiddenInputId) {
       const dropzone = document.getElementById(dropzoneId);
@@ -262,7 +335,7 @@ const items = await db.select().from(eventos).orderBy(desc(eventos.fechaISO));
 
       dropzone.addEventListener("click", () => input.click());
       dropzone.addEventListener("dragover", (e) => { e.preventDefault(); dropzone.classList.add("border-red-400", "bg-red-50"); });
-      dropzone.addEventListener("dragleave", () => { dropzone.classList.remove("border-red-400", "bg-red-50"); });
+      dropzone.addEventListener("dragleave", () => dropzone.classList.remove("border-red-400", "bg-red-50"));
       dropzone.addEventListener("drop", (e) => {
         e.preventDefault();
         dropzone.classList.remove("border-red-400", "bg-red-50");
@@ -271,15 +344,37 @@ const items = await db.select().from(eventos).orderBy(desc(eventos.fechaISO));
       input.addEventListener("change", () => {
         if (input.files.length) {
           const file = input.files[0];
-          const thumb = document.createElement("div");
-          thumb.className = "relative w-24 h-16 rounded-lg overflow-hidden border border-gray-200";
-          thumb.innerHTML = '<img class="w-full h-full object-cover" />';
-          thumb.querySelector("img").src = URL.createObjectURL(file);
           preview.innerHTML = "";
+          const thumb = document.createElement("div");
+          thumb.className = "relative w-24 h-16 rounded-lg overflow-hidden border border-gray-200 group/img";
+          const img = document.createElement("img");
+          img.className = "w-full h-full object-cover";
+          img.src = URL.createObjectURL(file);
+          thumb.appendChild(img);
+
+          const rmBtn = document.createElement("button");
+          rmBtn.type = "button";
+          rmBtn.className = "absolute top-0 right-0 w-5 h-5 bg-red-500 text-white rounded-bl-lg text-xs flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity z-10";
+          rmBtn.textContent = "\u2715";
+          rmBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            URL.revokeObjectURL(img.src);
+            preview.innerHTML = "";
+            input.value = "";
+            hiddenInput.value = "";
+          });
+          thumb.appendChild(rmBtn);
           preview.appendChild(thumb);
         }
       });
     }
+
+    /* ---- Inicializar dropzones ---- */
+
+    let createFiles = [];
+    setupDropzone("create-dropzone", "create-file-input", "create-preview", createFiles);
+    let editFiles = [];
+    setupDropzone("edit-dropzone", "edit-file-input", "edit-preview", editFiles);
 
     setupSingleDropzone("create-cover-dropzone", "create-cover-input", "create-cover-preview", "create-cover-url");
     setupSingleDropzone("edit-cover-dropzone", "edit-cover-input", "edit-cover-preview", "edit-cover-url");
@@ -293,15 +388,16 @@ const items = await db.select().from(eventos).orderBy(desc(eventos.fechaISO));
     });
 
     /* ---- Create Modal ---- */
-    let createExistingImages = [];
 
     document.getElementById("btn-create").addEventListener("click", () => {
-      createExistingImages = [];
+      createFiles.length = 0;
       document.getElementById("create-preview").innerHTML = "";
       document.getElementById("create-imagenes").value = "[]";
       document.getElementById("create-descripcion-hidden").value = "";
       document.getElementById("create-cover-url").value = "";
       document.getElementById("create-cover-preview").innerHTML = "";
+      document.getElementById("create-cover-input").value = "";
+      document.getElementById("create-file-input").value = "";
       window.dispatchEvent(new CustomEvent("rich-editor-load:create-editor", { detail: { content: "" } }));
       document.getElementById("create-modal").classList.remove("hidden");
     });
@@ -315,7 +411,6 @@ const items = await db.select().from(eventos).orderBy(desc(eventos.fechaISO));
     document.getElementById("create-form").addEventListener("submit", async (e) => {
       e.preventDefault();
       const form = e.target;
-      const fileInput = document.getElementById("create-file-input");
       const status = document.getElementById("create-upload-status");
       const submitBtn = document.getElementById("create-submit");
 
@@ -349,9 +444,9 @@ const items = await db.select().from(eventos).orderBy(desc(eventos.fechaISO));
           coverUrl = await uploadFile(coverInput.files[0]);
         }
 
-        const urls = [...createExistingImages];
-        if (fileInput.files.length) {
-          for (const file of fileInput.files) {
+        const urls = [];
+        if (createFiles.length) {
+          for (const file of createFiles) {
             status.textContent = "Subiendo " + file.name + "...";
             const url = await uploadFile(file);
             urls.push(url);
@@ -374,6 +469,61 @@ const items = await db.select().from(eventos).orderBy(desc(eventos.fechaISO));
     /* ---- Edit Modal ---- */
     let editExistingImages = [];
 
+    function renderEditExistingImages(container) {
+      container.innerHTML = "";
+      editExistingImages.forEach((url, i) => {
+        const thumb = document.createElement("div");
+        thumb.className = "relative w-16 h-16 rounded-lg overflow-hidden border border-gray-200 group/img cursor-grab active:cursor-grabbing";
+        thumb.draggable = true;
+        thumb.dataset.index = String(i);
+        const img = document.createElement("img");
+        img.className = "w-full h-full object-cover pointer-events-none";
+        img.src = url;
+        thumb.appendChild(img);
+
+        const rmBtn = document.createElement("button");
+        rmBtn.type = "button";
+        rmBtn.className = "absolute top-0 right-0 w-5 h-5 bg-red-500 text-white rounded-bl-lg text-xs flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity z-10";
+        rmBtn.textContent = "\u2715";
+        rmBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const idx = editExistingImages.indexOf(url);
+          if (idx !== -1) editExistingImages.splice(idx, 1);
+          document.getElementById("edit-imagenes").value = JSON.stringify(editExistingImages);
+          renderEditExistingImages(container);
+        });
+        thumb.appendChild(rmBtn);
+
+        thumb.addEventListener("dragstart", (e) => {
+          e.dataTransfer.setData("text/plain", String(i));
+          thumb.classList.add("opacity-50");
+        });
+        thumb.addEventListener("dragend", () => thumb.classList.remove("opacity-50"));
+        thumb.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = "move";
+          thumb.classList.add("border-red-400");
+        });
+        thumb.addEventListener("dragleave", () => thumb.classList.remove("border-red-400"));
+        thumb.addEventListener("drop", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          thumb.classList.remove("border-red-400");
+          const fromIdx = parseInt(e.dataTransfer.getData("text/plain"), 10);
+          const toIdx = parseInt(thumb.dataset.index, 10);
+          if (fromIdx !== toIdx && !isNaN(fromIdx)) {
+            const [moved] = editExistingImages.splice(fromIdx, 1);
+            editExistingImages.splice(toIdx, 0, moved);
+            document.getElementById("edit-imagenes").value = JSON.stringify(editExistingImages);
+            renderEditExistingImages(container);
+          }
+        });
+
+        container.appendChild(thumb);
+      });
+      document.getElementById("edit-imagenes").value = JSON.stringify(editExistingImages);
+    }
+
     document.querySelectorAll(".btn-edit").forEach(btn => {
       btn.addEventListener("click", () => {
         document.getElementById("edit-id").value = btn.dataset.id;
@@ -383,7 +533,6 @@ const items = await db.select().from(eventos).orderBy(desc(eventos.fechaISO));
         document.getElementById("edit-descripcion-hidden").value = btn.dataset.descripcion;
         document.getElementById("edit-participantes").value = btn.dataset.participantes;
 
-        /* Load content into the edit RichTextEditor */
         window.dispatchEvent(new CustomEvent("rich-editor-load:edit-editor", {
           detail: { content: btn.dataset.descripcion || "" }
         }));
@@ -400,7 +549,7 @@ const items = await db.select().from(eventos).orderBy(desc(eventos.fechaISO));
           coverContainer.innerHTML = `
             <div class="relative w-32 h-20 rounded-lg overflow-hidden border border-gray-200 group/cover">
               <img class="w-full h-full object-cover" src="${currentCover}" />
-              <button type="button" class="absolute inset-0 bg-red-500/70 text-white text-xs opacity-0 group-hover/cover:opacity-100 transition-opacity" id="remove-cover">✕ Quitar</button>
+              <button type="button" class="absolute inset-0 bg-red-500/70 text-white text-xs opacity-0 group-hover/cover:opacity-100 transition-opacity" id="remove-cover">\u2715 Quitar</button>
             </div>
           `;
           document.getElementById("remove-cover").addEventListener("click", () => {
@@ -411,30 +560,14 @@ const items = await db.select().from(eventos).orderBy(desc(eventos.fechaISO));
           coverContainer.innerHTML = '<span class="text-sm text-gray-400">Sin portada</span>';
         }
         document.getElementById("edit-cover-preview").innerHTML = "";
+        document.getElementById("edit-cover-input").value = "";
 
-        const currentContainer = document.getElementById("edit-current-images");
-        currentContainer.innerHTML = "";
-        editExistingImages.forEach((url, i) => {
-          const thumb = document.createElement("div");
-          thumb.className = "relative w-16 h-16 rounded-lg overflow-hidden border border-gray-200 group/img";
-          thumb.innerHTML = `
-            <img class="w-full h-full object-cover" src="${url}" />
-            <button type="button" class="absolute inset-0 bg-red-500/70 text-white text-xs opacity-0 group-hover/img:opacity-100 transition-opacity" data-remove="${i}">✕</button>
-          `;
-          currentContainer.appendChild(thumb);
-        });
-
-        currentContainer.querySelectorAll("[data-remove]").forEach(btn => {
-          btn.addEventListener("click", () => {
-            const idx = parseInt(btn.dataset.remove);
-            editExistingImages.splice(idx, 1);
-            btn.parentElement.remove();
-          });
-        });
-
-        document.getElementById("edit-imagenes").value = JSON.stringify(editExistingImages);
+        editFiles.length = 0;
         document.getElementById("edit-preview").innerHTML = "";
         document.getElementById("edit-file-input").value = "";
+
+        const currentContainer = document.getElementById("edit-current-images");
+        renderEditExistingImages(currentContainer);
 
         document.getElementById("edit-modal").classList.remove("hidden");
       });
@@ -448,7 +581,6 @@ const items = await db.select().from(eventos).orderBy(desc(eventos.fechaISO));
 
     document.getElementById("edit-form").addEventListener("submit", async (e) => {
       e.preventDefault();
-      const fileInput = document.getElementById("edit-file-input");
       const status = document.getElementById("edit-upload-status");
       const submitBtn = document.getElementById("edit-submit");
 
@@ -481,11 +613,11 @@ const items = await db.select().from(eventos).orderBy(desc(eventos.fechaISO));
         }
 
         const urls = [...editExistingImages];
-        if (fileInput.files.length) {
+        if (editFiles.length) {
           status.textContent = "Subiendo nuevas imágenes...";
           status.className = "text-sm text-center py-2 text-gray-500";
           status.classList.remove("hidden");
-          for (const file of fileInput.files) {
+          for (const file of editFiles) {
             status.textContent = "Subiendo " + file.name + "...";
             const url = await uploadFile(file);
             urls.push(url);
