@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # SQLite database
 data/
+
+
+public/galeria/
