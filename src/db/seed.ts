@@ -1,6 +1,6 @@
 import { createClient } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
-import { users, equipo, eventos, proyectos, galeria, tienda, testimonios, servicios, comision } from "./schema";
+import { users, equipo, eventos, proyectos, galeria, tienda, testimonios, servicios, comision, configuracion } from "./schema";
 import { resolve } from "path";
 import { readFileSync, mkdirSync, existsSync, readdirSync } from "fs";
 import bcrypt from "bcryptjs";
@@ -150,6 +150,9 @@ async function seed() {
     }
     console.log(`  ✅ ${testFiles.length} testimonios seeded`);
   }
+
+  await db.insert(configuracion).values({ key: "hero_image", value: "/hero-image.webp" });
+  console.log("  ✅ configuracion seeded");
 
   console.log("🎉 Database seeded successfully!");
 }

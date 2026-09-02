@@ -2,9 +2,15 @@
 import { ArrowRight } from "lucide-react";
 import Button from "../../components/atomos/Button";
 import Section from "../../components/organismos/Section.astro";
+import { db } from "../../db/client";
+import { configuracion } from "../../db/schema";
+import { eq } from "drizzle-orm";
+
+const rows = await db.select().from(configuracion).where(eq(configuracion.key, "hero_image"));
+const heroImage = rows[0]?.value || "/hero-image.webp";
 ---
 
-<Section isBackgroundFoto id="inicio" srcFotoBackground="/hero-image.webp">
+<Section isBackgroundFoto id="inicio" srcFotoBackground={heroImage}>
   <div class="max-w-2xl">
     <h1
       class="text-5xl md:text-6xl lg:text-7xl font-bold text-primary-textoTitle mb-6 leading-tight"

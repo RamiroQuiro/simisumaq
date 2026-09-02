@@ -63,6 +63,7 @@ export const comision = sqliteTable("comision", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   cargo: text("cargo").notNull(),
   nombre: text("nombre").notNull(),
+  foto: text("foto"),
 });
 
 export const servicios = sqliteTable("servicios", {
@@ -72,4 +73,10 @@ export const servicios = sqliteTable("servicios", {
   items: text("items").notNull().default("[]"),
   orden: integer("orden").default(99),
   cover: text("cover"),
+});
+
+export const configuracion = sqliteTable("configuracion", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  key: text("key").notNull().unique(),
+  value: text("value").notNull(),
 });

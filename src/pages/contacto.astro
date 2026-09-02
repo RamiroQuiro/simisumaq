@@ -1,6 +1,6 @@
 ---
 export const prerender = true;
-import Layout, { FACEBOOK, INSTAGRAM, YOUTUBE } from "../layouts/Layout.astro";
+import Layout, { FACEBOOK, INSTAGRAM, LINKEDIN, YOUTUBE } from "../layouts/Layout.astro";
 import Section from "../components/organismos/Section.astro";
 import Button from "../components/atomos/Button";
 import Input from "../components/atomos/Input";
@@ -9,6 +9,7 @@ import {
   Phone,
   Facebook,
   Instagram,
+  Linkedin,
   Twitter,
   Send,
   MessageCircle,
@@ -51,7 +52,13 @@ const socialMedia = [
     icon: Youtube,
     name: "Youtube",
     link: YOUTUBE,
-    color: "hover:text-pink-600",
+    color: "hover:text-red-600",
+  },
+  {
+    icon: Linkedin,
+    name: "LinkedIn",
+    link: LINKEDIN,
+    color: "hover:text-blue-700",
   },
 ];
 ---

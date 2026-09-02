@@ -1,6 +1,6 @@
 ---
-import { Facebook, Heart, Instagram, Twitter, Youtube } from "lucide-react";
-import { FACEBOOK, INSTAGRAM, YOUTUBE } from "../../layouts/Layout.astro";
+import { Facebook, Heart, Instagram, Linkedin, Youtube } from "lucide-react";
+import { FACEBOOK, INSTAGRAM, LINKEDIN, YOUTUBE } from "../../layouts/Layout.astro";
 
 const socialMedia = [
   {
@@ -19,7 +19,13 @@ const socialMedia = [
     icon: Youtube,
     name: "Youtube",
     link: YOUTUBE,
-    color: "hover:text-pink-600",
+    color: "hover:text-red-600",
+  },
+  {
+    icon: Linkedin,
+    name: "LinkedIn",
+    link: LINKEDIN,
+    color: "hover:text-blue-700",
   },
 ];
 ---
@@ -50,11 +56,6 @@ const socialMedia = [
           <li>
             <a href="/equipo" class="hover:text-white transition-colors"
               >Equipo</a
-            >
-          </li>
-          <li>
-            <a href="/que-hacemos" class="hover:text-white transition-colors"
-              >Qué Hacemos</a
             >
           </li>
           <li>

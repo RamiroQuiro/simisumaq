@@ -27,12 +27,13 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   const formData = await request.formData();
   const cargo = formData.get("cargo") as string;
   const nombre = formData.get("nombre") as string;
+  const foto = formData.get("foto") as string || null;
 
   if (!cargo || !nombre) {
     return new Response(JSON.stringify({ error: "Missing fields" }), { status: 400 });
   }
 
-  await db.insert(comision).values({ cargo, nombre });
+  await db.insert(comision).values({ cargo, nombre, foto });
   return redirect("/admin/comision");
 };
 
