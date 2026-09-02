@@ -3,7 +3,7 @@ import { writeFileSync, existsSync, mkdirSync, readdirSync, statSync } from "fs"
 import { resolve, extname, join } from "path";
 import sharp from "sharp";
 
-const UPLOAD_DIR = resolve(process.cwd(), "public/galeria");
+const UPLOAD_DIR = resolve(process.cwd(), "data/galeria");
 const MAX_INPUT_SIZE = 15 * 1024 * 1024; // Permite hasta 15MB antes de optimizar
 const MAX_TOTAL_STORAGE = 1000 * 1024 * 1024; // 1GB total
 const ALLOWED_TYPES = [
