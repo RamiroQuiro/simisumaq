@@ -16,10 +16,6 @@ import {
   Calendar,
   Users,
   Share2,
-  Heart,
-  Gift,
-  HandHeart,
-  Stethoscope,
 } from "lucide-react";
 
 const ways = [
@@ -55,13 +51,6 @@ const ways = [
     action: "Compartir",
     href: "https://wa.me/543855063501?text=Hola,%20quiero%20ayudar%20a%20difundir%20su%20causa",
   },
-];
-
-const necesidades = [
-  { item: "Insumos Médicos", icon: Stethoscope },
-  { item: "Juguetes Didácticos", icon: Gift },
-  { item: "Ropa para Niños", icon: Heart },
-  { item: "Alimentos no Perecederos", icon: HandHeart },
 ];
 ---
 
@@ -114,90 +103,6 @@ const necesidades = [
             );
           })
         }
-      </div>
-    </div>
-  </Section>
-
-  <Section id="donaciones-materiales" class="py-24 bg-primary-bg-claro">
-    <div class="max-w-5xl mx-auto">
-      <div class="grid md:grid-cols-2 gap-12 items-center">
-        <div>
-          <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-6">
-            Donaciones Materiales
-          </h2>
-          <p class="text-lg text-muted-foreground mb-8">
-            Además de aportes económicos, recibimos donaciones de insumos y
-            materiales que son vitales para nuestras jornadas y el
-            acompañamiento a las familias.
-          </p>
-
-          <div class="grid grid-cols-2 gap-4">
-            {
-              necesidades.map((nec) => {
-                const Icon = nec.icon;
-                return (
-                  <div class="bg-white p-4 rounded-xl shadow-sm flex items-center gap-3">
-                    <Icon className="h-5 w-5 text-primary-100" />
-                    <span class="font-medium text-primary-textoTitle">
-                      {nec.item}
-                    </span>
-                  </div>
-                );
-              })
-            }
-          </div>
-
-          <div class="mt-8">
-            <Button
-              href="https://wa.me/543855063501?text=Hola,%20quiero%20coordinar%20una%20entrega%20de%20donaciones"
-              target="_blank"
-              rel="noopener noreferrer"
-              variant="secondary"
-            >
-              Coordinar Entrega
-            </Button>
-          </div>
-        </div>
-
-        <div class="relative">
-          <div
-            class="absolute inset-0 bg-gradient-to-br from-primary-100 to-primary-200 rounded-2xl transform rotate-3 opacity-20"
-          >
-          </div>
-          <div
-            class="bg-white border border-primary-border p-8 rounded-2xl shadow-md relative"
-          >
-            <h3 class="text-xl font-bold text-primary-textoTitle mb-4">
-              Datos Bancarios
-            </h3>
-            <div class="space-y-4 text-muted-foreground">
-              <div>
-                <p class="text-sm font-semibold text-primary-100">Banco</p>
-                <p>Banco Nación</p>
-              </div>
-              <div>
-                <p class="text-sm font-semibold text-primary-100">Titular</p>
-                <p>Asociación Civil Simi Sumaq</p>
-              </div>
-              <div>
-                <p class="text-sm font-semibold text-primary-100">CBU</p>
-                <p class="font-mono bg-gray-100 p-2 rounded text-sm">
-                  0110123456789012345678
-                </p>
-              </div>
-              <div>
-                <p class="text-sm font-semibold text-primary-100">Alias</p>
-                <p class="font-mono bg-gray-100 p-2 rounded text-sm">
-                  ASOCIACION.SIMISUMAQ
-                </p>
-              </div>
-              <div>
-                <p class="text-sm font-semibold text-primary-100">CUIT</p>
-                <p>30-71606383-2</p>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </Section>
