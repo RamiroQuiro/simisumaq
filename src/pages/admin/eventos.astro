@@ -579,6 +579,9 @@ const items = await db.select().from(eventos).orderBy(desc(eventos.fechaISO));
 
         const currentContainer = document.getElementById("edit-current-images");
         renderEditExistingImages(currentContainer);
+        } catch (err) {
+          console.error("Error loading evento:", err);
+        }
       });
     });
     document.getElementById("edit-overlay").addEventListener("click", () => {
