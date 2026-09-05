@@ -181,29 +181,39 @@ const links = [
   </div>
 </nav>
 
-<script is:inline>
+<script>
+  let cleanup: (() => void) | null = null;
+
   function setupNavbar() {
+    if (cleanup) cleanup();
+
     const mobileMenuBtn = document.getElementById("mobile-menu-btn");
     const mobileMenu = document.getElementById("mobile-menu");
     const menuIcon = document.getElementById("menu-icon");
     const closeIcon = document.getElementById("close-icon");
 
-    if (mobileMenuBtn && mobileMenu && menuIcon && closeIcon) {
-      mobileMenuBtn.addEventListener("click", () => {
-        mobileMenu.classList.toggle("hidden");
-        menuIcon.classList.toggle("hidden");
-        closeIcon.classList.toggle("hidden");
-      });
+    if (!mobileMenuBtn || !mobileMenu || !menuIcon || !closeIcon) return;
 
-      const mobileLinks = mobileMenu.querySelectorAll("a");
-      mobileLinks.forEach((link) => {
-        link.addEventListener("click", () => {
-          mobileMenu.classList.add("hidden");
-          menuIcon.classList.remove("hidden");
-          closeIcon.classList.add("hidden");
-        });
-      });
-    }
+    const handleClick = () => {
+      mobileMenu.classList.toggle("hidden");
+      menuIcon.classList.toggle("hidden");
+      closeIcon.classList.toggle("hidden");
+    };
+
+    mobileMenuBtn.addEventListener("click", handleClick);
+
+    const mobileLinks = mobileMenu.querySelectorAll("a");
+    const handleLinkClick = () => {
+      mobileMenu.classList.add("hidden");
+      menuIcon.classList.remove("hidden");
+      closeIcon.classList.add("hidden");
+    };
+    mobileLinks.forEach((link) => link.addEventListener("click", handleLinkClick));
+
+    cleanup = () => {
+      mobileMenuBtn.removeEventListener("click", handleClick);
+      mobileLinks.forEach((link) => link.removeEventListener("click", handleLinkClick));
+    };
   }
 
   setupNavbar();
