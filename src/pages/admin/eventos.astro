@@ -46,10 +46,7 @@ const items = await db.select().from(eventos).orderBy(desc(eventos.fechaISO));
               data-titulo={item.titulo}
               data-fecha={item.fecha}
               data-fechaiso={item.fechaISO || ""}
-              data-descripcion={item.descripcion}
               data-participantes={item.participantes}
-              data-imagenes={item.imagenes}
-              data-cover={item.cover || ""}
             >
               <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -90,7 +87,7 @@ const items = await db.select().from(eventos).orderBy(desc(eventos.fechaISO));
           <input type="hidden" name="descripcion" id="create-descripcion-hidden" value="" />
           <div id="create-editor-container">
             <RichTextEditor
-              client:load
+              client:idle
               content=""
               editorKey="create-editor"
             />
@@ -160,7 +157,7 @@ const items = await db.select().from(eventos).orderBy(desc(eventos.fechaISO));
           <input type="hidden" name="descripcion" id="edit-descripcion-hidden" value="" />
           <div id="edit-editor-container">
             <RichTextEditor
-              client:load
+              client:idle
               content=""
               editorKey="edit-editor"
             />
@@ -533,6 +530,16 @@ const items = await db.select().from(eventos).orderBy(desc(eventos.fechaISO));
         document.getElementById("edit-fecha-texto").value = btn.dataset.fecha;
         document.getElementById("edit-participantes").value = btn.dataset.participantes;
 
+        document.getElementById("edit-descripcion-hidden").value = "";
+        editExistingImages = [];
+        document.getElementById("edit-current-images").innerHTML = "";
+        document.getElementById("edit-cover-current").innerHTML = '<span class="text-sm text-gray-400">Cargando...</span>';
+        document.getElementById("edit-cover-url").value = "";
+        document.getElementById("edit-preview").innerHTML = "";
+        editFiles.length = 0;
+
+        document.getElementById("edit-modal").classList.remove("hidden");
+
         try {
           const res = await fetch("/api/eventos?id=" + id);
           const evento = await res.json();
@@ -572,8 +579,6 @@ const items = await db.select().from(eventos).orderBy(desc(eventos.fechaISO));
 
         const currentContainer = document.getElementById("edit-current-images");
         renderEditExistingImages(currentContainer);
-
-        document.getElementById("edit-modal").classList.remove("hidden");
       });
     });
     document.getElementById("edit-overlay").addEventListener("click", () => {

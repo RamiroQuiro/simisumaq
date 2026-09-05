@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
-import { writeFileSync, existsSync, mkdirSync, readdirSync, statSync } from "fs";
+import { writeFileSync, existsSync, mkdirSync } from "fs";
+import { readdir, stat } from "fs/promises";
 import { resolve, extname, join } from "path";
 import sharp from "sharp";
 
@@ -26,16 +27,17 @@ if (!existsSync(UPLOAD_DIR)) {
   mkdirSync(UPLOAD_DIR, { recursive: true });
 }
 
-function getDirSize(dir: string): number {
+async function getDirSize(dir: string): Promise<number> {
   let total = 0;
   if (!existsSync(dir)) return 0;
-  for (const entry of readdirSync(dir)) {
+  const entries = await readdir(dir);
+  for (const entry of entries) {
     const fullPath = join(dir, entry);
-    const stat = statSync(fullPath);
-    if (stat.isDirectory()) {
-      total += getDirSize(fullPath);
+    const s = await stat(fullPath);
+    if (s.isDirectory()) {
+      total += await getDirSize(fullPath);
     } else {
-      total += stat.size;
+      total += s.size;
     }
   }
   return total;
@@ -74,7 +76,7 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    const currentUsage = getDirSize(UPLOAD_DIR);
+    const currentUsage = await getDirSize(UPLOAD_DIR);
     if (currentUsage + file.size > MAX_TOTAL_STORAGE) {
       const remainingMB = ((MAX_TOTAL_STORAGE - currentUsage) / 1024 / 1024).toFixed(1);
       return new Response(
@@ -123,7 +125,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     writeFileSync(filepath, finalBuffer);
 
-    const newUsage = getDirSize(UPLOAD_DIR);
+    const newUsage = await getDirSize(UPLOAD_DIR);
     const originalSizeStr = formatBytes(file.size);
     const compressedSizeStr = formatBytes(finalBuffer.length);
     const usageMB = (newUsage / 1024 / 1024).toFixed(1);
