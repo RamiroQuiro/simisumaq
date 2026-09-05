@@ -525,24 +525,28 @@ const items = await db.select().from(eventos).orderBy(desc(eventos.fechaISO));
     }
 
     document.querySelectorAll(".btn-edit").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.getElementById("edit-id").value = btn.dataset.id;
+      btn.addEventListener("click", async () => {
+        const id = btn.dataset.id;
+        document.getElementById("edit-id").value = id;
         document.getElementById("edit-titulo").value = btn.dataset.titulo;
         document.getElementById("edit-fechaISO").value = btn.dataset.fechaiso;
         document.getElementById("edit-fecha-texto").value = btn.dataset.fecha;
-        document.getElementById("edit-descripcion-hidden").value = btn.dataset.descripcion;
         document.getElementById("edit-participantes").value = btn.dataset.participantes;
 
-        window.dispatchEvent(new CustomEvent("rich-editor-load:edit-editor", {
-          detail: { content: btn.dataset.descripcion || "" }
-        }));
-
         try {
-          editExistingImages = JSON.parse(btn.dataset.imagenes || "[]");
-        } catch { editExistingImages = []; }
+          const res = await fetch("/api/eventos?id=" + id);
+          const evento = await res.json();
+          document.getElementById("edit-descripcion-hidden").value = evento.descripcion || "";
+          window.dispatchEvent(new CustomEvent("rich-editor-load:edit-editor", {
+            detail: { content: evento.descripcion || "" }
+          }));
 
-        const currentCover = btn.dataset.cover || "";
-        document.getElementById("edit-cover-url").value = currentCover;
+          try {
+            editExistingImages = JSON.parse(evento.imagenes || "[]");
+          } catch { editExistingImages = []; }
+
+          const currentCover = evento.cover || "";
+          document.getElementById("edit-cover-url").value = currentCover;
         const coverContainer = document.getElementById("edit-cover-current");
         coverContainer.innerHTML = "";
         if (currentCover) {
