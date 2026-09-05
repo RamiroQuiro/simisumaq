@@ -87,7 +87,7 @@ const items = await db.select().from(eventos).orderBy(desc(eventos.fechaISO));
           <input type="hidden" name="descripcion" id="create-descripcion-hidden" value="" />
           <div id="create-editor-container">
             <RichTextEditor
-              client:idle
+              client:load
               content=""
               editorKey="create-editor"
             />
@@ -157,7 +157,7 @@ const items = await db.select().from(eventos).orderBy(desc(eventos.fechaISO));
           <input type="hidden" name="descripcion" id="edit-descripcion-hidden" value="" />
           <div id="edit-editor-container">
             <RichTextEditor
-              client:idle
+              client:load
               content=""
               editorKey="edit-editor"
             />
