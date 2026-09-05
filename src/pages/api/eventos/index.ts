@@ -44,13 +44,6 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     imagenes = [];
   }
 
-  if (imagenes.length > 10) {
-    return new Response(
-      JSON.stringify({ error: "Límite superado: Se permite un máximo de 10 imágenes por evento." }),
-      { status: 400, headers: { "Content-Type": "application/json" } }
-    );
-  }
-
   await db.insert(eventos).values({ titulo, fecha, fechaISO: fechaISO || null, descripcion, participantes, imagenes: JSON.stringify(imagenes), cover: cover || null });
   return redirect("/admin/eventos");
 };
@@ -80,12 +73,6 @@ export const PUT: APIRoute = async ({ request, url }) => {
       imgs = typeof imagenes === "string" ? JSON.parse(imagenes) : imagenes;
     } catch {
       imgs = [];
-    }
-    if (imgs.length > 10) {
-      return new Response(
-        JSON.stringify({ error: "Límite superado: Se permite un máximo de 10 imágenes por evento." }),
-        { status: 400, headers: { "Content-Type": "application/json" } }
-      );
     }
   }
 
