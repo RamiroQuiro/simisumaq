@@ -61,11 +61,23 @@ export const PUT: APIRoute = async ({ request, url }) => {
     return new Response(JSON.stringify({ error: "Missing id" }), { status: 400 });
   }
 
-  const data = await request.json();
-  if (data.imagenes) {
-    let imgs: string[] = [];
+  let data;
+  try {
+    data = await request.json();
+  } catch {
+    return new Response(JSON.stringify({ error: "Invalid JSON" }), { status: 400 });
+  }
+
+  const { titulo, fecha, fechaISO, descripcion, participantes, imagenes, cover } = data;
+
+  if (!titulo || !fecha || !descripcion || !participantes) {
+    return new Response(JSON.stringify({ error: "Faltan campos obligatorios" }), { status: 400 });
+  }
+
+  let imgs: string[] = [];
+  if (imagenes) {
     try {
-      imgs = typeof data.imagenes === "string" ? JSON.parse(data.imagenes) : data.imagenes;
+      imgs = typeof imagenes === "string" ? JSON.parse(imagenes) : imagenes;
     } catch {
       imgs = [];
     }
@@ -77,7 +89,16 @@ export const PUT: APIRoute = async ({ request, url }) => {
     }
   }
 
-  await db.update(eventos).set(data).where(eq(eventos.id, parseInt(id)));
+  await db.update(eventos).set({
+    titulo,
+    fecha,
+    fechaISO: fechaISO || null,
+    descripcion,
+    participantes,
+    imagenes: JSON.stringify(imgs),
+    cover: cover || null,
+  }).where(eq(eventos.id, parseInt(id)));
+
   return new Response(JSON.stringify({ success: true }), {
     headers: { "Content-Type": "application/json" },
   });
