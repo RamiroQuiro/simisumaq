@@ -1,10 +1,10 @@
 import type { APIRoute } from "astro";
 import { db } from "../../../db/client";
 import { eventos } from "../../../db/schema";
-import { eq, desc, sql } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 
 const MAX_IMGS_PER_EVENT = 20;
-const MAX_IMGS_TOTAL = 150;
+const MAX_IMGS_TOTAL = 300;
 
 async function countTotalImages(): Promise<number> {
   const rows = await db.select({ imagenes: eventos.imagenes }).from(eventos);
