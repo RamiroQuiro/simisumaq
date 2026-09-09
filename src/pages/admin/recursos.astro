@@ -1,0 +1,267 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+import { db } from "../../db/client";
+import { recursos } from "../../db/schema";
+import { desc } from "drizzle-orm";
+
+const items = await db.select().from(recursos).orderBy(desc(recursos.fecha));
+---
+
+<AdminLayout title="Recursos">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">Recursos</h1>
+      <p class="text-gray-500 mt-1">{items.length} recursos (PDFs)</p>
+    </div>
+    <button
+      id="btn-create"
+      class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-red-500 to-orange-500 text-white text-sm font-medium hover:from-red-600 hover:to-orange-600 transition-all"
+    >
+      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+      </svg>
+      Subir recurso
+    </button>
+  </div>
+
+  <div class="space-y-4">
+    {items.length === 0 && (
+      <div class="text-center py-12 text-gray-400">
+        <svg class="h-12 w-12 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+        </svg>
+        <p>No hay recursos subidos todavía</p>
+      </div>
+    )}
+    {items.map((item) => (
+      <div class="bg-white rounded-xl border border-gray-200 p-4 sm:p-6">
+        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 mb-2">
+              {item.categoria && (
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
+                  {item.categoria}
+                </span>
+              )}
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
+                PDF
+              </span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-1">{item.titulo}</h3>
+            {item.descripcion && (
+              <p class="text-sm text-gray-500 mb-2">{item.descripcion}</p>
+            )}
+            <p class="text-xs text-gray-400">{item.fecha}</p>
+          </div>
+          <div class="flex items-center gap-2 sm:shrink-0">
+            <a
+              href={item.archivo}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="p-2 rounded-lg text-gray-400 hover:text-green-600 hover:bg-green-50 transition-colors"
+              title="Ver PDF"
+            >
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+            </a>
+            <button
+              class="btn-delete p-2 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+              data-id={item.id}
+              data-nombre={item.titulo}
+            >
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <!-- Create Modal -->
+  <div id="create-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="fixed inset-0 bg-black/50" id="create-overlay"></div>
+    <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-lg p-6">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4">Subir recurso</h3>
+      <form id="create-form" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Título *</label>
+          <input type="text" name="titulo" required placeholder="Ej: Flayer Campaña 2024" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+          <textarea name="descripcion" rows="2" placeholder="Descripción opcional del recurso" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
+          <select name="categoria" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
+            <option value="">Sin categoría</option>
+            <option value="Flayers">Flayers</option>
+            <option value="Guías">Guías</option>
+            <option value="Manuales">Manuales</option>
+            <option value="Otros">Otros</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Archivo PDF *</label>
+          <div id="create-dropzone" class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-red-400 transition-colors cursor-pointer">
+            <svg class="h-8 w-8 text-gray-400 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+            </svg>
+            <p class="text-sm text-gray-500">Click o arrastrá un PDF</p>
+            <p class="text-xs text-gray-400 mt-1">Máx 10MB</p>
+            <input type="file" accept=".pdf" class="hidden" id="create-file-input" />
+          </div>
+          <div id="create-preview" class="mt-2"></div>
+          <input type="hidden" name="archivo" id="create-archivo-url" value="" />
+        </div>
+        <div id="create-upload-status" class="hidden text-sm text-center py-2"></div>
+        <div class="flex gap-3 pt-2">
+          <button type="button" class="btn-cancel-create flex-1 px-4 py-2.5 rounded-lg border border-gray-300 text-gray-700 text-sm font-medium hover:bg-gray-50 transition-colors">
+            Cancelar
+          </button>
+          <button type="submit" id="create-submit" class="flex-1 px-4 py-2.5 rounded-lg bg-gradient-to-r from-red-500 to-orange-500 text-white text-sm font-medium hover:from-red-600 hover:to-orange-600 transition-all">
+            Subir
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script is:inline>
+    async function uploadPdf(file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      let res;
+      try {
+        res = await fetch("/api/upload-pdf", { method: "POST", body: formData });
+      } catch {
+        throw new Error("No se pudo conectar con el servidor");
+      }
+      if (!res.ok) {
+        let msg = "Error al subir el archivo";
+        try { const errData = await res.json(); if (errData.error) msg = errData.error; } catch {}
+        throw new Error(msg);
+      }
+      const data = await res.json();
+      return data.url;
+    }
+
+    /* Create modal */
+    document.getElementById("btn-create").addEventListener("click", () => {
+      document.getElementById("create-form").reset();
+      document.getElementById("create-archivo-url").value = "";
+      document.getElementById("create-preview").innerHTML = "";
+      document.getElementById("create-upload-status").classList.add("hidden");
+      document.getElementById("create-modal").classList.remove("hidden");
+    });
+    document.getElementById("create-overlay").addEventListener("click", () => {
+      document.getElementById("create-modal").classList.add("hidden");
+    });
+    document.querySelectorAll(".btn-cancel-create").forEach(b => b.addEventListener("click", () => {
+      document.getElementById("create-modal").classList.add("hidden");
+    }));
+
+    /* Dropzone */
+    const dropzone = document.getElementById("create-dropzone");
+    const fileInput = document.getElementById("create-file-input");
+    const preview = document.getElementById("create-preview");
+    let selectedFile = null;
+
+    dropzone.addEventListener("click", () => fileInput.click());
+    dropzone.addEventListener("dragover", (e) => { e.preventDefault(); dropzone.classList.add("border-red-400", "bg-red-50"); });
+    dropzone.addEventListener("dragleave", () => dropzone.classList.remove("border-red-400", "bg-red-50"));
+    dropzone.addEventListener("drop", (e) => {
+      e.preventDefault();
+      dropzone.classList.remove("border-red-400", "bg-red-50");
+      if (e.dataTransfer.files.length) {
+        selectedFile = e.dataTransfer.files[0];
+        showPreview(selectedFile);
+      }
+    });
+    fileInput.addEventListener("change", () => {
+      if (fileInput.files.length) {
+        selectedFile = fileInput.files[0];
+        showPreview(selectedFile);
+      }
+    });
+
+    function showPreview(file) {
+      preview.innerHTML = `
+        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+          <svg class="h-8 w-8 text-red-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+          </svg>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium text-gray-900 truncate">${file.name}</p>
+            <p class="text-xs text-gray-500">${(file.size / 1024 / 1024).toFixed(2)} MB</p>
+          </div>
+          <button type="button" id="remove-file" class="text-gray-400 hover:text-red-500">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      `;
+      document.getElementById("remove-file").addEventListener("click", () => {
+        selectedFile = null;
+        preview.innerHTML = "";
+        fileInput.value = "";
+        document.getElementById("create-archivo-url").value = "";
+      });
+    }
+
+    /* Submit */
+    document.getElementById("create-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const status = document.getElementById("create-upload-status");
+      const submitBtn = document.getElementById("create-submit");
+
+      if (!selectedFile) {
+        status.textContent = "Seleccioná un archivo PDF";
+        status.className = "text-sm text-center py-2 text-red-600";
+        status.classList.remove("hidden");
+        return;
+      }
+
+      submitBtn.disabled = true;
+      status.textContent = "Subiendo PDF...";
+      status.className = "text-sm text-center py-2 text-gray-500";
+      status.classList.remove("hidden");
+
+      try {
+        const archivoUrl = await uploadPdf(selectedFile);
+
+        const data = {
+          titulo: document.querySelector('[name="titulo"]').value,
+          descripcion: document.querySelector('[name="descripcion"]').value || null,
+          categoria: document.querySelector('[name="categoria"]').value || null,
+          archivo: archivoUrl,
+        };
+
+        await fetch("/api/recursos", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+        window.location.reload();
+      } catch (err) {
+        status.textContent = err.message;
+        status.className = "text-sm text-center py-2 text-red-600";
+        submitBtn.disabled = false;
+      }
+    });
+
+    /* Delete */
+    document.querySelectorAll(".btn-delete").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        if (!confirm('¿Eliminar "' + btn.dataset.nombre + '"?')) return;
+        await fetch("/api/recursos?id=" + btn.dataset.id, { method: "DELETE" });
+        window.location.reload();
+      });
+    });
+  </script>
+</AdminLayout>

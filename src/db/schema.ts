@@ -80,3 +80,12 @@ export const configuracion = sqliteTable("configuracion", {
   key: text("key").notNull().unique(),
   value: text("value").notNull(),
 });
+
+export const recursos = sqliteTable("recursos", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  titulo: text("titulo").notNull(),
+  descripcion: text("descripcion"),
+  archivo: text("archivo").notNull(),
+  categoria: text("categoria"),
+  fecha: text("fecha"),
+});
