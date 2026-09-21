@@ -4,7 +4,10 @@ import { db } from "../../db/client";
 import { configuracion } from "../../db/schema";
 import { eq } from "drizzle-orm";
 
-const rows = await db.select().from(configuracion).where(eq(configuracion.key, "hero_image"));
+const rows = await db
+  .select()
+  .from(configuracion)
+  .where(eq(configuracion.key, "hero_image"));
 const heroImage = rows[0]?.value || "/hero-image.webp";
 ---
 
@@ -16,11 +19,19 @@ const heroImage = rows[0]?.value || "/hero-image.webp";
       Multiplicando sonrisas
     </h1>
 
-    <p class="text-xl md:text-2xl text-primary-texto mb-8 leading-relaxed">
-      Cada 3 minutos nace un niño o niña con labio y/o paladar hendido . Tu
-      donación puede tranformar sonrisas y darles la oportunidad de de hacer con
-      confianza y superar sus miedos
-    </p>
+    <div class="text-xl md:text-2xl text-primary-texto mb-8 leading-relaxed">
+      <p class="text-xl md:text-2xl text-primary-texto leading-relaxed">
+        Detrás de cada fisura hay un <span class="font-bold text-accent"
+          >niño</span
+        >, Detrás de cada niño hay <span class="font-bold text-accent"
+          >una historia</span
+        >.
+      </p>
+      <p>
+        Tu donación puede tranformar sonrisas y darles la oportunidad de de
+        hacer con confianza y superar sus miedos
+      </p>
+    </div>
 
     <div class="mt-12 grid grid-cols-3 gap-6">
       <div>
@@ -34,7 +45,7 @@ const heroImage = rows[0]?.value || "/hero-image.webp";
         </div>
       </div>
       <div>
-        <div class="text-4xl font-bold text-accent mb-2">+10</div>
+        <div class="text-4xl font-bold text-accent mb-2">+8</div>
         <div class="text-sm text-muted-foreground">Años de impacto</div>
       </div>
     </div>

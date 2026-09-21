@@ -1,6 +1,11 @@
 ---
 import { Facebook, Heart, Instagram, Linkedin, Youtube } from "lucide-react";
-import { FACEBOOK, INSTAGRAM, LINKEDIN, YOUTUBE } from "../../layouts/Layout.astro";
+import {
+  FACEBOOK,
+  INSTAGRAM,
+  LINKEDIN,
+  YOUTUBE,
+} from "../../layouts/Layout.astro";
 
 const socialMedia = [
   {
@@ -119,6 +124,14 @@ const socialMedia = [
             class="hover:text-primary transition-colors"
           >
             <Youtube className="h-6 w-6" />
+          </a>
+          <a
+            href={LINKEDIN}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-primary transition-colors"
+          >
+            <Linkedin className="h-6 w-6" />
           </a>
         </div>
       </div>

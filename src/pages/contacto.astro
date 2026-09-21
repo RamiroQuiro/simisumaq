@@ -1,6 +1,11 @@
 ---
 export const prerender = true;
-import Layout, { FACEBOOK, INSTAGRAM, LINKEDIN, YOUTUBE } from "../layouts/Layout.astro";
+import Layout, {
+  FACEBOOK,
+  INSTAGRAM,
+  LINKEDIN,
+  YOUTUBE,
+} from "../layouts/Layout.astro";
 import Section from "../components/organismos/Section.astro";
 import Button from "../components/atomos/Button";
 import Input from "../components/atomos/Input";
@@ -32,6 +37,12 @@ const contactInfo = [
     title: "Telefono",
     value: "+54 9 385 506-3501",
     link: "tel:+543855063501",
+  },
+  {
+    icon: Phone,
+    title: "Telefono",
+    value: "+54 9 385 306-1667",
+    link: "tel:+543853061667",
   },
 ];
 
@@ -86,7 +97,7 @@ const socialMedia = [
         Informacion de Contacto
       </h2>
 
-      <div class="grid md:grid-cols-2 gap-8 mb-16">
+      <div class="grid md:grid-cols-3 gap-8 mb-16">
         {
           contactInfo.map((info) => {
             const Icon = info.icon;
