@@ -9,6 +9,7 @@
     "astro": "astro",
     "start": "node dist/server/entry.mjs",
     "seed": "tsx src/db/seed.ts",
+    "restore:colaborar": "tsx src/db/restore-colaborar.ts",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio"
   },

@@ -9,57 +9,34 @@ import {
   CardHeader,
   CardTitle,
 } from "../../components/organismos/Card";
-const ways = [
-  {
-    icon: DollarSign,
-    title: "Donación Única",
-    description:
-      "Haz una diferencia inmediata con una donación única. $150.000 puede cambiar una vida para siempre.",
-    action: "Donar Ahora",
-    href: "https://wa.me/543855063501?text=Hola,%20quiero%20hacer%20una%20donaci%C3%B3n%20%C3%BAnica",
-  },
-  {
-    icon: Calendar,
-    title: "Donación Mensual",
-    description:
-      "Únete a nuestra comunidad de patrocinadores mensuales con $1500 o anual $16000 para todo el año.",
-    action: "Ser Patrocinador",
-    href: "https://wa.me/543855063501?text=Hola,%20quiero%20ser%20patrocinador",
-  },
-  {
-    icon: Users,
-    title: "Voluntariado",
-    description:
-      "Profesionale de diferentes áreas pueden unirse a nuestras misiones y apoyar en diferentes actividades.",
-    action: "Únete al Equipo",
-    href: "https://wa.me/543855063501?text=Hola,%20quiero%20unirme%20como%20voluntario",
-  },
-  {
-    icon: Share2,
-    title: "Comparte Nuestra Causa",
-    description:
-      "Ayúdanos a llegar a más personas compartiendo nuestro trabajo en redes sociales.",
-    action: "Compartir",
-    href: "https://wa.me/543855063501?text=Hola,%20quiero%20ayudar%20a%20difundir%20su%20causa",
-  },
-];
+import { db } from "../../db/client";
+import { configuracion } from "../../db/schema";
+import { eq } from "drizzle-orm";
+
+const rows = await db.select().from(configuracion).where(eq(configuracion.key, "colaborar"));
+const config = rows[0] ? JSON.parse(rows[0].value) : {
+  titulo: "Cómo Puedes Ayudar",
+  texto: "Hay muchas formas de contribuir a nuestra misión. Cada acción cuenta y juntos podemos transformar más vidas.",
+  formas: [],
+};
+
+const defaultIcons = [DollarSign, Calendar, Users, Share2];
 ---
 
 <Section id="ayudar">
   <div class="text-center mb-16">
     <h2 class="text-4xl md:text-5xl font-bold text-foreground mb-6">
-      Cómo Puedes Ayudar
+      {config.titulo}
     </h2>
     <p class="text-xl text-muted-foreground max-w-3xl mx-auto">
-      Hay muchas formas de contribuir a nuestra misión. Cada acción cuenta y
-      juntos podemos transformar más vidas.
+      {config.texto}
     </p>
   </div>
 
   <div class="grid md:grid-cols-2 gap-8 mb-12">
     {
-      ways.map((way, index) => {
-        const Icon = way.icon;
+      config.formas.map((way: any, index: number) => {
+        const Icon = defaultIcons[index % defaultIcons.length];
         return (
           <Card
             key={index}
@@ -69,9 +46,12 @@ const ways = [
               <div class="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center mb-4">
                 <Icon className="h-6 w-6 text-white" />
               </div>
-              <CardTitle className="text-2xl">{way.title}</CardTitle>
+              <CardTitle className="text-2xl">{way.titulo}</CardTitle>
+              {way.monto && (
+                <p class="text-primary font-bold text-lg">{way.monto}</p>
+              )}
               <CardDescription className="text-base">
-                {way.description}
+                {way.descripcion}
               </CardDescription>
             </CardHeader>
             <CardContent>

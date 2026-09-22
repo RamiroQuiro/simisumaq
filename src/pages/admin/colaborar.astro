@@ -1,0 +1,209 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+import { db } from "../../db/client";
+import { configuracion } from "../../db/schema";
+import { eq } from "drizzle-orm";
+
+const rows = await db.select().from(configuracion).where(eq(configuracion.key, "colaborar"));
+const config = rows[0] ? JSON.parse(rows[0].value) : {
+  titulo: "Formas de Colaborar",
+  texto: "",
+  formas: [],
+};
+---
+
+<AdminLayout title="Formas de Colaborar">
+  <div class="mb-8">
+    <h1 class="text-2xl font-bold text-gray-900">Formas de Colaborar</h1>
+    <p class="text-gray-500 mt-1">Editá las formas en que la gente puede ayudar</p>
+  </div>
+
+  <form id="colaborar-form" class="space-y-6">
+    <div class="bg-white rounded-xl border border-gray-200 p-6">
+      <h2 class="text-lg font-semibold text-gray-900 mb-4">Encabezado</h2>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Título de la sección</label>
+          <input
+            type="text"
+            name="titulo"
+            value={config.titulo}
+            class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Texto descriptivo</label>
+          <textarea
+            name="texto"
+            rows="2"
+            class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+          >{config.texto}</textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl border border-gray-200 p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-semibold text-gray-900">Formas de colaborar</h2>
+        <button
+          type="button"
+          id="btn-add-forma"
+          class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-100 text-gray-700 text-sm font-medium hover:bg-gray-200 transition-colors"
+        >
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          Agregar forma
+        </button>
+      </div>
+
+      <div id="formas-container" class="space-y-4">
+        {config.formas.map((forma: any, i: number) => (
+          <div class="forma-item border border-gray-200 rounded-lg p-4 space-y-3 relative" data-index={i}>
+            <button type="button" class="btn-remove-forma absolute top-2 right-2 p-1 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors" title="Eliminar">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-medium text-gray-500 mb-1">Título</label>
+                <input type="text" name={`forma_titulo_${i}`} value={forma.titulo} class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-500 mb-1">Monto (opcional)</label>
+                <input type="text" name={`forma_monto_${i}`} value={forma.monto || ""} placeholder="$150.000" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-500 mb-1">Descripción</label>
+              <textarea name={`forma_descripcion_${i}`} rows="2" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">{forma.descripcion}</textarea>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-medium text-gray-500 mb-1">Texto del botón</label>
+                <input type="text" name={`forma_action_${i}`} value={forma.action} class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-500 mb-1">URL (WhatsApp o enlace)</label>
+                <input type="text" name={`forma_href_${i}`} value={forma.href} class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div id="colaborar-status" class="hidden text-sm text-center py-2"></div>
+
+    <div class="flex gap-3">
+      <button
+        type="submit"
+        id="colaborar-submit"
+        class="px-4 py-2.5 rounded-lg bg-gradient-to-r from-red-500 to-orange-500 text-white text-sm font-medium hover:from-red-600 hover:to-orange-600 transition-all"
+      >
+        Guardar cambios
+      </button>
+    </div>
+  </form>
+
+  <script is:inline>
+    let formaCount = document.querySelectorAll(".forma-item").length;
+
+    document.getElementById("btn-add-forma").addEventListener("click", () => {
+      const container = document.getElementById("formas-container");
+      const idx = formaCount++;
+      const div = document.createElement("div");
+      div.className = "forma-item border border-gray-200 rounded-lg p-4 space-y-3 relative";
+      div.dataset.index = idx;
+      div.innerHTML = `
+        <button type="button" class="btn-remove-forma absolute top-2 right-2 p-1 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors" title="Eliminar">
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-medium text-gray-500 mb-1">Título</label>
+            <input type="text" name="forma_titulo_${idx}" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-500 mb-1">Monto (opcional)</label>
+            <input type="text" name="forma_monto_${idx}" placeholder="$150.000" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-500 mb-1">Descripción</label>
+          <textarea name="forma_descripcion_${idx}" rows="2" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"></textarea>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-medium text-gray-500 mb-1">Texto del botón</label>
+            <input type="text" name="forma_action_${idx}" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-500 mb-1">URL</label>
+            <input type="text" name="forma_href_${idx}" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent" />
+          </div>
+        </div>
+      `;
+      container.appendChild(div);
+      div.querySelector(".btn-remove-forma").addEventListener("click", () => div.remove());
+    });
+
+    document.querySelectorAll(".btn-remove-forma").forEach(btn => {
+      btn.addEventListener("click", () => btn.closest(".forma-item").remove());
+    });
+
+    document.getElementById("colaborar-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const status = document.getElementById("colaborar-status");
+      const submitBtn = document.getElementById("colaborar-submit");
+
+      submitBtn.disabled = true;
+      status.textContent = "Guardando...";
+      status.className = "text-sm text-center py-2 text-gray-500";
+      status.classList.remove("hidden");
+
+      try {
+        const items = document.querySelectorAll(".forma-item");
+        const formas = [];
+        items.forEach((item, i) => {
+          const get = (name) => {
+            const el = item.querySelector(`[name="${name}"]`);
+            return el ? el.value : "";
+          };
+          formas.push({
+            titulo: get(`forma_titulo_${i}`),
+            descripcion: get(`forma_descripcion_${i}`),
+            monto: get(`forma_monto_${i}`),
+            action: get(`forma_action_${i}`),
+            href: get(`forma_href_${i}`),
+          });
+        });
+
+        const config = {
+          titulo: form.titulo.value,
+          texto: form.texto.value,
+          formas,
+        };
+
+        const saveRes = await fetch("/api/configuracion", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ key: "colaborar", value: JSON.stringify(config) }),
+        });
+        if (!saveRes.ok) throw new Error("Error al guardar");
+
+        status.textContent = "Guardado correctamente";
+        status.className = "text-sm text-center py-2 text-green-600";
+        setTimeout(() => window.location.reload(), 1000);
+      } catch (err) {
+        status.textContent = err.message;
+        status.className = "text-sm text-center py-2 text-red-600";
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
+</AdminLayout>
