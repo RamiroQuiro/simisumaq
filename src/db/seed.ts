@@ -160,6 +160,31 @@ async function seed() {
   };
   await db.insert(configuracion).values({ key: "diagnostico", value: JSON.stringify(diagnosticoConfig) });
 
+  const seccionesSalud = [
+    {
+      key: "fonoaudiologia",
+      titulo: "Fonoaudiología",
+      texto: "La fonoaudiología es una disciplina de la salud que se ocupa de la prevención, evaluación, diagnóstico y tratamiento de los trastornos del lenguaje, el habla, la voz, la audición y la deglución.",
+      imagen: "",
+    },
+    {
+      key: "psicologia",
+      titulo: "Psicología",
+      texto: "Próximamente publicaremos detalles acerca de nuestro apoyo psicológico.",
+      imagen: "",
+    },
+    {
+      key: "psicopedagogia",
+      titulo: "Psicopedagogía",
+      texto: "Próximamente publicaremos detalles acerca de nuestro apoyo psicopedagógico.",
+      imagen: "",
+    },
+  ];
+  for (const seccion of seccionesSalud) {
+    const { key, ...value } = seccion;
+    await db.insert(configuracion).values({ key, value: JSON.stringify(value) });
+  }
+
   const colaborarConfig = {
     titulo: "Formas de Colaborar",
     texto: "Hay muchas formas de contribuir a nuestra misión. Cada acción cuenta y juntos podemos transformar más vidas.",

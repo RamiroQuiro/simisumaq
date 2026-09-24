@@ -1,6 +1,6 @@
 ---
 import Button from "../../components/atomos/Button";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 ---
 
 <nav
@@ -95,7 +95,87 @@ import { ChevronDown } from "lucide-react";
         </a>
       </div>
 
-      <Button size="lg" class="font-semibold"> Donar Ahora </Button>
+      <Button size="lg" className="font-semibold hidden md:inline-flex"> Donar Ahora </Button>
+
+      <button
+        id="landing-mobile-btn"
+        class="md:hidden p-2 text-primary-texto hover:text-primary-100 rounded-lg"
+        aria-label="Abrir menu"
+      >
+        <Menu className="h-6 w-6" id="landing-menu-icon" />
+        <X className="h-6 w-6 hidden" id="landing-close-icon" />
+      </button>
+    </div>
+  </div>
+
+  <div
+    id="landing-mobile-menu"
+    class="hidden md:hidden bg-white border-t border-primary-border absolute w-full left-0 shadow-lg max-h-[calc(100vh-64px)] overflow-y-auto"
+  >
+    <div class="px-4 pt-2 pb-6 space-y-1">
+      <a href="/" class="block px-4 py-3 text-base font-medium text-primary-texto hover:bg-primary-bg-claro rounded-lg transition-colors">Inicio</a>
+
+      <div class="px-4 py-2 text-sm font-semibold text-primary-textoTitle">Nosotros</div>
+      <a href="/sobre-nosotros" class="block pl-8 pr-4 py-2 text-sm text-primary-texto hover:bg-primary-bg-claro rounded-lg transition-colors">Sobre Nosotros</a>
+      <a href="/comision" class="block pl-8 pr-4 py-2 text-sm text-primary-texto hover:bg-primary-bg-claro rounded-lg transition-colors">Comisión Directiva</a>
+      <a href="/equipo" class="block pl-8 pr-4 py-2 text-sm text-primary-texto hover:bg-primary-bg-claro rounded-lg transition-colors">Equipo</a>
+
+      <div class="px-4 py-2 text-sm font-semibold text-primary-textoTitle">Nuestro Enfoque</div>
+      <a href="/que-es-flap" class="block pl-8 pr-4 py-2 text-sm text-primary-texto hover:bg-primary-bg-claro rounded-lg transition-colors">Qué es la FLAP</a>
+      <a href="/servicios" class="block pl-8 pr-4 py-2 text-sm text-primary-texto hover:bg-primary-bg-claro rounded-lg transition-colors">Servicios que brindamos</a>
+
+      <div class="px-4 py-2 text-sm font-semibold text-primary-textoTitle">Pacientes y Familias</div>
+      <a href="/diagnostico" class="block pl-8 pr-4 py-2 text-sm text-primary-texto hover:bg-primary-bg-claro rounded-lg transition-colors">Diagnóstico</a>
+      <a href="/fonoaudiologia" class="block pl-8 pr-4 py-2 text-sm text-primary-texto hover:bg-primary-bg-claro rounded-lg transition-colors">Fonoaudiología</a>
+      <a href="/psicologia" class="block pl-8 pr-4 py-2 text-sm text-primary-texto hover:bg-primary-bg-claro rounded-lg transition-colors">Psicología</a>
+      <a href="/psicopedagogia" class="block pl-8 pr-4 py-2 text-sm text-primary-texto hover:bg-primary-bg-claro rounded-lg transition-colors">Psicopedagogía</a>
+      <a href="/recursos" class="block pl-8 pr-4 py-2 text-sm text-primary-texto hover:bg-primary-bg-claro rounded-lg transition-colors">Recursos</a>
+
+      <div class="px-4 py-2 text-sm font-semibold text-primary-textoTitle">Impacto</div>
+      <a href="/eventos" class="block pl-8 pr-4 py-2 text-sm text-primary-texto hover:bg-primary-bg-claro rounded-lg transition-colors">Eventos</a>
+      <a href="/testimonios" class="block pl-8 pr-4 py-2 text-sm text-primary-texto hover:bg-primary-bg-claro rounded-lg transition-colors">Testimonios</a>
+
+      <div class="px-4 py-2 text-sm font-semibold text-primary-textoTitle">Sumate</div>
+      <a href="/como-ayudar" class="block pl-8 pr-4 py-2 text-sm text-primary-texto hover:bg-primary-bg-claro rounded-lg transition-colors">Cómo Ayudar</a>
+      <a href="/contacto" class="block pl-8 pr-4 py-2 text-sm text-primary-texto hover:bg-primary-bg-claro rounded-lg transition-colors">Contacto</a>
+
+      <a href="/tienda" class="block px-4 py-3 text-base font-medium text-primary-texto hover:bg-primary-bg-claro rounded-lg transition-colors">Tienda</a>
+
+      <div class="pt-4 mt-2 border-t border-primary-border">
+        <Button href="/como-ayudar" size="lg" className="w-full font-semibold justify-center">
+          Donar Ahora
+        </Button>
+      </div>
     </div>
   </div>
 </nav>
+
+<script>
+  function setupLandingNavbar() {
+    const btn = document.getElementById("landing-mobile-btn");
+    const menu = document.getElementById("landing-mobile-menu");
+    const menuIcon = document.getElementById("landing-menu-icon");
+    const closeIcon = document.getElementById("landing-close-icon");
+
+    if (!btn || !menu || !menuIcon || !closeIcon) return;
+
+    const handleClick = () => {
+      menu.classList.toggle("hidden");
+      menuIcon.classList.toggle("hidden");
+      closeIcon.classList.toggle("hidden");
+    };
+
+    btn.addEventListener("click", handleClick);
+
+    menu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        menu.classList.add("hidden");
+        menuIcon.classList.remove("hidden");
+        closeIcon.classList.add("hidden");
+      });
+    });
+  }
+
+  setupLandingNavbar();
+  document.addEventListener("astro:page-load", setupLandingNavbar);
+</script>

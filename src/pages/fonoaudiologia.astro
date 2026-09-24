@@ -1,20 +1,41 @@
 ---
-export const prerender = true;
 import Layout from "../layouts/Layout.astro";
 import Section from "../components/organismos/Section.astro";
+import { db } from "../db/client";
+import { configuracion } from "../db/schema";
+import { eq } from "drizzle-orm";
+
+const rows = await db.select().from(configuracion).where(eq(configuracion.key, "fonoaudiologia"));
+const config = rows[0] ? JSON.parse(rows[0].value) : {
+  titulo: "Fonoaudiología",
+  texto: "La fonoaudiología es una disciplina de la salud.",
+  imagen: "",
+};
 ---
 
-<Layout>
+<Layout title={`${config.titulo} | Simi Sumaq`}>
   <Section class="bg-primary-bg-claro min-h-screen">
-    <div class="max-w-4xl mx-auto my-24 text-center">
-      <h1 class="text-4xl md:text-5xl font-bold text-primary-textoTitle mb-6">
-        Fonoaudiología
-      </h1>
-      <p class="text-lg text-primary-textoBody">
-        La fonoaudiología es una disciplina de la salud que se ocupa de la
-        prevención, evaluación, diagnóstico y tratamiento de los trastornos del
-        lenguaje, el habla, la voz, la audición y la deglución.
-      </p>
+    <div class="max-w-5xl mx-auto my-24">
+      <div class={`grid gap-12 items-center ${config.imagen ? "md:grid-cols-2" : ""}`}>
+        <div class={config.imagen ? "" : "text-center max-w-3xl mx-auto"}>
+          <h1 class="text-4xl md:text-5xl font-bold text-primary-textoTitle mb-6">
+            {config.titulo}
+          </h1>
+          <p class="text-lg text-primary-texto leading-relaxed">
+            {config.texto}
+          </p>
+        </div>
+
+        {config.imagen && (
+          <div>
+            <img
+              src={config.imagen}
+              alt={config.titulo}
+              class="w-full h-auto rounded-2xl shadow-strong"
+            />
+          </div>
+        )}
+      </div>
     </div>
   </Section>
 </Layout>

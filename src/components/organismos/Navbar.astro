@@ -127,8 +127,8 @@ const links = [
           class="p-2 text-primary-texto hover:text-primary-100 hover:bg-primary-bg-claro rounded-lg transition-colors"
           aria-label="Abrir menu"
         >
-          <Menu className="h-6 w-6" id="menu-icon" />
-          <X className="h-6 w-6 hidden" id="close-icon" />
+          <span id="menu-icon"><Menu className="h-6 w-6" /></span>
+          <span id="close-icon" class="hidden"><X className="h-6 w-6" /></span>
         </button>
       </div>
     </div>
@@ -172,7 +172,7 @@ const links = [
           href="/como-ayudar"
           size="lg"
           variant="primary"
-          class="w-full font-semibold justify-center"
+          className="w-full font-semibold justify-center"
         >
           Donar Ahora
         </Button>
