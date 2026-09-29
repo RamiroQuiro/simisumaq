@@ -15,12 +15,17 @@ import { db } from "../db/client";
 import { configuracion } from "../db/schema";
 import { eq } from "drizzle-orm";
 
-const rows = await db.select().from(configuracion).where(eq(configuracion.key, "colaborar"));
-const config = rows[0] ? JSON.parse(rows[0].value) : {
-  titulo: "Formas de Colaborar",
-  texto: "Hay muchas formas de contribuir a nuestra misión.",
-  formas: [],
-};
+const rows = await db
+  .select()
+  .from(configuracion)
+  .where(eq(configuracion.key, "colaborar"));
+const config = rows[0]
+  ? JSON.parse(rows[0].value)
+  : {
+      titulo: "Formas de Colaborar",
+      texto: "Hay muchas formas de contribuir a nuestra misión.",
+      formas: [],
+    };
 
 const iconMap: Record<string, any> = {
   DollarSign,
@@ -37,25 +42,31 @@ const defaultIcons = [DollarSign, Calendar, Users, Share2];
   description="Conoce formas concretas de ayudar: donaciones, voluntariado y patrocinio para que mas ninos accedan a tratamiento integral."
   canonical="https://simisumq.org/como-ayudar"
 >
-  <div class="text-center text-primary-textoTitle py-30">
-    <h1 class="text-5xl md:text-6xl font-bold mb-6">¿Cómo puedes ayudar?</h1>
-    <p class="text-xl md:text-2xl max-w-3xl mx-auto opacity-90">
-      Tu generosidad es la llave que abre un futuro lleno de sonrisas
-    </p>
-  </div>
-
-  <Section id="formas" class="py-24 bg-white">
+  <Section
+    isBackgroundFoto
+    srcFotoBackground="./ayudar.webp"
+    id="formas"
+    class="py-24 bg-white"
+  >
+    <div class="text-center text-primary-textoTitle py-30">
+      <h1 class="text-5xl md:text-6xl font-bold">¿Cómo puedes ayudar?</h1>
+      <p class="text-xl md:text-2xl max-w-3xl mx-auto opacity-90">
+        Tu generosidad es la llave que abre un futuro lleno de sonrisas
+      </p>
+    </div>
     <div class="max-w-6xl mx-auto">
       <h2
         class="text-4xl md:text-5xl font-bold text-foreground mb-6 text-center"
       >
         {config.titulo}
       </h2>
-      {config.texto && (
-        <p class="text-xl text-muted-foreground mb-12 text-center max-w-3xl mx-auto">
-          {config.texto}
-        </p>
-      )}
+      {
+        config.texto && (
+          <p class="text-xl text-muted-foreground mb-12 text-center max-w-3xl mx-auto">
+            {config.texto}
+          </p>
+        )
+      }
 
       <div class="grid md:grid-cols-2 gap-8 mb-16">
         {
